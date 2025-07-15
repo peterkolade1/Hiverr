@@ -39,6 +39,7 @@ export function Header() {
             <Button 
               variant="outline" 
               size="sm" 
+              onClick={() => window.location.href = '/creators'}
               className="border-purple-600 text-purple-600 hover:bg-purple-50 text-xs sm:text-sm px-2 sm:px-4"
             >
               For Creators
