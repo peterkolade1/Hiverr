@@ -127,28 +127,6 @@ export function ServicesSection() {
                 </CardContent>
               </Card>
             </motion.div>
-                <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-                <p className={`${service.bgColor === "bg-gray-900 text-white" ? "text-gray-300" : "text-gray-600"} mb-6`}>
-                  {service.description}
-                </p>
-                <div className="space-y-3 mb-8">
-                  {service.features.map((feature, featureIndex) => (
-                    <Badge
-                      key={featureIndex}
-                      className={`${service.featureBadgeStyle} mr-2 mb-2 inline-block`}
-                    >
-                      {feature}
-                    </Badge>
-                  ))}
-                </div>
-                <div className={`text-sm ${service.bgColor === "bg-gray-900 text-white" ? "text-gray-400" : "text-gray-500"}`}>
-                  {service.price.split("$")[0]}
-                  <span className={`${service.bgColor === "bg-gray-900 text-white" ? "text-white" : "text-gray-900"} font-semibold`}>
-                    ${service.price.split("$")[1]}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
           ))}
         </motion.div>
       </div>

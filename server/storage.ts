@@ -84,7 +84,11 @@ export class MemStorage implements IStorage {
 
     sampleCreators.forEach(creator => {
       const id = this.currentCreatorId++;
-      this.creators.set(id, { ...creator, id });
+      this.creators.set(id, { 
+        ...creator, 
+        id,
+        platforms: creator.platforms as string[]
+      });
     });
 
     // Sample campaigns
@@ -139,7 +143,15 @@ export class MemStorage implements IStorage {
 
     sampleCampaigns.forEach(campaign => {
       const id = this.currentCampaignId++;
-      this.campaigns.set(id, { ...campaign, id, createdAt: new Date() });
+      this.campaigns.set(id, { 
+        ...campaign, 
+        id, 
+        createdAt: new Date(),
+        testimonial: campaign.testimonial || null,
+        clientName: campaign.clientName || null,
+        clientTitle: campaign.clientTitle || null,
+        metrics: campaign.metrics as { engagement?: string; reach?: string; conversions?: string; downloads?: string; }
+      });
     });
   }
 
@@ -156,7 +168,9 @@ export class MemStorage implements IStorage {
     const creator: Creator = { 
       ...insertCreator, 
       id,
-      isVerified: false 
+      isVerified: false,
+      isAvailable: insertCreator.isAvailable ?? true,
+      platforms: insertCreator.platforms as string[]
     };
     this.creators.set(id, creator);
     return creator;
@@ -175,7 +189,12 @@ export class MemStorage implements IStorage {
     const campaign: Campaign = { 
       ...insertCampaign, 
       id,
-      createdAt: new Date()
+      createdAt: new Date(),
+      testimonial: insertCampaign.testimonial || null,
+      clientName: insertCampaign.clientName || null,
+      clientTitle: insertCampaign.clientTitle || null,
+      rating: insertCampaign.rating ?? 5,
+      metrics: insertCampaign.metrics as { engagement?: string; reach?: string; conversions?: string; downloads?: string; }
     };
     this.campaigns.set(id, campaign);
     return campaign;
@@ -186,7 +205,8 @@ export class MemStorage implements IStorage {
     const inquiry: Inquiry = { 
       ...insertInquiry, 
       id,
-      createdAt: new Date()
+      createdAt: new Date(),
+      company: insertInquiry.company || null
     };
     this.inquiries.set(id, inquiry);
     return inquiry;
