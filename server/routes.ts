@@ -66,6 +66,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin routes
+  app.get("/api/admin/waitlist", async (req, res) => {
+    try {
+      const waitlistEntries = await storage.getAllWaitlistEntries();
+      res.json(waitlistEntries);
+    } catch (error) {
+      console.error("Error fetching waitlist entries:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

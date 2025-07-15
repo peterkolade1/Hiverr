@@ -18,6 +18,7 @@ export interface IStorage {
   
   // Waitlist methods
   createWaitlistEntry(entry: InsertWaitlist): Promise<Waitlist>;
+  getAllWaitlistEntries(): Promise<Waitlist[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -454,6 +455,12 @@ export class MemStorage implements IStorage {
     this.waitlistEntries.set(id, waitlistEntry);
     return waitlistEntry;
   }
+
+  async getAllWaitlistEntries(): Promise<Waitlist[]> {
+    return Array.from(this.waitlistEntries.values()).sort((a, b) => 
+      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
+    );
+  }
 }
 
 export class DatabaseStorage implements IStorage {
@@ -505,6 +512,10 @@ export class DatabaseStorage implements IStorage {
       .values([insertWaitlist])
       .returning();
     return waitlistEntry;
+  }
+
+  async getAllWaitlistEntries(): Promise<Waitlist[]> {
+    return await db.select().from(waitlist).orderBy(waitlist.createdAt);
   }
 }
 
