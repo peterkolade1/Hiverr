@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Search, Handshake, Rocket, Star, Plus, Minus } from "lucide-react";
+import heroImage from "@assets/back-view-woman-with-blue-background_1752550924992.jpg";
 
 export function HowItWorks() {
   const [expandedStep, setExpandedStep] = useState(0);
@@ -29,7 +30,7 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-20 bg-white">
+    <section id="how-it-works" className="py-20 bg-gradient-to-br from-blue-50/30 via-white to-cyan-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <motion.h2
@@ -59,9 +60,9 @@ export function HowItWorks() {
             className="relative"
           >
             <img
-              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=500"
-              alt="Creative team collaboration"
-              className="rounded-2xl shadow-lg w-full"
+              src={heroImage}
+              alt="Creative content creator"
+              className="rounded-2xl shadow-lg w-full object-cover h-[500px]"
             />
             
             {/* Floating Profile Card */}
@@ -69,7 +70,7 @@ export function HowItWorks() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="absolute bottom-6 left-6 bg-white p-4 rounded-xl shadow-lg max-w-xs"
+              className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-lg max-w-xs border border-cyan-100"
             >
               <div className="flex items-center">
                 <img
@@ -87,7 +88,7 @@ export function HowItWorks() {
                   </div>
                 </div>
               </div>
-              <Button size="sm" className="w-full mt-3 bg-gray-900 text-white hover:bg-gray-800">
+              <Button size="sm" className="w-full mt-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white hover:from-blue-700 hover:to-cyan-700 transition-all duration-300">
                 <Plus className="mr-1" size={12} />
                 Show More
               </Button>
@@ -107,18 +108,20 @@ export function HowItWorks() {
                 className="border border-gray-200 rounded-2xl overflow-hidden transition-all duration-300"
               >
                 <div
-                  className={`p-6 cursor-pointer ${
-                    expandedStep === index ? "bg-gray-900 text-white" : "bg-white"
+                  className={`p-6 cursor-pointer transition-all duration-300 ${
+                    expandedStep === index 
+                      ? "bg-gradient-to-br from-blue-600 to-cyan-600 text-white" 
+                      : "bg-white hover:bg-gradient-to-br hover:from-blue-50 hover:to-cyan-50"
                   }`}
                   onClick={() => setExpandedStep(expandedStep === index ? -1 : index)}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <div
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center mr-4 ${
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center mr-4 transition-all duration-300 ${
                           expandedStep === index
-                            ? "bg-white text-gray-900"
-                            : "bg-gray-100 text-gray-600"
+                            ? "bg-white text-blue-600"
+                            : "bg-gradient-to-br from-blue-100 to-cyan-100 text-blue-600"
                         }`}
                       >
                         {step.icon}
@@ -128,10 +131,10 @@ export function HowItWorks() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className={`rounded-full ${
+                      className={`rounded-full transition-all duration-300 ${
                         expandedStep === index
-                          ? "bg-white/20 hover:bg-white/30"
-                          : "bg-gray-100 hover:bg-gray-200"
+                          ? "bg-white/20 hover:bg-white/30 text-white"
+                          : "bg-gradient-to-br from-blue-100 to-cyan-100 hover:from-blue-200 hover:to-cyan-200 text-blue-600"
                       }`}
                     >
                       {expandedStep === index ? (
