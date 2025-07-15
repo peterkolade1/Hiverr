@@ -14,7 +14,7 @@ import beautyVloggerImage from "@assets/woman-beauty-vlogger-filming-vlog-about-
 import foodPhotoImage from "@assets/woman-taking-photo-her-food_1752547296036.jpg";
 import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752547296037.jpg";
 // Import brand logos
-import binanceLogo from "@assets/image_1752551686611.png";
+import binanceLogo from "@assets/1391309_1752552346373.png";
 import shopifyLogo from "@assets/image_1752551752354.png";
 import amplifyLogo from "@assets/Logo Main_1752551931487.png";
 
