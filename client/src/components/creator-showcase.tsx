@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ArrowRight, Check, Crown, Heart, Eye, Star, Filter } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Crown, Heart, Eye, Star, Filter, Users, TrendingUp, Award, MapPin, DollarSign, Calendar } from "lucide-react";
 import type { Creator } from "@shared/schema";
 
 // Import images
@@ -20,6 +20,7 @@ import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-work
 
 export function CreatorShowcase() {
   const [selectedNiche, setSelectedNiche] = useState<string>("All");
+  const [hoveredCreator, setHoveredCreator] = useState<number | null>(null);
   const { data: creators, isLoading } = useQuery<Creator[]>({
     queryKey: ["/api/creators"],
   });
@@ -158,6 +159,9 @@ export function CreatorShowcase() {
               variants={cardVariants}
               whileHover={{ y: -8 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="relative"
+              onMouseEnter={() => setHoveredCreator(creator.id)}
+              onMouseLeave={() => setHoveredCreator(null)}
             >
               <Card className="overflow-hidden hover:shadow-2xl transition-all duration-500 relative group cursor-pointer border-transparent hover:border-purple-200">
                 <div className="absolute top-4 left-4 z-10">
@@ -266,6 +270,86 @@ export function CreatorShowcase() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Hover Card with Quick Stats */}
+              <AnimatePresence>
+                {hoveredCreator === creator.id && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 right-0 z-50 mt-2"
+                  >
+                    <Card className="bg-white/95 backdrop-blur-sm border border-purple-200 shadow-2xl">
+                      <CardContent className="p-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          {/* Left Column */}
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                              <MapPin size={14} className="text-gray-500" />
+                              <span className="text-sm text-gray-600">{creator.location || "Remote"}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Users size={14} className="text-blue-500" />
+                              <span className="text-sm font-medium">{(creator.followerCount / 1000).toFixed(0)}K followers</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <TrendingUp size={14} className="text-green-500" />
+                              <span className="text-sm font-medium">{creator.engagementRate} engagement</span>
+                            </div>
+                          </div>
+                          
+                          {/* Right Column */}
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                              <DollarSign size={14} className="text-purple-500" />
+                              <span className="text-sm font-medium">${creator.hourlyRate}/hour</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Award size={14} className="text-orange-500" />
+                              <span className="text-sm font-medium">
+                                {Math.floor(Math.random() * 50) + 20} projects
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Calendar size={14} className="text-cyan-500" />
+                              <span className="text-sm font-medium">
+                                {creator.isAvailable ? "Available" : "Busy"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Platforms */}
+                        <div className="mt-4 pt-3 border-t border-gray-100">
+                          <div className="flex flex-wrap gap-1">
+                            {creator.platforms?.map((platform: string) => (
+                              <Badge 
+                                key={platform} 
+                                variant="outline" 
+                                className="text-xs px-2 py-0.5"
+                              >
+                                {platform}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        {/* Quick Action */}
+                        <div className="mt-3 pt-3 border-t border-gray-100">
+                          <Button 
+                            size="sm" 
+                            className="w-full bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-700 hover:to-cyan-600"
+                          >
+                            View Full Profile
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           ))}
         </motion.div>
