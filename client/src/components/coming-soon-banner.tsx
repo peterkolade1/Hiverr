@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { WaitlistForm } from "./waitlist-form";
 import { Sparkles, ArrowRight } from "lucide-react";
 
 export function ComingSoonBanner() {
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
+
   return (
     <section className="py-20 bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -48,6 +52,7 @@ export function ComingSoonBanner() {
           >
             <Button
               size="lg"
+              onClick={() => setIsWaitlistOpen(true)}
               className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white px-8 py-4 text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl group"
             >
               Join the Waitlist
@@ -75,6 +80,11 @@ export function ComingSoonBanner() {
           </motion.div>
         </motion.div>
       </div>
+
+      <WaitlistForm 
+        isOpen={isWaitlistOpen} 
+        onClose={() => setIsWaitlistOpen(false)} 
+      />
     </section>
   );
 }

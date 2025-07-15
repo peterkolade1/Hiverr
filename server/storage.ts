@@ -1,4 +1,4 @@
-import { creators, campaigns, inquiries, type Creator, type Campaign, type Inquiry, type InsertCreator, type InsertCampaign, type InsertInquiry } from "@shared/schema";
+import { creators, campaigns, inquiries, waitlist, type Creator, type Campaign, type Inquiry, type Waitlist, type InsertCreator, type InsertCampaign, type InsertInquiry, type InsertWaitlist } from "@shared/schema";
 
 export interface IStorage {
   // Creator methods
@@ -13,23 +13,30 @@ export interface IStorage {
   
   // Inquiry methods
   createInquiry(inquiry: InsertInquiry): Promise<Inquiry>;
+  
+  // Waitlist methods
+  createWaitlistEntry(entry: InsertWaitlist): Promise<Waitlist>;
 }
 
 export class MemStorage implements IStorage {
   private creators: Map<number, Creator>;
   private campaigns: Map<number, Campaign>;
   private inquiries: Map<number, Inquiry>;
+  private waitlistEntries: Map<number, Waitlist>;
   private currentCreatorId: number;
   private currentCampaignId: number;
   private currentInquiryId: number;
+  private currentWaitlistId: number;
 
   constructor() {
     this.creators = new Map();
     this.campaigns = new Map();
     this.inquiries = new Map();
+    this.waitlistEntries = new Map();
     this.currentCreatorId = 1;
     this.currentCampaignId = 1;
     this.currentInquiryId = 1;
+    this.currentWaitlistId = 1;
 
     // Initialize with sample data
     this.initializeSampleData();
@@ -286,6 +293,19 @@ export class MemStorage implements IStorage {
     };
     this.inquiries.set(id, inquiry);
     return inquiry;
+  }
+
+  async createWaitlistEntry(insertWaitlist: InsertWaitlist): Promise<Waitlist> {
+    const id = this.currentWaitlistId++;
+    const waitlistEntry: Waitlist = { 
+      ...insertWaitlist, 
+      id,
+      createdAt: new Date(),
+      company: insertWaitlist.company || null,
+      role: insertWaitlist.role || null
+    };
+    this.waitlistEntries.set(id, waitlistEntry);
+    return waitlistEntry;
   }
 }
 

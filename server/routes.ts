@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertInquirySchema } from "@shared/schema";
+import { insertInquirySchema, insertWaitlistSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -43,6 +43,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(201).json(inquiry);
     } catch (error) {
       console.error("Error creating inquiry:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Create waitlist entry
+  app.post("/api/waitlist", async (req, res) => {
+    try {
+      const result = insertWaitlistSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ 
+          message: "Validation error",
+          errors: result.error.errors 
+        });
+      }
+
+      const waitlistEntry = await storage.createWaitlistEntry(result.data);
+      res.status(201).json(waitlistEntry);
+    } catch (error) {
+      console.error("Error creating waitlist entry:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
