@@ -126,22 +126,20 @@ export function HeroSection() {
 
             {/* Search Bar */}
             <div className="relative w-full max-w-lg">
-              <div className="relative">
+              <div className="relative overflow-hidden rounded-full">
                 <input
                   type="text"
                   placeholder={searchConfig[searchMode].placeholder}
                   className="w-full px-6 py-4 text-base border-2 border-gray-200 rounded-full focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all duration-300 pr-14"
                 />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-cyan-600 text-white p-2.5 rounded-full hover:from-purple-700 hover:to-cyan-700 transition-all duration-300"
+                <button
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-cyan-600 text-white p-2.5 rounded-full hover:from-purple-700 hover:to-cyan-700 transition-all duration-300 hover:scale-105 active:scale-95"
                   onClick={() => {
                     document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 >
                   <Search size={20} />
-                </motion.button>
+                </button>
               </div>
             </div>
 
