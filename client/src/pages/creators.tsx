@@ -8,7 +8,6 @@ import { WaitlistForm } from "@/components/waitlist-form";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CreatorShowcase } from "@/components/creator-showcase";
-import { HowItWorks } from "@/components/how-it-works";
 
 // Import creator-focused images
 import smartphoneImage from "@assets/back-view-woman-with-blue-background_1752553805026.jpg";
@@ -223,9 +222,6 @@ export default function Creators() {
       {/* Creator Showcase Section */}
       <CreatorShowcase />
 
-      {/* How It Works Section */}
-      <HowItWorks />
-
       {/* Benefits Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -333,7 +329,7 @@ export default function Creators() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="start-earning" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
