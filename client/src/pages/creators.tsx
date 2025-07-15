@@ -7,6 +7,8 @@ import { useImagePreloader } from "@/hooks/useImagePreloader";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { CreatorShowcase } from "@/components/creator-showcase";
+import { HowItWorks } from "@/components/how-it-works";
 
 // Import creator-focused images
 import smartphoneImage from "@assets/back-view-woman-with-blue-background_1752553805026.jpg";
@@ -217,6 +219,12 @@ export default function Creators() {
           </div>
         </div>
       </section>
+
+      {/* Creator Showcase Section */}
+      <CreatorShowcase />
+
+      {/* How It Works Section */}
+      <HowItWorks />
 
       {/* Benefits Section */}
       <section className="py-20 bg-white">
