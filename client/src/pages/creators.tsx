@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { HiverLogo } from "@/components/hiver-logo";
 import { Star, Plus, Video, Search, DollarSign, Users, TrendingUp, Calendar, Clock, Shield, Trophy, Medal, Award } from "lucide-react";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
-import { WaitlistForm } from "@/components/waitlist-form";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CreatorShowcase } from "@/components/creator-showcase";
@@ -19,7 +17,6 @@ import musicImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-
 import cookingImage from "@assets/medium-shot-women-cooking-together_1752553805030.jpg";
 
 export default function Creators() {
-  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
   // Preload critical images for better performance
   useImagePreloader({
@@ -574,7 +571,7 @@ export default function Creators() {
           </p>
           <Button
             size="lg"
-            onClick={() => setIsWaitlistOpen(true)}
+            onClick={() => window.location.href = '/waitlist'}
             className="bg-white text-purple-600 hover:bg-gray-50 px-8 py-4 text-lg font-semibold rounded-full"
           >
             Start Your Creator Journey
@@ -585,11 +582,6 @@ export default function Creators() {
 
 
       <Footer />
-
-      <WaitlistForm 
-        isOpen={isWaitlistOpen} 
-        onClose={() => setIsWaitlistOpen(false)} 
-      />
     </div>
   );
 }

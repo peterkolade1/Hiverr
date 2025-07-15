@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import Creators from "@/pages/creators";
+import Waitlist from "@/pages/waitlist";
 import Login from "@/pages/login";
 import Signup from "@/pages/signup";
 import Admin from "@/pages/admin";
@@ -15,6 +16,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/creators" component={Creators} />
+      <Route path="/waitlist" component={Waitlist} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/admin" component={Admin} />

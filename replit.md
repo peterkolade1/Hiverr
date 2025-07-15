@@ -37,6 +37,12 @@ Preferred communication style: Simple, everyday language.
 - JSON fields for storing array data (platforms, metrics)
 - Proper relationships and constraints with serial primary keys
 
+## Recent Changes
+- **December 2024**: Created dedicated waitlist page with separate comprehensive forms for brands and creators
+- **December 2024**: Updated hero section to display only 4 core influence niches (Lifestyle & Fashion, Food & Lifestyle, Beauty & Skincare, Fitness & Wellness)
+- **December 2024**: Moved "Hive Leaderboard" section to appear before "Ready to monetize your creativity" section on creators page
+- **December 2024**: Replaced all waitlist modal functionality with navigation to dedicated `/waitlist` page
+
 ## Key Components
 
 ### Frontend Components
@@ -46,7 +52,7 @@ Preferred communication style: Simple, everyday language.
 - **Services Section** highlighting platform-specific creator categories
 - **Success Stories** featuring campaign metrics and testimonials
 - **Inquiry System** for brands to contact creators
-- **Waitlist System** with modal form for early access to AI features
+- **Dedicated Waitlist Page** with separate comprehensive forms for brands and creators
 - **Custom Hiverr Logo** hexagonal design with purple-cyan gradient branding
 - **Responsive Design** optimized for mobile and desktop with Eudoxus Sans typography
 
