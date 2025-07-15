@@ -46,11 +46,6 @@ export function Header() {
 
           <div className="flex items-center space-x-4">
             <span className="hidden sm:block text-sm text-gray-600">Hamburg, 2:30pm</span>
-            <Link href="/login">
-              <Button variant="outline" size="sm" className="border-gray-300 text-gray-700 hover:bg-gray-50">
-                Login
-              </Button>
-            </Link>
             <Button 
               variant="default" 
               size="sm" 

@@ -1,4 +1,6 @@
 import { creators, campaigns, inquiries, waitlist, type Creator, type Campaign, type Inquiry, type Waitlist, type InsertCreator, type InsertCampaign, type InsertInquiry, type InsertWaitlist } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // Creator methods
@@ -309,4 +311,56 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  async getAllCreators(): Promise<Creator[]> {
+    return await db.select().from(creators);
+  }
+
+  async getCreator(id: number): Promise<Creator | undefined> {
+    const [creator] = await db.select().from(creators).where(eq(creators.id, id));
+    return creator || undefined;
+  }
+
+  async createCreator(insertCreator: InsertCreator): Promise<Creator> {
+    const [creator] = await db
+      .insert(creators)
+      .values([insertCreator])
+      .returning();
+    return creator;
+  }
+
+  async getAllCampaigns(): Promise<Campaign[]> {
+    return await db.select().from(campaigns);
+  }
+
+  async getCampaign(id: number): Promise<Campaign | undefined> {
+    const [campaign] = await db.select().from(campaigns).where(eq(campaigns.id, id));
+    return campaign || undefined;
+  }
+
+  async createCampaign(insertCampaign: InsertCampaign): Promise<Campaign> {
+    const [campaign] = await db
+      .insert(campaigns)
+      .values([insertCampaign])
+      .returning();
+    return campaign;
+  }
+
+  async createInquiry(insertInquiry: InsertInquiry): Promise<Inquiry> {
+    const [inquiry] = await db
+      .insert(inquiries)
+      .values([insertInquiry])
+      .returning();
+    return inquiry;
+  }
+
+  async createWaitlistEntry(insertWaitlist: InsertWaitlist): Promise<Waitlist> {
+    const [waitlistEntry] = await db
+      .insert(waitlist)
+      .values([insertWaitlist])
+      .returning();
+    return waitlistEntry;
+  }
+}
+
+export const storage = new DatabaseStorage();

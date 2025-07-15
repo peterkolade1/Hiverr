@@ -25,13 +25,15 @@ Preferred communication style: Simple, everyday language.
 - **Drizzle ORM** for database operations and schema management
 - **Neon Database** (PostgreSQL) as the primary database
 - RESTful API design with proper error handling and logging
-- Memory storage implementation with sample data for development
+- Database storage implementation with PostgreSQL backend
+- Waitlist functionality with database persistence
 
 ### Database Design
-- PostgreSQL database with three main tables:
+- PostgreSQL database with four main tables:
   - `creators` - Content creator profiles with skills, rates, and social metrics
   - `campaigns` - Brand campaign information with success metrics
   - `inquiries` - Communication requests between brands and creators
+  - `waitlist` - Early access signups for AI features
 - JSON fields for storing array data (platforms, metrics)
 - Proper relationships and constraints with serial primary keys
 
@@ -74,6 +76,7 @@ Preferred communication style: Simple, everyday language.
 - `GET /api/creators` - Fetch all content creators
 - `GET /api/campaigns` - Fetch all campaigns with success metrics
 - `POST /api/inquiries` - Submit brand inquiry forms
+- `POST /api/waitlist` - Join waitlist for AI features
 
 ## External Dependencies
 
