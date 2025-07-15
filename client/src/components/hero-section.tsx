@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { HiverLogo } from "./hiver-logo";
 import { Star, Plus, Video } from "lucide-react";
 
 // Import creator images

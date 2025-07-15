@@ -44,6 +44,8 @@ Preferred communication style: Simple, everyday language.
 - **Services Section** highlighting platform-specific creator categories
 - **Success Stories** featuring campaign metrics and testimonials
 - **Inquiry System** for brands to contact creators
+- **Waitlist System** with modal form for early access to AI features
+- **Custom Hiver Logo** hexagonal design with purple-cyan gradient branding
 - **Responsive Design** optimized for mobile and desktop with Eudoxus Sans typography
 
 ### Backend Components
@@ -55,6 +57,7 @@ Preferred communication style: Simple, everyday language.
 ### UI Component Library
 - Complete Shadcn/UI implementation with 40+ components
 - Custom theme with brand colors (orange, purple, cyan)
+- Custom Hiver logo components (HiverLogo, HiverWordmark) with SVG graphics
 - Consistent design tokens and CSS variables
 - Accessible components following WAI-ARIA guidelines
 

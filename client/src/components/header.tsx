@@ -3,7 +3,8 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { WaitlistForm } from "./waitlist-form";
-import { Menu, Users, Zap, Sparkles } from "lucide-react";
+import { HiverWordmark } from "./hiver-logo";
+import { Menu, Sparkles } from "lucide-react";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,11 +35,8 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center group">
-              <div className="w-8 h-8 gradient-brand rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                <Zap className="text-white text-sm transition-transform duration-300 group-hover:rotate-12" size={16} />
-              </div>
-              <span className="ml-2 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600">Hiver</span>
+            <Link href="/" className="group">
+              <HiverWordmark className="transition-all duration-300 group-hover:scale-105" />
             </Link>
           </div>
           

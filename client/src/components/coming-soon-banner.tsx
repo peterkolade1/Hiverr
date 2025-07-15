@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { WaitlistForm } from "./waitlist-form";
+import { HiverLogo } from "./hiver-logo";
 import { Sparkles, ArrowRight } from "lucide-react";
 
 export function ComingSoonBanner() {

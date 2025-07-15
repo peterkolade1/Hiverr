@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Zap } from "lucide-react";
+import { HiverWordmark } from "./hiver-logo";
 import { FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 export function Footer() {
@@ -15,12 +15,7 @@ export function Footer() {
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
             {/* Left side - Logo and tagline */}
             <div>
-              <div className="flex items-center mb-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-lg flex items-center justify-center">
-                  <Zap className="text-white text-sm" size={16} />
-                </div>
-                <span className="ml-2 text-2xl font-bold text-gray-900">Hiver</span>
-              </div>
+              <HiverWordmark size="lg" className="mb-2" />
               <p className="text-gray-500 text-sm">
                 Powering UGC at Scale.
               </p>
