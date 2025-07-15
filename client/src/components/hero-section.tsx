@@ -326,25 +326,51 @@ export function HeroSection() {
           className="mt-16"
         >
           <p className="text-center text-gray-500 text-sm mb-8">Trusted by</p>
-          <div className="flex justify-center items-center space-x-12 opacity-60">
-            {["Nike", "Glossier", "Shopify", "Notion", "Airbnb"].map((brand, index) => (
-              <motion.div
-                key={brand}
-                className="text-2xl font-bold text-gray-400 hover:text-gray-600 transition-colors duration-300 cursor-pointer"
-                whileHover={{ 
-                  scale: 1.1,
-                  y: -2,
-                }}
-                transition={{ 
-                  type: "spring", 
-                  stiffness: 400, 
-                  damping: 10,
-                  delay: index * 0.1 
-                }}
-              >
-                {brand}
-              </motion.div>
-            ))}
+          <div className="flex justify-center items-center space-x-8 sm:space-x-12 opacity-70">
+            <motion.img
+              src="@assets/image_1752551686611.png"
+              alt="Binance"
+              className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              whileHover={{ 
+                scale: 1.1,
+                y: -2,
+              }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 400, 
+                damping: 10
+              }}
+            />
+            <motion.img
+              src="@assets/image_1752551752354.png"
+              alt="Shopify"
+              className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              whileHover={{ 
+                scale: 1.1,
+                y: -2,
+              }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 400, 
+                damping: 10,
+                delay: 0.1
+              }}
+            />
+            <motion.img
+              src="@assets/Logo Main_1752551931487.png"
+              alt="Amplify"
+              className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              whileHover={{ 
+                scale: 1.1,
+                y: -2,
+              }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 400, 
+                damping: 10,
+                delay: 0.2
+              }}
+            />
           </div>
         </motion.div>
       </div>
