@@ -71,7 +71,7 @@ export function HiverWordmark({ className = "", size = "md" }: HiverWordmarkProp
     <div className={`flex items-center ${className}`}>
       <HiverLogo size={size} className="mr-2" />
       <span className={`font-bold text-gray-900 ${sizeClasses[size]}`}>
-        Hiver
+        Hiverr
       </span>
     </div>
   );

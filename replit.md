@@ -1,8 +1,8 @@
-# Hiver - UGC Influencer Marketing Platform
+# Hiverr - UGC Influencer Marketing Platform
 
 ## Overview
 
-Hiver is a full-stack web application that connects brands with content creators for User-Generated Content (UGC) campaigns. The platform features a modern React frontend with TypeScript, an Express.js backend, and PostgreSQL database with Drizzle ORM. The application showcases creators with "Hive Score" ratings, campaigns, and includes an inquiry system for connecting brands with creators across multiple niches including Beauty & Skincare, Fitness & Health, Food & Cooking, Fashion & Lifestyle, Technology, Photography, Music & Audio, and Travel.
+Hiverr is a full-stack web application that connects brands with content creators for User-Generated Content (UGC) campaigns. The platform features a modern React frontend with TypeScript, an Express.js backend, and PostgreSQL database with Drizzle ORM. The application showcases creators with "Hive Score" ratings, campaigns, and includes an inquiry system for connecting brands with creators across multiple niches including Beauty & Skincare, Fitness & Health, Food & Cooking, Fashion & Lifestyle, Technology, Photography, Music & Audio, and Travel.
 
 ## User Preferences
 
@@ -47,7 +47,7 @@ Preferred communication style: Simple, everyday language.
 - **Success Stories** featuring campaign metrics and testimonials
 - **Inquiry System** for brands to contact creators
 - **Waitlist System** with modal form for early access to AI features
-- **Custom Hiver Logo** hexagonal design with purple-cyan gradient branding
+- **Custom Hiverr Logo** hexagonal design with purple-cyan gradient branding
 - **Responsive Design** optimized for mobile and desktop with Eudoxus Sans typography
 
 ### Backend Components
@@ -59,7 +59,7 @@ Preferred communication style: Simple, everyday language.
 ### UI Component Library
 - Complete Shadcn/UI implementation with 40+ components
 - Custom theme with brand colors (orange, purple, cyan)
-- Custom Hiver logo components (HiverLogo, HiverWordmark) with SVG graphics
+- Custom Hiverr logo components (HiverLogo, HiverWordmark) with SVG graphics
 - Consistent design tokens and CSS variables
 - Accessible components following WAI-ARIA guidelines
 

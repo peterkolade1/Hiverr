@@ -68,7 +68,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-lg sm:text-xl text-gray-600 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed px-4"
           >
-            Hiver helps brands submit briefs, discover top-fit creators, and generate UGC content — all in one simple platform.
+            Hiverr helps brands submit briefs, discover top-fit creators, and generate UGC content — all in one simple platform.
           </motion.p>
 
           {/* CTA Buttons */}

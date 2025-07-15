@@ -52,7 +52,7 @@ export default function Admin() {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'hiver-waitlist.csv';
+    link.download = 'hiverr-waitlist.csv';
     link.click();
     window.URL.revokeObjectURL(url);
   };
@@ -108,7 +108,7 @@ export default function Admin() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Waitlist Admin</h1>
-              <p className="text-gray-600 mt-2">Manage Hiver platform waitlist entries</p>
+              <p className="text-gray-600 mt-2">Manage Hiverr platform waitlist entries</p>
             </div>
             <Button onClick={() => setIsAuthenticated(false)} variant="outline">
               Logout
