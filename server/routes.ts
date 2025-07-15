@@ -60,8 +60,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const waitlistEntry = await storage.createWaitlistEntry(result.data);
       res.status(201).json(waitlistEntry);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating waitlist entry:", error);
+      
+      // Handle duplicate email error
+      if (error.code === '23505' && error.constraint === 'waitlist_email_unique') {
+        return res.status(409).json({ 
+          message: "This email is already on the waitlist",
+          type: "duplicate_email"
+        });
+      }
+      
       res.status(500).json({ message: "Internal server error" });
     }
   });

@@ -44,9 +44,16 @@ export function WaitlistForm({ isOpen, onClose }: WaitlistFormProps) {
       });
     },
     onError: (error: any) => {
+      let description = "Failed to join waitlist. Please try again.";
+      
+      // Check if it's a duplicate email error
+      if (error.message?.includes("409") || error.message?.includes("already on the waitlist")) {
+        description = "This email is already on the waitlist. Thank you for your interest!";
+      }
+      
       toast({
         title: "Error",
-        description: error.message || "Failed to join waitlist. Please try again.",
+        description,
         variant: "destructive",
       });
     },
