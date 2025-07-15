@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { ArrowLeft, ArrowRight, Check, Crown, Heart, Eye, Star, Filter, Users, TrendingUp, Award, MapPin, DollarSign, Calendar } from "lucide-react";
+import { CreatorProfileModal } from "./creator-profile-modal";
+import { Check, Star, Eye, Filter } from "lucide-react";
 import type { Creator } from "@shared/schema";
 
 // Import images
@@ -21,9 +21,22 @@ import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-work
 
 export function CreatorShowcase() {
   const [selectedNiche, setSelectedNiche] = useState<string>("All");
+  const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const { data: creators, isLoading } = useQuery<Creator[]>({
     queryKey: ["/api/creators"],
   });
+
+  const handleViewProfile = (creator: Creator) => {
+    setSelectedCreator(creator);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCreator(null);
+  };
 
   const niches = [
     "All",
@@ -92,7 +105,7 @@ export function CreatorShowcase() {
           >
             Top Creators on Hiver{" "}
             <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-lg ml-2">
-              <Crown className="text-white text-sm" size={16} />
+              <Star className="text-white text-sm" size={16} fill="currentColor" />
             </span>
           </motion.h2>
           <motion.p
@@ -157,13 +170,9 @@ export function CreatorShowcase() {
             <motion.div 
               key={creator.id} 
               variants={cardVariants}
-              whileHover={{ y: -8 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="relative"
             >
-              <HoverCard openDelay={300} closeDelay={150}>
-                <HoverCardTrigger asChild>
-                  <Card className="overflow-hidden hover:shadow-2xl transition-all duration-500 relative group cursor-pointer border-transparent hover:border-purple-200">
+              <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 relative group border-gray-100">
                 <div className="absolute top-4 left-4 z-10">
                   <motion.div 
                     className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center"
@@ -174,7 +183,7 @@ export function CreatorShowcase() {
                   </motion.div>
                 </div>
                 <div className="absolute top-4 right-4 z-10">
-                  <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm transition-all duration-300 group-hover:bg-purple-100 group-hover:text-purple-700">
+                  <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
                     {creator.category}
                   </Badge>
                 </div>
@@ -191,7 +200,9 @@ export function CreatorShowcase() {
                          index === 7 ? gymImage :
                          creator.profileImage}
                     alt={`${creator.name} - ${creator.category}`}
-                    className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-64 object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
                   
                   {/* Testimonial overlay for featured creator */}
@@ -264,91 +275,27 @@ export function CreatorShowcase() {
                         <span className="text-purple-600 font-medium">Hive Score: {Math.floor(Math.random() * 20) + 80}</span>
                       </div>
                     </div>
-                    <Button variant="link" className="text-purple-600 hover:text-purple-700 p-0 h-auto">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleViewProfile(creator)}
+                      className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 border-purple-200"
+                    >
+                      <Eye className="mr-1" size={14} />
                       View Profile
                     </Button>
                   </div>
                 </CardContent>
-                  </Card>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-80 p-4" side="bottom" align="start">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-lg">
-                          {creator.name.split(' ').map(n => n[0]).join('')}
-                        </span>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900">{creator.name}</h4>
-                        <p className="text-sm text-gray-600">{creator.category}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <MapPin size={14} className="text-gray-500" />
-                          <span className="text-sm text-gray-600">{creator.location}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Users size={14} className="text-blue-500" />
-                          <span className="text-sm font-medium">{(creator.followerCount / 1000).toFixed(0)}K followers</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <TrendingUp size={14} className="text-green-500" />
-                          <span className="text-sm font-medium">{creator.engagementRate} engagement</span>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <DollarSign size={14} className="text-purple-500" />
-                          <span className="text-sm font-medium">${creator.hourlyRate}/hour</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Award size={14} className="text-orange-500" />
-                          <span className="text-sm font-medium">
-                            {Math.floor(Math.random() * 50) + 20} projects
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Calendar size={14} className="text-cyan-500" />
-                          <span className="text-sm font-medium">
-                            {creator.isAvailable ? "Available" : "Busy"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="pt-3 border-t border-gray-100">
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {creator.platforms?.map((platform: string) => (
-                          <Badge 
-                            key={platform} 
-                            variant="outline" 
-                            className="text-xs px-2 py-0.5"
-                          >
-                            {platform}
-                          </Badge>
-                        ))}
-                      </div>
-                      
-                      <Button 
-                        size="sm" 
-                        className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:from-purple-700 hover:to-cyan-700"
-                      >
-                        Contact {creator.name}
-                      </Button>
-                    </div>
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
+              </Card>
             </motion.div>
           ))}
         </motion.div>
         
-
+        <CreatorProfileModal 
+          creator={selectedCreator}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        />
       </div>
     </section>
   );
