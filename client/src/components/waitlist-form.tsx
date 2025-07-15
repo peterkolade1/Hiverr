@@ -40,7 +40,7 @@ export function WaitlistForm({ isOpen, onClose }: WaitlistFormProps) {
       setIsSubmitted(true);
       toast({
         title: "Welcome to the waitlist!",
-        description: "We'll notify you as soon as AI Creator Avatars are available.",
+        description: "We'll let you know when we launch.",
       });
     },
     onError: (error: any) => {
@@ -77,10 +77,10 @@ export function WaitlistForm({ isOpen, onClose }: WaitlistFormProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-2xl">
             <Sparkles className="text-purple-600" size={24} />
-            Join the AI Creator Waitlist
+            Join the Waitlist
           </DialogTitle>
           <DialogDescription>
-            Be the first to experience AI-generated creator avatars when they launch.
+            Be the first to know when Hiverr launches and get early access to our platform.
           </DialogDescription>
         </DialogHeader>
 
@@ -162,8 +162,8 @@ export function WaitlistForm({ isOpen, onClose }: WaitlistFormProps) {
                   🚀 <strong>Early Access Benefits:</strong>
                 </p>
                 <ul className="text-sm text-purple-600 mt-2 space-y-1">
-                  <li>• Be the first to test AI Creator Avatars</li>
-                  <li>• 50% discount on first month</li>
+                  <li>• Be the first to access Hiverr when we launch</li>
+                  <li>• Special launch pricing and discounts</li>
                   <li>• Direct feedback line to our product team</li>
                 </ul>
               </div>
@@ -202,7 +202,7 @@ export function WaitlistForm({ isOpen, onClose }: WaitlistFormProps) {
               You're on the list!
             </h3>
             <p className="text-gray-600 mb-6">
-              We'll notify you as soon as AI Creator Avatars are ready. 
+              We'll let you know when we launch. 
               Keep an eye on your inbox for exclusive updates.
             </p>
             <Button
