@@ -6,6 +6,55 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Eudoxus Sans Font Family */
+@font-face {
+  font-family: 'Eudoxus Sans';
+  src: url('@assets/EudoxusSans-ExtraLight-BF659b6cb1e7092_1752551189389.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Eudoxus Sans';
+  src: url('@assets/EudoxusSans-Light-BF659b6cb2036b5_1752551189390.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Eudoxus Sans';
+  src: url('@assets/EudoxusSans-Regular-BF659b6cb1d4714_1752551189390.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Eudoxus Sans';
+  src: url('@assets/EudoxusSans-Medium-BF659b6cb1c14cb_1752551189390.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Eudoxus Sans';
+  src: url('@assets/EudoxusSans-Bold-BF659b6cb1408e5_1752551189381.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Eudoxus Sans';
+  src: url('@assets/EudoxusSans-ExtraBold-BF659b6cb1b96c9_1752551189389.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Custom animations for the neon auth pages */
 @keyframes blob {
   0% {
@@ -149,4 +198,40 @@
   .gradient-dark {
     background: linear-gradient(135deg, hsl(240, 10%, 8%) 0%, hsl(240, 10%, 3.9%) 100%);
   }
+}
+
+/* Global font styles for Eudoxus Sans */
+body {
+  font-family: 'Eudoxus Sans', 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Enhanced font utilities for Eudoxus Sans */
+.font-eudoxus {
+  font-family: 'Eudoxus Sans', 'Inter', system-ui, sans-serif;
+}
+
+.font-extralight {
+  font-weight: 200;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
 }

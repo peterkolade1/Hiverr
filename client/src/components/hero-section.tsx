@@ -41,7 +41,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight"
           >
             UGC That Converts.{" "}
             <br />
@@ -56,7 +56,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg sm:text-xl text-gray-600 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed px-4"
           >
             Hiver helps brands submit briefs, discover top-fit creators, and generate UGC content — all in one simple platform.
           </motion.p>
@@ -66,7 +66,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4"
           >
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -74,9 +74,9 @@ export function HeroSection() {
             >
               <Button
                 size="lg"
-                className="bg-gray-900 text-white px-8 py-4 text-lg hover:bg-gray-800 transition-all duration-300 transform hover:shadow-2xl group"
+                className="bg-gray-900 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg hover:bg-gray-800 transition-all duration-300 transform hover:shadow-2xl group w-full sm:w-auto"
               >
-                <Plus className="mr-2 transition-transform duration-300 group-hover:rotate-90" size={20} />
+                <Plus className="mr-2 transition-transform duration-300 group-hover:rotate-90" size={16} />
                 Start a Campaign
               </Button>
             </motion.div>
@@ -87,7 +87,7 @@ export function HeroSection() {
               <Button
                 variant="outline"
                 size="lg"
-                className="px-8 py-4 text-lg transition-all duration-300 hover:bg-gray-50 hover:shadow-lg"
+                className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg transition-all duration-300 hover:bg-gray-50 hover:shadow-lg w-full sm:w-auto"
               >
                 Browse Creators
               </Button>
@@ -100,9 +100,9 @@ export function HeroSection() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="mt-16 relative max-w-5xl mx-auto"
+          className="mt-12 sm:mt-16 relative max-w-5xl mx-auto px-4"
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             <motion.div 
               className="relative"
               initial={{ y: 20 }}
@@ -113,7 +113,7 @@ export function HeroSection() {
                 <img 
                   src={smartphoneImage} 
                   alt="Content Creator"
-                  className="w-full h-48 object-cover"
+                  className="w-full h-32 sm:h-40 lg:h-48 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
@@ -138,7 +138,7 @@ export function HeroSection() {
                 <img 
                   src={youngFriendsImage} 
                   alt="Lifestyle Creators"
-                  className="w-full h-48 object-cover"
+                  className="w-full h-32 sm:h-40 lg:h-48 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">

@@ -44,16 +44,16 @@ export function Header() {
             <NavLinks />
           </nav>
 
-          <div className="flex items-center space-x-4">
-            <span className="hidden sm:block text-sm text-gray-600">Hamburg, 2:30pm</span>
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <span className="hidden lg:block text-sm text-gray-600">Hamburg, 2:30pm</span>
             <Button 
               variant="default" 
               size="sm" 
               onClick={() => setIsWaitlistOpen(true)}
-              className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700"
+              className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-xs sm:text-sm px-2 sm:px-4"
             >
-              <Sparkles size={14} className="mr-1" />
-              Join Waitlist
+              <Sparkles size={12} className="mr-1 sm:mr-1" />
+              <span className="hidden xs:inline">Join </span>Waitlist
             </Button>
             
             {/* Mobile menu trigger */}

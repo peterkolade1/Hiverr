@@ -63,7 +63,7 @@ export function CreatorShowcase() {
     return (
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[...Array(3)].map((_, i) => (
               <Card key={i} className="animate-pulse">
                 <div className="h-64 bg-gray-200 rounded-t-xl"></div>
@@ -88,7 +88,7 @@ export function CreatorShowcase() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl font-bold text-gray-900 mb-4"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
           >
             Top Creators on Hiver{" "}
             <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-lg ml-2">
@@ -99,7 +99,7 @@ export function CreatorShowcase() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-gray-600 text-lg"
+            className="text-gray-600 text-base sm:text-lg"
           >
             Discover influencers with proven track records and high Hive Scores.
           </motion.p>
@@ -119,14 +119,14 @@ export function CreatorShowcase() {
               {filteredCreators?.length || 0} creators found
             </span>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {niches.map((niche) => (
               <Button
                 key={niche}
                 variant={selectedNiche === niche ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedNiche(niche)}
-                className={`transition-all duration-300 ${
+                className={`transition-all duration-300 text-xs sm:text-sm ${
                   selectedNiche === niche 
                     ? "bg-gradient-to-r from-purple-600 to-cyan-500 text-white border-0 shadow-lg" 
                     : "border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-600"
@@ -151,7 +151,7 @@ export function CreatorShowcase() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
         >
           {filteredCreators?.map((creator, index) => (
             <motion.div 

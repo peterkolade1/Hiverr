@@ -37,7 +37,7 @@ export function HowItWorks() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl font-bold text-gray-900 mb-4"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
           >
             How It Works
           </motion.h2>
@@ -45,13 +45,13 @@ export function HowItWorks() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-gray-600 text-lg max-w-2xl mx-auto"
+            className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto px-4"
           >
             Three simple steps to launch successful UGC campaigns with top-tier creators who match your brand perfectly.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left side - Image */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -100,7 +100,7 @@ export function HowItWorks() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
             {steps.map((step, index) => (
               <Card
