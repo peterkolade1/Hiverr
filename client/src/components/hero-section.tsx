@@ -17,6 +17,7 @@ import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-work
 import binanceLogo from "@assets/1391309_1752552346373.png";
 import shopifyLogo from "@assets/image_1752551752354.png";
 import amplifyLogo from "@assets/Logo Main_1752551931487.png";
+import newBrandLogo from "@assets/image_1752552551607.png";
 
 export function HeroSection() {
   return (
@@ -330,7 +331,7 @@ export function HeroSection() {
           className="mt-16"
         >
           <p className="text-center text-gray-500 text-sm mb-8">Trusted by</p>
-          <div className="flex justify-center items-center space-x-8 sm:space-x-12 opacity-70">
+          <div className="flex justify-center items-center space-x-6 sm:space-x-10 opacity-70">
             <motion.img
               src={binanceLogo}
               alt="Binance"
@@ -373,6 +374,21 @@ export function HeroSection() {
                 stiffness: 400, 
                 damping: 10,
                 delay: 0.2
+              }}
+            />
+            <motion.img
+              src={newBrandLogo}
+              alt="Enterprise Partner"
+              className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              whileHover={{ 
+                scale: 1.1,
+                y: -2,
+              }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 400, 
+                damping: 10,
+                delay: 0.3
               }}
             />
           </div>
