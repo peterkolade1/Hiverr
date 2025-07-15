@@ -348,22 +348,7 @@ export function CreatorShowcase() {
           ))}
         </motion.div>
         
-        {/* View Leaderboard Button */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-12"
-        >
-          <Button
-            variant="outline"
-            size="lg"
-            className="px-8 py-4 text-lg border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 transition-all duration-300"
-          >
-            View Leaderboard
-            <ArrowRight className="ml-2" size={20} />
-          </Button>
-        </motion.div>
+
       </div>
     </section>
   );
