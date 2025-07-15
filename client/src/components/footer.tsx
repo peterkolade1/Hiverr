@@ -21,26 +21,26 @@ export function Footer() {
               </p>
             </div>
 
-            {/* Right side - Footer links */}
-            <div className="flex space-x-8 text-sm">
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                How it Works
+            {/* Right side - Social links */}
+            <div className="flex space-x-6 text-sm">
+              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center">
+                <FaTwitter size={16} className="mr-2" />
+                Twitter
               </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                For Creators
+              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center">
+                <FaLinkedin size={16} className="mr-2" />
+                LinkedIn
               </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Pricing
-              </a>
-              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Login
+              <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center">
+                <FaInstagram size={16} className="mr-2" />
+                Instagram
               </a>
             </div>
           </div>
           
           <div className="border-t border-gray-100 pt-8 mt-8">
             <div className="text-center">
-              <p className="text-sm text-gray-500">© {currentYear} Hiver. All rights reserved.</p>
+              <p className="text-sm text-gray-500">© {currentYear} Hiverr. All rights reserved.</p>
             </div>
           </div>
         </div>
