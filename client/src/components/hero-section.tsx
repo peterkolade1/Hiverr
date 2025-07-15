@@ -120,7 +120,7 @@ export function HeroSection() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Find campaign
+                Find a campaign
               </motion.button>
             </div>
 
