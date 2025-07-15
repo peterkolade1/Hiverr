@@ -168,7 +168,7 @@ const languages = [
   "Ukrainian", "Belarusian", "Lithuanian", "Latvian", "Estonian", "Finnish", "Sami",
   "Icelandic", "Faroese", "Norwegian", "Danish", "Swedish", "Yiddish", "Ladino",
   "Romani", "Rusyn", "Silesian", "Kashubian", "Sorbian", "Maltese", "Irish", "Scottish Gaelic",
-  "Welsh", "Cornish", "Manx", "Occitan", "Franco-Provençal", "Walloon", "Picard",
+  "Welsh", "Cornish", "Manx", "Occitan", "Franco-Provençal", "Picard",
   "Norman", "Jèrriais", "Guernésiais", "Sercquiais", "Auregnais", "Other"
 ];
 

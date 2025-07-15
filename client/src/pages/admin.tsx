@@ -6,13 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Users, Mail, Calendar, Search, Download } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Users, Mail, Calendar, Search, Download, Eye, User, Building2, MapPin, Globe, Star, DollarSign, Link } from "lucide-react";
 import type { Waitlist } from "@shared/schema";
 
 export default function Admin() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedEntry, setSelectedEntry] = useState<Waitlist | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   const { data: waitlistEntries, isLoading } = useQuery<Waitlist[]>({
     queryKey: ["/api/admin/waitlist"],
@@ -202,6 +207,7 @@ export default function Admin() {
                       <TableHead>Interest</TableHead>
                       <TableHead>Date Joined</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -224,6 +230,20 @@ export default function Admin() {
                             Active
                           </Badge>
                         </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedEntry(entry);
+                              setDetailsOpen(true);
+                            }}
+                            className="gap-1"
+                          >
+                            <Eye size={14} />
+                            View
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -237,6 +257,236 @@ export default function Admin() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Waitlist Entry Details Modal */}
+          <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+            <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <User size={20} />
+                  Waitlist Entry Details
+                </DialogTitle>
+              </DialogHeader>
+              
+              {selectedEntry && (
+                <div className="space-y-6">
+                  {/* Basic Information */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Name</Label>
+                      <p className="text-sm text-gray-900">{selectedEntry.name}</p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Email</Label>
+                      <p className="text-sm text-gray-900">{selectedEntry.email}</p>
+                    </div>
+                  </div>
+
+                  {/* Interest and Date */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Interest</Label>
+                      <p className="text-sm text-gray-900">
+                        {selectedEntry.interest ? (
+                          <Badge variant="secondary">{selectedEntry.interest}</Badge>
+                        ) : (
+                          <span className="text-gray-400">Not specified</span>
+                        )}
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Date Joined</Label>
+                      <p className="text-sm text-gray-900">
+                        {selectedEntry.createdAt ? new Date(selectedEntry.createdAt).toLocaleDateString() : 'Unknown'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Brand-specific fields */}
+                  {selectedEntry.companyName && (
+                    <div className="border-t pt-4">
+                      <h3 className="text-lg font-medium text-gray-900 mb-3 flex items-center gap-2">
+                        <Building2 size={18} />
+                        Brand Information
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium text-gray-700">Company Name</Label>
+                          <p className="text-sm text-gray-900">{selectedEntry.companyName}</p>
+                        </div>
+                        {selectedEntry.role && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Role</Label>
+                            <p className="text-sm text-gray-900">{selectedEntry.role}</p>
+                          </div>
+                        )}
+                        {selectedEntry.creatorPreference && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Creator Preference</Label>
+                            <p className="text-sm text-gray-900">{selectedEntry.creatorPreference}</p>
+                          </div>
+                        )}
+                        {selectedEntry.budget && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Budget</Label>
+                            <p className="text-sm text-gray-900">{selectedEntry.budget}</p>
+                          </div>
+                        )}
+                        {selectedEntry.campaignTiming && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Campaign Timing</Label>
+                            <p className="text-sm text-gray-900">{selectedEntry.campaignTiming}</p>
+                          </div>
+                        )}
+                        {selectedEntry.brandLogo && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Brand Logo</Label>
+                            <p className="text-sm text-gray-900">{selectedEntry.brandLogo}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Creator-specific fields */}
+                  {selectedEntry.niches && (
+                    <div className="border-t pt-4">
+                      <h3 className="text-lg font-medium text-gray-900 mb-3 flex items-center gap-2">
+                        <Star size={18} />
+                        Creator Information
+                      </h3>
+                      <div className="space-y-4">
+                        {selectedEntry.niches && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Niches</Label>
+                            <div className="flex flex-wrap gap-2">
+                              {JSON.parse(selectedEntry.niches).map((niche: string, index: number) => (
+                                <Badge key={index} variant="outline">{niche}</Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {selectedEntry.profilePicture && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Profile Picture</Label>
+                            <p className="text-sm text-gray-900">{selectedEntry.profilePicture}</p>
+                          </div>
+                        )}
+
+                        {/* Social Media Platforms */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {selectedEntry.instagram && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium text-gray-700">Instagram</Label>
+                              <p className="text-sm text-gray-900">{selectedEntry.instagram}</p>
+                              {selectedEntry.instagramFollowers && (
+                                <p className="text-xs text-gray-500">{selectedEntry.instagramFollowers} followers</p>
+                              )}
+                            </div>
+                          )}
+                          {selectedEntry.tiktok && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium text-gray-700">TikTok</Label>
+                              <p className="text-sm text-gray-900">{selectedEntry.tiktok}</p>
+                              {selectedEntry.tiktokFollowers && (
+                                <p className="text-xs text-gray-500">{selectedEntry.tiktokFollowers} followers</p>
+                              )}
+                            </div>
+                          )}
+                          {selectedEntry.youtube && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium text-gray-700">YouTube</Label>
+                              <p className="text-sm text-gray-900">{selectedEntry.youtube}</p>
+                              {selectedEntry.youtubeSubs && (
+                                <p className="text-xs text-gray-500">{selectedEntry.youtubeSubs} subscribers</p>
+                              )}
+                            </div>
+                          )}
+                          {selectedEntry.twitter && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium text-gray-700">Twitter</Label>
+                              <p className="text-sm text-gray-900">{selectedEntry.twitter}</p>
+                            </div>
+                          )}
+                          {selectedEntry.facebook && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium text-gray-700">Facebook</Label>
+                              <p className="text-sm text-gray-900">{selectedEntry.facebook}</p>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Location and Languages */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {selectedEntry.location && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                <MapPin size={14} />
+                                Location
+                              </Label>
+                              <p className="text-sm text-gray-900">{selectedEntry.location}</p>
+                            </div>
+                          )}
+                          {selectedEntry.languages && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                <Globe size={14} />
+                                Languages
+                              </Label>
+                              <div className="flex flex-wrap gap-2">
+                                {JSON.parse(selectedEntry.languages).map((language: string, index: number) => (
+                                  <Badge key={index} variant="outline">{language}</Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* AI Content and Rate */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {selectedEntry.aiContent !== null && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium text-gray-700">AI Content</Label>
+                              <div className="flex items-center gap-2">
+                                <Switch 
+                                  checked={selectedEntry.aiContent || false} 
+                                  disabled 
+                                />
+                                <span className="text-sm text-gray-900">
+                                  {selectedEntry.aiContent ? 'Enabled' : 'Disabled'}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                          {selectedEntry.rateRange && (
+                            <div className="space-y-2">
+                              <Label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                                <DollarSign size={14} />
+                                Rate Range
+                              </Label>
+                              <p className="text-sm text-gray-900">{selectedEntry.rateRange}</p>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Portfolio */}
+                        {selectedEntry.portfolio && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                              <Link size={14} />
+                              Portfolio
+                            </Label>
+                            <p className="text-sm text-gray-900">{selectedEntry.portfolio}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
         </motion.div>
       </div>
     </div>
