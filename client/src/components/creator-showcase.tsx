@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ArrowRight, Check, Crown, Heart, Eye, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Crown, Heart, Eye, Star, Filter } from "lucide-react";
 import type { Creator } from "@shared/schema";
 
 // Import images
@@ -18,8 +19,28 @@ import foodPhotoImage from "@assets/woman-taking-photo-her-food_1752547296036.jp
 import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752547296037.jpg";
 
 export function CreatorShowcase() {
+  const [selectedNiche, setSelectedNiche] = useState<string>("All");
   const { data: creators, isLoading } = useQuery<Creator[]>({
     queryKey: ["/api/creators"],
+  });
+
+  const niches = [
+    "All",
+    "Beauty & Skincare", 
+    "Fitness & Health",
+    "Food & Cooking", 
+    "Fashion & Lifestyle",
+    "Technology",
+    "Photography",
+    "Music & Audio",
+    "Travel"
+  ];
+
+  const filteredCreators = creators?.filter(creator => {
+    if (selectedNiche === "All") return true;
+    return creator.category === selectedNiche || creator.skills?.some(skill => 
+      skill.toLowerCase().includes(selectedNiche.toLowerCase().split(' ')[0])
+    );
   });
 
   const containerVariants = {
@@ -61,37 +82,69 @@ export function CreatorShowcase() {
   return (
     <section id="creators" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-12">
-          <div>
-            <motion.h2
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl font-bold text-gray-900 mb-4"
-            >
-              Top Creators on Hiver{" "}
-              <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-lg ml-2">
-                <Crown className="text-white text-sm" size={16} />
-              </span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-gray-600 text-lg"
-            >
-              Discover influencers with proven track records and high Aura Scores.
-            </motion.p>
-          </div>
-          <div className="hidden lg:flex space-x-2">
-            <Button variant="outline" size="icon" className="rounded-full">
-              <ArrowLeft size={16} />
-            </Button>
-            <Button variant="outline" size="icon" className="rounded-full">
-              <ArrowRight size={16} />
-            </Button>
-          </div>
+        <div className="mb-8">
+          <motion.h2
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl font-bold text-gray-900 mb-4"
+          >
+            Top Creators on Hiver{" "}
+            <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-lg ml-2">
+              <Crown className="text-white text-sm" size={16} />
+            </span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-gray-600 text-lg"
+          >
+            Discover influencers with proven track records and high Aura Scores.
+          </motion.p>
         </div>
+
+        {/* Niche Filter */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mb-8"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <Filter size={20} className="text-gray-500" />
+            <span className="text-sm font-medium text-gray-700">Filter by niche:</span>
+            <span className="text-sm text-gray-500">
+              {filteredCreators?.length || 0} creators found
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {niches.map((niche) => (
+              <Button
+                key={niche}
+                variant={selectedNiche === niche ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedNiche(niche)}
+                className={`transition-all duration-300 ${
+                  selectedNiche === niche 
+                    ? "bg-gradient-to-r from-purple-600 to-cyan-500 text-white border-0 shadow-lg" 
+                    : "border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-600"
+                }`}
+              >
+                {niche}
+                {selectedNiche === niche && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="ml-1"
+                  >
+                    <Check size={14} />
+                  </motion.span>
+                )}
+              </Button>
+            ))}
+          </div>
+        </motion.div>
 
         <motion.div
           variants={containerVariants}
@@ -99,7 +152,7 @@ export function CreatorShowcase() {
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {creators?.map((creator, index) => (
+          {filteredCreators?.map((creator, index) => (
             <motion.div 
               key={creator.id} 
               variants={cardVariants}
