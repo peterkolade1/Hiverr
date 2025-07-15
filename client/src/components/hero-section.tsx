@@ -33,11 +33,11 @@ export function HeroSection() {
   const searchConfig = {
     creators: {
       placeholder: 'Try "skincare creator" or "tech reviewer"',
-      suggestions: 'Popular: Beauty Creators, Tech Reviewers, Fitness Influencers'
+      suggestions: 'Popular: Beauty creators, Tech reviewers, Fitness influencers'
     },
     campaigns: {
       placeholder: 'Try "beauty brand" or "tech startup"',
-      suggestions: 'Popular: Skincare Brands, Tech Companies, Fitness Apps'
+      suggestions: 'Popular: Skincare brands, Tech companies, Fitness apps'
     }
   };
 
@@ -74,12 +74,12 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight"
           >
-            UGC That Converts.{" "}
+            UGC that converts.{" "}
             <br />
-            Influencers Who Fit.{" "}
+            Influencers who fit.{" "}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-cyan-500">
-              Campaigns That Just Flow.
+              Campaigns that just flow.
             </span>
           </motion.h1>
 
@@ -99,39 +99,32 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="flex flex-col items-center space-y-4 px-4 max-w-2xl mx-auto"
           >
-            {/* Dual Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button
-                  size="lg"
-                  className={`px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 rounded-full w-full sm:w-auto ${
-                    searchMode === 'creators'
-                      ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white'
-                      : 'border-2 border-purple-600 text-purple-600 hover:bg-purple-50 bg-white'
-                  }`}
-                  onClick={() => {
-                    setSearchMode('creators');
-                  }}
-                >
-                  Browse Creators
-                </Button>
-              </motion.div>
-              
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button
-                  size="lg"
-                  className={`px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 rounded-full w-full sm:w-auto ${
-                    searchMode === 'campaigns'
-                      ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white'
-                      : 'border-2 border-purple-600 text-purple-600 hover:bg-purple-50 bg-white'
-                  }`}
-                  onClick={() => {
-                    setSearchMode('campaigns');
-                  }}
-                >
-                  Find Campaign
-                </Button>
-              </motion.div>
+            {/* Toggle Switch */}
+            <div className="bg-gray-100 p-1 rounded-full flex w-fit mx-auto">
+              <motion.button
+                className={`px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 ${
+                  searchMode === 'creators'
+                    ? 'bg-white text-purple-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+                onClick={() => setSearchMode('creators')}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Browse creators
+              </motion.button>
+              <motion.button
+                className={`px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 ${
+                  searchMode === 'campaigns'
+                    ? 'bg-white text-purple-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+                onClick={() => setSearchMode('campaigns')}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Find campaign
+              </motion.button>
             </div>
 
             {/* Search Bar */}
