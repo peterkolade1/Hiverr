@@ -46,9 +46,16 @@ export function Header() {
 
           <div className="flex items-center space-x-4">
             <span className="hidden sm:block text-sm text-gray-600">Hamburg, 2:30pm</span>
-            <Button variant="default" size="sm" className="bg-gray-900 hover:bg-gray-800">
-              Login
-            </Button>
+            <Link href="/login">
+              <Button variant="outline" size="sm" className="border-gray-300 text-gray-700 hover:bg-gray-50">
+                Login
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button variant="default" size="sm" className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700">
+                Sign Up
+              </Button>
+            </Link>
             
             {/* Mobile menu trigger */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
