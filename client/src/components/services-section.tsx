@@ -87,14 +87,46 @@ export function ServicesSection() {
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
           {services.map((service, index) => (
-            <Card
+            <motion.div
               key={index}
-              className={`${service.bgColor} hover:shadow-xl transition-shadow duration-300 border-none`}
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
-              <CardContent className="p-8">
-                <div className={`w-12 h-12 ${service.iconBg} rounded-xl flex items-center justify-center mb-6`}>
-                  {service.icon}
-                </div>
+              <Card
+                className={`${service.bgColor} hover:shadow-2xl transition-all duration-500 border-none cursor-pointer group overflow-hidden relative`}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <CardContent className="p-8 relative z-10">
+                  <motion.div 
+                    className={`w-12 h-12 ${service.iconBg} rounded-xl flex items-center justify-center mb-6`}
+                    whileHover={{ rotate: 360, scale: 1.1 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    {service.icon}
+                  </motion.div>
+                  <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
+                  <p className={`${service.bgColor === "bg-gray-900 text-white" ? "text-gray-300" : "text-gray-600"} mb-6`}>
+                    {service.description}
+                  </p>
+                  <div className="space-y-3 mb-8">
+                    {service.features.map((feature, featureIndex) => (
+                      <Badge
+                        key={featureIndex}
+                        className={`${service.featureBadgeStyle} mr-2 mb-2 inline-block`}
+                      >
+                        {feature}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className={`text-sm ${service.bgColor === "bg-gray-900 text-white" ? "text-gray-400" : "text-gray-500"}`}>
+                    {service.price.split("$")[0]}
+                    <span className={`${service.bgColor === "bg-gray-900 text-white" ? "text-white" : "text-gray-900"} font-semibold`}>
+                      ${service.price.split("$")[1]}
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
                 <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
                 <p className={`${service.bgColor === "bg-gray-900 text-white" ? "text-gray-300" : "text-gray-600"} mb-6`}>
                   {service.description}

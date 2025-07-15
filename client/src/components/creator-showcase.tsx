@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ArrowRight, Check, Crown, Heart, Eye } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Crown, Heart, Eye, Star } from "lucide-react";
 import type { Creator } from "@shared/schema";
 
 export function CreatorShowcase() {
@@ -90,15 +90,24 @@ export function CreatorShowcase() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {creators?.map((creator, index) => (
-            <motion.div key={creator.id} variants={cardVariants}>
-              <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 relative group">
+            <motion.div 
+              key={creator.id} 
+              variants={cardVariants}
+              whileHover={{ y: -8 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <Card className="overflow-hidden hover:shadow-2xl transition-all duration-500 relative group cursor-pointer border-transparent hover:border-purple-200">
                 <div className="absolute top-4 left-4 z-10">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                  <motion.div 
+                    className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center"
+                    whileHover={{ scale: 1.2, rotate: 360 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <Check className="text-white text-xs" size={12} />
-                  </div>
+                  </motion.div>
                 </div>
                 <div className="absolute top-4 right-4 z-10">
-                  <Badge variant="secondary" className="bg-white">
+                  <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm transition-all duration-300 group-hover:bg-purple-100 group-hover:text-purple-700">
                     {creator.category}
                   </Badge>
                 </div>

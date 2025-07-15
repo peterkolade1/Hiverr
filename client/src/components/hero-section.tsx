@@ -49,7 +49,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto"
           >
-            Discover vetted content creators across Instagram, TikTok, and YouTube. Launch campaigns that drive engagement and authentic brand connections.
+            Discover vetted content creators across Instagram, TikTok, and YouTube. Launch campaigns that drive engagement and authentic brand connections with Hiverr.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -59,20 +59,30 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
-            <Button
-              size="lg"
-              className="bg-gray-900 text-white px-8 py-4 text-lg hover:bg-gray-800 transition-all duration-200 transform hover:scale-105"
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <Plus className="mr-2" size={20} />
-              Find Creators
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="px-8 py-4 text-lg"
+              <Button
+                size="lg"
+                className="bg-gray-900 text-white px-8 py-4 text-lg hover:bg-gray-800 transition-all duration-300 transform hover:shadow-2xl group"
+              >
+                <Plus className="mr-2 transition-transform duration-300 group-hover:rotate-90" size={20} />
+                Find Creators
+              </Button>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Explore Campaigns
-            </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="px-8 py-4 text-lg transition-all duration-300 hover:bg-gray-50 hover:shadow-lg"
+              >
+                Explore Campaigns
+              </Button>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -85,11 +95,24 @@ export function HeroSection() {
         >
           <p className="text-center text-gray-500 text-sm mb-8">Trusted by</p>
           <div className="flex justify-center items-center space-x-12 opacity-60">
-            <div className="text-2xl font-bold text-gray-400">Nike</div>
-            <div className="text-2xl font-bold text-gray-400">Spotify</div>
-            <div className="text-2xl font-bold text-gray-400">Airbnb</div>
-            <div className="text-2xl font-bold text-gray-400">Slack</div>
-            <div className="text-2xl font-bold text-gray-400">Shopify</div>
+            {["Nike", "Spotify", "Airbnb", "Slack", "Shopify"].map((brand, index) => (
+              <motion.div
+                key={brand}
+                className="text-2xl font-bold text-gray-400 hover:text-gray-600 transition-colors duration-300 cursor-pointer"
+                whileHover={{ 
+                  scale: 1.1,
+                  y: -2,
+                }}
+                transition={{ 
+                  type: "spring", 
+                  stiffness: 400, 
+                  damping: 10,
+                  delay: index * 0.1 
+                }}
+              >
+                {brand}
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </div>

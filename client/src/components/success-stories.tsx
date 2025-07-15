@@ -54,7 +54,7 @@ export function SuccessStories() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-gray-600 text-lg"
           >
-            Real results from brands that trust CreatorLink for their UGC campaigns
+            Real results from brands that trust Hiverr for their UGC campaigns
           </motion.p>
         </div>
 

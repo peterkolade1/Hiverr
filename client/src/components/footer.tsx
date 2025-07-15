@@ -15,7 +15,7 @@ export function Footer() {
             <span className="text-brand-orange">UGC Campaign?</span>
           </h2>
           <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-            Join thousands of brands that trust CreatorLink to connect with authentic content creators and drive meaningful engagement.
+            Join thousands of brands that trust Hiverr to connect with authentic content creators and drive meaningful engagement.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
@@ -54,7 +54,7 @@ export function Footer() {
                 <div className="w-8 h-8 gradient-brand rounded-lg flex items-center justify-center">
                   <Zap className="text-white text-sm" size={16} />
                 </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">CreatorLink</span>
+                <span className="ml-2 text-xl font-bold text-gray-900">Hiverr</span>
               </div>
               <p className="text-gray-600 text-sm mb-4">
                 Connecting brands with authentic content creators for impactful UGC campaigns.

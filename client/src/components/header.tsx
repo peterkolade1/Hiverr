@@ -32,11 +32,11 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-              <div className="w-8 h-8 gradient-brand rounded-lg flex items-center justify-center">
-                <Zap className="text-white text-sm" size={16} />
+            <Link href="/" className="flex items-center group">
+              <div className="w-8 h-8 gradient-brand rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+                <Zap className="text-white text-sm transition-transform duration-300 group-hover:rotate-12" size={16} />
               </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">CreatorLink</span>
+              <span className="ml-2 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600">Hiverr</span>
             </Link>
           </div>
           

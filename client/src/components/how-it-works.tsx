@@ -44,7 +44,7 @@ export function HowItWorks() {
             transition={{ duration: 0.6 }}
             className="text-4xl font-bold text-gray-900 mb-4"
           >
-            How CreatorLink{" "}
+            How Hiverr{" "}
             <span className="inline-flex items-center justify-center w-8 h-8 bg-brand-cyan rounded-lg mx-2">
               <Rocket className="text-white text-sm" size={16} />
             </span>
