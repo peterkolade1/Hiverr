@@ -71,34 +71,19 @@ export default function Signup() {
       <div className="relative z-10 min-h-screen flex">
         {/* Left Side - Signup Form */}
         <div className="flex-1 flex items-center justify-center p-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="w-full max-w-md"
-          >
+          <div className="w-full max-w-md">
             <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl">
               <CardHeader className="text-center">
-                <motion.div
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                >
-                  <CardTitle className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                    Join Hiver
-                  </CardTitle>
-                  <CardDescription className="text-white/80 mt-2">
-                    Create your account and start connecting
-                  </CardDescription>
-                </motion.div>
+                <CardTitle className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  Join Hiver
+                </CardTitle>
+                <CardDescription className="text-white/80 mt-2">
+                  Create your account and start connecting
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                  >
+                  <div>
                     <Label htmlFor="accountType" className="text-white/90">
                       Account Type
                     </Label>
@@ -120,14 +105,10 @@ export default function Signup() {
                     {errors.accountType && (
                       <p className="text-red-400 text-sm mt-1">{errors.accountType.message}</p>
                     )}
-                  </motion.div>
+                  </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                    >
+                    <div>
                       <Label htmlFor="firstName" className="text-white/90">
                         First Name
                       </Label>
@@ -143,13 +124,9 @@ export default function Signup() {
                       {errors.firstName && (
                         <p className="text-red-400 text-sm mt-1">{errors.firstName.message}</p>
                       )}
-                    </motion.div>
+                    </div>
 
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
-                    >
+                    <div>
                       <Label htmlFor="lastName" className="text-white/90">
                         Last Name
                       </Label>
@@ -165,14 +142,10 @@ export default function Signup() {
                       {errors.lastName && (
                         <p className="text-red-400 text-sm mt-1">{errors.lastName.message}</p>
                       )}
-                    </motion.div>
+                    </div>
                   </div>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
-                  >
+                  <div>
                     <Label htmlFor="email" className="text-white/90">
                       Email Address
                     </Label>
@@ -189,14 +162,10 @@ export default function Signup() {
                     {errors.email && (
                       <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
                     )}
-                  </motion.div>
+                  </div>
 
                   {watchedAccountType === "brand" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.6 }}
-                    >
+                    <div>
                       <Label htmlFor="company" className="text-white/90">
                         Company Name (Optional)
                       </Label>
@@ -209,14 +178,10 @@ export default function Signup() {
                           {...register("company")}
                         />
                       </div>
-                    </motion.div>
+                    </div>
                   )}
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.7 }}
-                  >
+                  <div>
                     <Label htmlFor="password" className="text-white/90">
                       Password
                     </Label>
@@ -240,13 +205,9 @@ export default function Signup() {
                     {errors.password && (
                       <p className="text-red-400 text-sm mt-1">{errors.password.message}</p>
                     )}
-                  </motion.div>
+                  </div>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.8 }}
-                  >
+                  <div>
                     <Label htmlFor="confirmPassword" className="text-white/90">
                       Confirm Password
                     </Label>
@@ -270,14 +231,9 @@ export default function Signup() {
                     {errors.confirmPassword && (
                       <p className="text-red-400 text-sm mt-1">{errors.confirmPassword.message}</p>
                     )}
-                  </motion.div>
+                  </div>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.9 }}
-                    className="flex items-center space-x-2"
-                  >
+                  <div className="flex items-center space-x-2">
                     <Checkbox
                       id="agreeToTerms"
                       {...register("agreeToTerms")}
@@ -293,19 +249,15 @@ export default function Signup() {
                         Privacy Policy
                       </Link>
                     </Label>
-                  </motion.div>
+                  </div>
                   {errors.agreeToTerms && (
                     <p className="text-red-400 text-sm">{errors.agreeToTerms.message}</p>
                   )}
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 1.0 }}
-                  >
+                  <div>
                     <Button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-medium py-3 transition-all duration-300 transform hover:scale-105"
+                      className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-medium py-3 transition-all duration-300"
                       disabled={isLoading}
                     >
                       {isLoading ? (
@@ -317,35 +269,25 @@ export default function Signup() {
                         </>
                       )}
                     </Button>
-                  </motion.div>
+                  </div>
                 </form>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 1.1 }}
-                  className="text-center"
-                >
+                <div className="text-center">
                   <p className="text-white/80">
                     Already have an account?{" "}
                     <Link href="/login" className="text-purple-400 hover:text-purple-300 font-medium">
                       Sign in here
                     </Link>
                   </p>
-                </motion.div>
+                </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
         </div>
 
         {/* Right Side - Neon Image */}
         <div className="flex-1 relative overflow-hidden">
-          <motion.div
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="absolute inset-0"
-          >
+          <div className="absolute inset-0">
             <img
               src={neonImage}
               alt="Neon aesthetic"
@@ -353,15 +295,10 @@ export default function Signup() {
             />
             <div className="absolute inset-0 bg-black/40"></div>
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-purple-900/20 to-purple-900/40"></div>
-          </motion.div>
+          </div>
           
           {/* Overlay Content */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="absolute inset-0 flex items-center justify-center"
-          >
+          <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white max-w-md p-8">
               <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
                 Start Your Journey
@@ -384,7 +321,7 @@ export default function Signup() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
