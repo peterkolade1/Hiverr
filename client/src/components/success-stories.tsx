@@ -4,8 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import type { Campaign } from "@shared/schema";
 
-// Import cooking image
+// Import cooking images
 import cookingImage from "@assets/medium-shot-women-cooking-together_1752546339467.jpg";
+import cookingImageNew from "@assets/medium-shot-women-cooking-together_1752546751336.jpg";
 
 export function SuccessStories() {
   const { data: campaigns, isLoading } = useQuery<Campaign[]>({

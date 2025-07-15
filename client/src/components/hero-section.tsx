@@ -2,6 +2,12 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Star, Plus, Video } from "lucide-react";
 
+// Import creator images
+import smartphoneImage from "@assets/portrait-woman-using-smartphone-with-pop-socket-outdoors_1752546751339.jpg";
+import musicImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-home-studio_1752546751339.jpg";
+import photographerImage from "@assets/beautiful-young-smiling-photographer-girl-taking-photos-using-her-retro-camera_1752546339462.jpg";
+import fitnessImage from "@assets/fit-young-woman-doing-stretching-exercise-yoga-mat_1752546339467.jpg";
+
 export function HeroSection() {
   return (
     <section className="relative gradient-hero py-20 lg:py-32">
@@ -83,11 +89,121 @@ export function HeroSection() {
           </motion.div>
         </div>
 
+        {/* Creator Image Gallery */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.8 }}
+          className="mt-16 relative max-w-5xl mx-auto"
+        >
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <motion.div 
+              className="relative"
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.6, delay: 1 }}
+            >
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform rotate-2 hover:rotate-4 transition-transform">
+                <img 
+                  src={smartphoneImage} 
+                  alt="Content Creator"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center justify-between text-white text-xs">
+                    <span>Social Media</span>
+                    <div className="flex items-center">
+                      <Star size={12} fill="currentColor" />
+                      <span className="ml-1">4.9</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              className="relative mt-8"
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+            >
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-1 hover:-rotate-3 transition-transform">
+                <img 
+                  src={musicImage} 
+                  alt="Music Creator"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center justify-between text-white text-xs">
+                    <span>Music & Audio</span>
+                    <div className="flex items-center">
+                      <Star size={12} fill="currentColor" />
+                      <span className="ml-1">5.0</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              className="relative mt-4"
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.6, delay: 1.4 }}
+            >
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform rotate-1 hover:rotate-2 transition-transform">
+                <img 
+                  src={photographerImage} 
+                  alt="Photography Creator"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center justify-between text-white text-xs">
+                    <span>Photography</span>
+                    <div className="flex items-center">
+                      <Star size={12} fill="currentColor" />
+                      <span className="ml-1">4.8</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              className="relative mt-12"
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.6, delay: 1.6 }}
+            >
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-2 hover:-rotate-4 transition-transform">
+                <img 
+                  src={fitnessImage} 
+                  alt="Fitness Creator"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center justify-between text-white text-xs">
+                    <span>Health & Fitness</span>
+                    <div className="flex items-center">
+                      <Star size={12} fill="currentColor" />
+                      <span className="ml-1">4.7</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+
         {/* Trust Indicators */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 0.8, delay: 1.8 }}
           className="mt-16"
         >
           <p className="text-center text-gray-500 text-sm mb-8">Trusted by</p>

@@ -9,6 +9,8 @@ import type { Creator } from "@shared/schema";
 // Import images
 import photographerImage from "@assets/beautiful-young-smiling-photographer-girl-taking-photos-using-her-retro-camera_1752546339462.jpg";
 import fitnessImage from "@assets/fit-young-woman-doing-stretching-exercise-yoga-mat_1752546339467.jpg";
+import smartphoneImage from "@assets/portrait-woman-using-smartphone-with-pop-socket-outdoors_1752546751339.jpg";
+import musicImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-home-studio_1752546751339.jpg";
 
 export function CreatorShowcase() {
   const { data: creators, isLoading } = useQuery<Creator[]>({
@@ -118,8 +120,9 @@ export function CreatorShowcase() {
                 <div className="relative overflow-hidden">
                   <img
                     src={index === 0 ? photographerImage : 
-                         index === 1 ? creator.profileImage :
+                         index === 1 ? smartphoneImage :
                          index === 2 ? fitnessImage :
+                         index === 3 ? musicImage :
                          creator.profileImage}
                     alt={`${creator.name} - ${creator.category}`}
                     className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
