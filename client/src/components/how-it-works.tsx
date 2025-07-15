@@ -130,7 +130,9 @@ export function HowItWorks() {
                       >
                         {step.icon}
                       </div>
-                      <h3 className="text-xl font-bold">{step.title}</h3>
+                      <h3 className={`text-xl font-bold transition-colors ${
+                        expandedStep === index ? "text-white" : "text-gray-900"
+                      }`}>{step.title}</h3>
                     </div>
                     <Button
                       variant="ghost"
@@ -157,8 +159,8 @@ export function HowItWorks() {
                         transition={{ duration: 0.3 }}
                         className="mt-4 pl-12"
                       >
-                        <p className="text-gray-300 mb-2">{step.description}</p>
-                        <p className="text-gray-400 text-sm">{step.details}</p>
+                        <p className="text-white/90 mb-2">{step.description}</p>
+                        <p className="text-white/80 text-sm">{step.details}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>
