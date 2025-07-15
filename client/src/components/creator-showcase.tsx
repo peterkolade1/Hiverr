@@ -8,16 +8,24 @@ import { CreatorProfileModal } from "./creator-profile-modal";
 import { Check, Star, Eye, Filter } from "lucide-react";
 import type { Creator } from "@shared/schema";
 
-// Import images
+// Import creator images
 import photographerImage from "@assets/beautiful-young-smiling-photographer-girl-taking-photos-using-her-retro-camera_1752546339462.jpg";
 import fitnessImage from "@assets/fit-young-woman-doing-stretching-exercise-yoga-mat_1752546339467.jpg";
 import smartphoneImage from "@assets/portrait-woman-using-smartphone-with-pop-socket-outdoors_1752546751339.jpg";
 import musicImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-home-studio_1752546751339.jpg";
-// Import new creator images
 import youngFriendsImage from "@assets/young-friends-posing-together-low-angle_1752547296035.jpg";
 import beautyVloggerImage from "@assets/woman-beauty-vlogger-filming-vlog-about-creams_1752547296036.jpg";
 import foodPhotoImage from "@assets/woman-taking-photo-her-food_1752547296036.jpg";
 import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752547296037.jpg";
+
+// Import new niche images
+import fashionImage from "@assets/back-view-woman-with-blue-background_1752553805026.jpg";
+import cookingImage from "@assets/medium-shot-women-cooking-together_1752553805030.jpg";
+import musicStudioImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-home-studio_1752553805030.jpg";
+import fitnessGymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752553805030.jpg";
+import beautyContentImage from "@assets/woman-beauty-vlogger-filming-vlog-about-creams_1752553805031.jpg";
+import foodContentImage from "@assets/woman-taking-photo-her-food_1752553805031.jpg";
+import lifestyleImage from "@assets/young-friends-posing-together-low-angle_1752553805032.jpg";
 
 export function CreatorShowcase() {
   const [selectedNiche, setSelectedNiche] = useState<string>("All");
@@ -190,15 +198,25 @@ export function CreatorShowcase() {
                 
                 <div className="relative overflow-hidden">
                   <img
-                    src={index === 0 ? photographerImage : 
-                         index === 1 ? smartphoneImage :
-                         index === 2 ? fitnessImage :
-                         index === 3 ? musicImage :
-                         index === 4 ? youngFriendsImage :
-                         index === 5 ? beautyVloggerImage :
-                         index === 6 ? foodPhotoImage :
-                         index === 7 ? gymImage :
-                         creator.profileImage}
+                    src={
+                      creator.category === "Photography" ? photographerImage :
+                      creator.category === "Technology" ? smartphoneImage :
+                      creator.category === "Fitness & Health" ? fitnessGymImage :
+                      creator.category === "Music & Audio" ? musicStudioImage :
+                      creator.category === "Fashion & Lifestyle" ? fashionImage :
+                      creator.category === "Beauty & Skincare" ? beautyContentImage :
+                      creator.category === "Food & Cooking" ? cookingImage :
+                      creator.category === "Travel" ? lifestyleImage :
+                      index === 0 ? photographerImage : 
+                      index === 1 ? smartphoneImage :
+                      index === 2 ? fitnessGymImage :
+                      index === 3 ? musicStudioImage :
+                      index === 4 ? lifestyleImage :
+                      index === 5 ? beautyContentImage :
+                      index === 6 ? cookingImage :
+                      index === 7 ? fashionImage :
+                      creator.profileImage
+                    }
                     alt={`${creator.name} - ${creator.category}`}
                     className="w-full h-64 object-cover"
                     loading="lazy"
