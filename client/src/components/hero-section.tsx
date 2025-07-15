@@ -78,12 +78,12 @@ export function HeroSection() {
             Hiverr helps brands submit briefs, discover top-fit creators, and generate UGC content — all in one simple platform.
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* CTA Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4"
+            className="flex justify-center items-center px-4"
           >
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -91,22 +91,19 @@ export function HeroSection() {
             >
               <Button
                 size="lg"
-                className="bg-gray-900 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg hover:bg-gray-800 transition-all duration-300 transform hover:shadow-2xl group w-full sm:w-auto"
-              >
-                <Plus className="mr-2 transition-transform duration-300 group-hover:rotate-90" size={16} />
-                Start a Campaign
-              </Button>
-            </motion.div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg transition-all duration-300 hover:bg-gray-50 hover:shadow-lg w-full sm:w-auto"
+                className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white px-8 sm:px-12 py-4 sm:py-5 text-lg sm:text-xl font-semibold transition-all duration-300 transform hover:shadow-2xl group rounded-xl"
+                onClick={() => {
+                  document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 Browse Creators
+                <motion.span
+                  className="ml-2"
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  →
+                </motion.span>
               </Button>
             </motion.div>
           </motion.div>
