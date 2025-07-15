@@ -92,7 +92,7 @@ export default function Creators() {
             >
               <Button
                 size="lg"
-                onClick={() => setIsWaitlistOpen(true)}
+                onClick={() => window.location.href = '/waitlist'}
                 className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-8 py-4 text-lg font-semibold rounded-full"
               >
                 Join Waitlist
