@@ -47,7 +47,7 @@ export function SuccessStories() {
   const featuredCampaign = campaigns?.[0];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-50 to-cyan-50">
+    <section id="success-stories" className="py-20 bg-gradient-to-br from-purple-50 to-cyan-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <motion.h2

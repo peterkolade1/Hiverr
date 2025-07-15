@@ -370,3 +370,13 @@ body {
 .font-extrabold {
   font-weight: 800;
 }
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll offset for fixed header */
+section[id] {
+  scroll-margin-top: 80px;
+}
