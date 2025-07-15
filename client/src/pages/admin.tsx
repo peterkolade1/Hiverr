@@ -260,12 +260,15 @@ export default function Admin() {
 
           {/* Waitlist Entry Details Modal */}
           <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-            <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+            <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto" aria-describedby="waitlist-entry-description">
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <User size={20} />
                   Waitlist Entry Details
                 </DialogTitle>
+                <p id="waitlist-entry-description" className="text-sm text-gray-600">
+                  View detailed information about this waitlist entry including all submitted form data.
+                </p>
               </DialogHeader>
               
               {selectedEntry && (

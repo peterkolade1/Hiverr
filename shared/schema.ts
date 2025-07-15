@@ -77,8 +77,37 @@ export const waitlist = pgTable("waitlist", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
-  company: varchar("company", { length: 255 }),
+  interest: varchar("interest", { length: 50 }),
+  
+  // Brand-specific fields
+  companyName: varchar("company_name", { length: 255 }),
   role: varchar("role", { length: 100 }),
+  creatorPreference: varchar("creator_preference", { length: 100 }),
+  budget: varchar("budget", { length: 100 }),
+  campaignTiming: varchar("campaign_timing", { length: 100 }),
+  brandLogo: text("brand_logo"),
+  
+  // Creator-specific fields
+  niches: text("niches"), // JSON string array
+  profilePicture: text("profile_picture"),
+  
+  // Social media platforms
+  instagram: varchar("instagram", { length: 255 }),
+  instagramFollowers: varchar("instagram_followers", { length: 50 }),
+  tiktok: varchar("tiktok", { length: 255 }),
+  tiktokFollowers: varchar("tiktok_followers", { length: 50 }),
+  youtube: varchar("youtube", { length: 255 }),
+  youtubeSubs: varchar("youtube_subs", { length: 50 }),
+  twitter: varchar("twitter", { length: 255 }),
+  facebook: varchar("facebook", { length: 255 }),
+  
+  // Additional creator fields
+  location: varchar("location", { length: 255 }),
+  languages: text("languages"), // JSON string array
+  aiContent: boolean("ai_content"),
+  rateRange: varchar("rate_range", { length: 100 }),
+  portfolio: text("portfolio"),
+  
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
