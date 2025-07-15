@@ -74,12 +74,9 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight"
           >
-            UGC that converts.{" "}
-            <br />
-            Influencers who fit.{" "}
-            <br />
+            Launch Your Next Viral Campaign on{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-cyan-500">
-              Campaigns that just flow.
+              Hiverr.
             </span>
           </motion.h1>
 
@@ -89,7 +86,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-lg sm:text-xl text-gray-600 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed px-4"
           >
-            Hiverr helps brands submit briefs, discover top-fit creators, and generate UGC content — all in one simple platform.
+            Discover creators, drop a brief, and get UGC that actually performs.
           </motion.p>
 
           {/* Dual Audience CTA */}

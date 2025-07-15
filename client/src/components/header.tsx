@@ -37,6 +37,13 @@ export function Header() {
 
           <div className="flex items-center space-x-2 sm:space-x-4">
             <Button 
+              variant="outline" 
+              size="sm" 
+              className="border-purple-600 text-purple-600 hover:bg-purple-50 text-xs sm:text-sm px-2 sm:px-4"
+            >
+              For Creators
+            </Button>
+            <Button 
               variant="default" 
               size="sm" 
               onClick={() => setIsWaitlistOpen(true)}
