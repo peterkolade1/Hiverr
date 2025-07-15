@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { HiverLogo } from "./hiver-logo";
-import { Star, Plus, Video } from "lucide-react";
+import { Star, Plus, Video, Search } from "lucide-react";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
 
 // Import creator images
@@ -78,34 +78,77 @@ export function HeroSection() {
             Hiverr helps brands submit briefs, discover top-fit creators, and generate UGC content — all in one simple platform.
           </motion.p>
 
-          {/* CTA Button */}
+          {/* Dual Audience CTA */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex justify-center items-center px-4"
+            className="flex flex-col items-center space-y-4 px-4 max-w-2xl mx-auto"
           >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white px-8 sm:px-12 py-4 sm:py-5 text-lg sm:text-xl font-semibold transition-all duration-300 transform hover:shadow-2xl group rounded-xl"
-                onClick={() => {
-                  document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
-                Browse Creators
-                <motion.span
-                  className="ml-2"
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+            {/* Dual Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 rounded-full w-full sm:w-auto"
+                  onClick={() => {
+                    document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
-                  →
-                </motion.span>
-              </Button>
+                  Browse Creators
+                </Button>
+              </motion.div>
+              
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 rounded-full w-full sm:w-auto"
+                  onClick={() => {
+                    // For now, scroll to creators section - can be updated to campaign section later
+                    document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Find Campaign
+                </Button>
+              </motion.div>
+            </div>
+
+            {/* Search Bar */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="relative w-full max-w-lg"
+            >
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder='Try "skincare creator" or "tech reviewer"'
+                  className="w-full px-6 py-4 text-base border-2 border-gray-200 rounded-full focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all duration-300 pr-14"
+                />
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-cyan-600 text-white p-2.5 rounded-full hover:from-purple-700 hover:to-cyan-700 transition-all duration-300"
+                  onClick={() => {
+                    document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  <Search size={20} />
+                </motion.button>
+              </div>
             </motion.div>
+
+            {/* Helper Text */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1 }}
+              className="text-sm text-gray-500 text-center"
+            >
+              Popular: Beauty Creators, Tech Reviewers, Fitness Influencers
+            </motion.p>
           </motion.div>
         </div>
 
