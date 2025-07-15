@@ -190,6 +190,7 @@ export default function Login() {
               alt="Neon aesthetic"
               className="w-full h-full object-cover"
             />
+            <div className="absolute inset-0 bg-black/40"></div>
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-purple-900/20 to-purple-900/40"></div>
           </motion.div>
           
