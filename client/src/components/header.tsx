@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Users, Zap } from "lucide-react";
+import { WaitlistForm } from "./waitlist-form";
+import { Menu, Users, Zap, Sparkles } from "lucide-react";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
   const NavLinks = () => (
     <>
@@ -51,11 +53,15 @@ export function Header() {
                 Login
               </Button>
             </Link>
-            <Link href="/signup">
-              <Button variant="default" size="sm" className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700">
-                Sign Up
-              </Button>
-            </Link>
+            <Button 
+              variant="default" 
+              size="sm" 
+              onClick={() => setIsWaitlistOpen(true)}
+              className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700"
+            >
+              <Sparkles size={14} className="mr-1" />
+              Join Waitlist
+            </Button>
             
             {/* Mobile menu trigger */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -73,6 +79,11 @@ export function Header() {
           </div>
         </div>
       </div>
+      
+      <WaitlistForm 
+        isOpen={isWaitlistOpen} 
+        onClose={() => setIsWaitlistOpen(false)} 
+      />
     </header>
   );
 }

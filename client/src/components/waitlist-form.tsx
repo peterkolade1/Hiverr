@@ -7,7 +7,7 @@ import { insertWaitlistSchema, type InsertWaitlist } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
@@ -34,13 +34,7 @@ export function WaitlistForm({ isOpen, onClose }: WaitlistFormProps) {
 
   const waitlistMutation = useMutation({
     mutationFn: async (data: InsertWaitlist) => {
-      return await apiRequest("/api/waitlist", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      return await apiRequest("/api/waitlist", "POST", data);
     },
     onSuccess: () => {
       setIsSubmitted(true);
@@ -78,6 +72,9 @@ export function WaitlistForm({ isOpen, onClose }: WaitlistFormProps) {
             <Sparkles className="text-purple-600" size={24} />
             Join the AI Creator Waitlist
           </DialogTitle>
+          <DialogDescription>
+            Be the first to experience AI-generated creator avatars when they launch.
+          </DialogDescription>
         </DialogHeader>
 
         {!isSubmitted ? (
