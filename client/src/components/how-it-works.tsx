@@ -30,8 +30,12 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-20 bg-gradient-to-br from-blue-50/30 via-white to-cyan-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="how-it-works" className="py-20 neon-background overflow-hidden">
+      {/* Floating orbs for How It Works */}
+      <div className="floating-orb floating-orb-2" style={{ top: '20%', left: '80%', animationDelay: '1s' }}></div>
+      <div className="floating-orb floating-orb-1" style={{ bottom: '30%', right: '10%', animationDelay: '3s' }}></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

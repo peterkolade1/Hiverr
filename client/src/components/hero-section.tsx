@@ -16,8 +16,13 @@ import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-work
 
 export function HeroSection() {
   return (
-    <section className="relative gradient-hero py-20 lg:py-32">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative gradient-hero py-20 lg:py-32 overflow-hidden">
+      {/* Floating orbs */}
+      <div className="floating-orb floating-orb-1"></div>
+      <div className="floating-orb floating-orb-2"></div>
+      <div className="floating-orb floating-orb-3"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center">
           {/* Trust Badge */}
           <motion.div
