@@ -192,6 +192,18 @@
     position: relative;
   }
   
+  .gradient-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(240, 244, 255, 0) 0%, rgba(255, 255, 255, 0.8) 60%, rgba(255, 255, 255, 1) 100%);
+    pointer-events: none;
+    z-index: 5;
+  }
+  
   .gradient-hero::before {
     content: '';
     position: absolute;
@@ -209,6 +221,30 @@
   .neon-background {
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 25%, #f0f4ff 50%, #e6e7ff 75%, #f3e8ff 100%);
     position: relative;
+  }
+  
+  .neon-background-top::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 40%, rgba(248, 250, 252, 0) 100%);
+    pointer-events: none;
+    z-index: 20;
+  }
+  
+  .neon-background-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(248, 250, 252, 0) 0%, rgba(255, 255, 255, 0.8) 60%, rgba(255, 255, 255, 1) 100%);
+    pointer-events: none;
+    z-index: 20;
   }
   
   .neon-background::before {

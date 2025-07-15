@@ -30,7 +30,7 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-20 neon-background overflow-hidden">
+    <section id="how-it-works" className="py-20 neon-background neon-background-top neon-background-bottom overflow-hidden">
       {/* Floating orbs for How It Works */}
       <div className="floating-orb floating-orb-2" style={{ top: '20%', left: '80%', animationDelay: '1s' }}></div>
       <div className="floating-orb floating-orb-1" style={{ bottom: '30%', right: '10%', animationDelay: '3s' }}></div>
