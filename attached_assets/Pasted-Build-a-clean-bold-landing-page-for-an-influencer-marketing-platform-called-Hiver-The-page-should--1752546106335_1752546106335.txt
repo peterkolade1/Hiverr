@@ -1,0 +1,61 @@
+Build a clean, bold landing page for an influencer marketing platform called Hiver. The page should follow a modern, minimal design style like optivus.framer.website. Use a neutral or soft gradient palette with spacious layout, crisp typography, and subtle animation. Structure the layout as follows:
+
+🟣 Hero Section:
+Centered, bold headline:
+“UGC That Converts. Influencers Who Fit. Campaigns That Just Flow.”
+
+Subheading in lighter text:
+“Hiver helps brands submit briefs, discover top-fit creators, and generate UGC content — all in one simple platform.”
+
+Primary CTA button: “Start a Campaign”
+
+Secondary CTA (ghost style): “Browse Creators”
+
+🤝 Trusted By Section:
+Horizontal scrolling row of grayscale logos (placeholder: Nike, Glossier, Shopify, Notion, Airbnb)
+
+🚀 How It Works Section:
+Two-column layout
+
+Left: Section title — “How It Works” + short paragraph
+
+Right: 3 feature cards with icons and short titles like:
+
+Submit a Brief – Structured brief form to outline goals, budget, and deliverables
+
+Match with Creators – Get matched with top influencers using our Aura Score
+
+Collaborate & Track – Manage UGC delivery, feedback, and status in one dashboard
+
+🔥 Featured Creators Section:
+Section title: “Top Creators on Hiver”
+
+Display 3–4 influencer cards with image, name, niche, and Aura Score
+
+Include a "View Leaderboard" button
+
+🤖 Coming Soon CTA Banner:
+Dark background with bold white text:
+“AI-Generated Creator Avatars Are Coming.”
+“Let your top creators scale campaigns—even while they sleep.”
+
+CTA: “Join the Waitlist”
+
+🧭 Footer:
+Left: Hiver logo + one-line tagline: "Powering UGC at Scale."
+
+Right: Footer links (How it Works, For Creators, Pricing, Login)
+
+Clean, minimal, no social icons
+
+💅 Style Guide:
+Font: Modern sans-serif (e.g., Inter, Satoshi, DM Sans)
+
+Colors: Soft gradient (lavender, black, white), minimal contrast
+
+Design: Spacious, minimal, centered layout
+
+Animation: Light fade-ins and floating effect for cards
+
+Mobile responsive + dark mode compatible
+

@@ -6,6 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ArrowRight, Check, Crown, Heart, Eye, Star } from "lucide-react";
 import type { Creator } from "@shared/schema";
 
+// Import images
+import photographerImage from "@assets/beautiful-young-smiling-photographer-girl-taking-photos-using-her-retro-camera_1752546339462.jpg";
+import fitnessImage from "@assets/fit-young-woman-doing-stretching-exercise-yoga-mat_1752546339467.jpg";
+
 export function CreatorShowcase() {
   const { data: creators, isLoading } = useQuery<Creator[]>({
     queryKey: ["/api/creators"],
@@ -58,11 +62,10 @@ export function CreatorShowcase() {
               transition={{ duration: 0.6 }}
               className="text-4xl font-bold text-gray-900 mb-4"
             >
-              Top-Rated Creators{" "}
-              <span className="inline-flex items-center justify-center w-8 h-8 bg-brand-purple rounded-lg ml-2">
+              Top Creators on Hiver{" "}
+              <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-lg ml-2">
                 <Crown className="text-white text-sm" size={16} />
-              </span>{" "}
-              for Your Next Campaign
+              </span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, x: -20 }}
@@ -70,7 +73,7 @@ export function CreatorShowcase() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-gray-600 text-lg"
             >
-              Handpicked Experts Ready to Bring Your Brand Vision to Life.
+              Discover influencers with proven track records and high Aura Scores.
             </motion.p>
           </div>
           <div className="hidden lg:flex space-x-2">
@@ -114,7 +117,10 @@ export function CreatorShowcase() {
                 
                 <div className="relative overflow-hidden">
                   <img
-                    src={creator.profileImage}
+                    src={index === 0 ? photographerImage : 
+                         index === 1 ? creator.profileImage :
+                         index === 2 ? fitnessImage :
+                         creator.profileImage}
                     alt={`${creator.name} - ${creator.category}`}
                     className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -184,19 +190,12 @@ export function CreatorShowcase() {
                   
                   <div className="flex items-center justify-between">
                     <div className="text-xs text-gray-500 flex items-center">
-                      {index === 2 ? (
-                        <>
-                          <Eye className="mr-1" size={12} />
-                          2.1M monthly views
-                        </>
-                      ) : (
-                        <>
-                          <Heart className="mr-1" size={12} />
-                          {creator.engagementRate} engagement rate
-                        </>
-                      )}
+                      <div className="flex items-center bg-gradient-to-r from-purple-100 to-cyan-100 px-2 py-1 rounded-full">
+                        <Star className="mr-1 text-purple-600" size={12} fill="currentColor" />
+                        <span className="text-purple-600 font-medium">Aura Score: {Math.floor(Math.random() * 20) + 80}</span>
+                      </div>
                     </div>
-                    <Button variant="link" className="brand-purple p-0 h-auto">
+                    <Button variant="link" className="text-purple-600 hover:text-purple-700 p-0 h-auto">
                       View Profile
                     </Button>
                   </div>
@@ -204,6 +203,23 @@ export function CreatorShowcase() {
               </Card>
             </motion.div>
           ))}
+        </motion.div>
+        
+        {/* View Leaderboard Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="text-center mt-12"
+        >
+          <Button
+            variant="outline"
+            size="lg"
+            className="px-8 py-4 text-lg border-purple-200 text-purple-600 hover:bg-purple-50 hover:border-purple-300 transition-all duration-300"
+          >
+            View Leaderboard
+            <ArrowRight className="ml-2" size={20} />
+          </Button>
         </motion.div>
       </div>
     </section>

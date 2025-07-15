@@ -36,7 +36,7 @@ export function Header() {
               <div className="w-8 h-8 gradient-brand rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110">
                 <Zap className="text-white text-sm transition-transform duration-300 group-hover:rotate-12" size={16} />
               </div>
-              <span className="ml-2 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600">Hiverr</span>
+              <span className="ml-2 text-xl font-bold text-gray-900 transition-colors duration-300 group-hover:text-purple-600">Hiver</span>
             </Link>
           </div>
           

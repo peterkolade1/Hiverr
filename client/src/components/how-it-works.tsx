@@ -10,27 +10,21 @@ export function HowItWorks() {
   const steps = [
     {
       icon: <Search size={20} />,
-      title: "Discover Creators",
-      description: "Browse through our curated collection of skilled UGC creators across various specialties such as fashion, tech, fitness, and more.",
-      details: "Filter by platform, follower count, engagement rate, and location to find the perfect match for your brand.",
+      title: "Submit a Brief",
+      description: "Structured brief form to outline goals, budget, and deliverables.",
+      details: "Fill out our comprehensive brief form with campaign objectives, target audience, content requirements, and budget parameters to get started.",
     },
     {
       icon: <Handshake size={20} />,
-      title: "Collaborate with Your Creator",
-      description: "Connect directly with creators, discuss your campaign goals, and establish clear expectations for content delivery.",
-      details: "Use our built-in messaging system to share briefs, review concepts, and provide feedback throughout the collaboration.",
+      title: "Match with Creators",
+      description: "Get matched with top influencers using our Aura Score.",
+      details: "Our algorithm analyzes creator performance, audience alignment, and engagement quality to match you with the perfect creators for your brand.",
     },
     {
       icon: <Rocket size={20} />,
-      title: "Launch Your Campaign",
-      description: "Watch your authentic UGC content go live across social platforms and track performance metrics in real-time.",
-      details: "Monitor engagement, reach, and conversion metrics through our comprehensive analytics dashboard.",
-    },
-    {
-      icon: <Star size={20} />,
-      title: "Review the Creator",
-      description: "Provide feedback and ratings to help other brands make informed decisions and build the creator community.",
-      details: "Your reviews help maintain quality standards and recognition for top-performing creators on our platform.",
+      title: "Collaborate & Track",
+      description: "Manage UGC delivery, feedback, and status in one dashboard.",
+      details: "Monitor project progress, provide feedback, approve content, and track campaign performance all from your centralized dashboard.",
     },
   ];
 
@@ -44,19 +38,15 @@ export function HowItWorks() {
             transition={{ duration: 0.6 }}
             className="text-4xl font-bold text-gray-900 mb-4"
           >
-            How Hiverr{" "}
-            <span className="inline-flex items-center justify-center w-8 h-8 bg-brand-cyan rounded-lg mx-2">
-              <Rocket className="text-white text-sm" size={16} />
-            </span>
-            Works
+            How It Works
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-gray-600 text-lg"
+            className="text-gray-600 text-lg max-w-2xl mx-auto"
           >
-            Connecting You with the Best UGC Creators in Three Simple Steps
+            Three simple steps to launch successful UGC campaigns with top-tier creators who match your brand perfectly.
           </motion.p>
         </div>
 
@@ -69,8 +59,8 @@ export function HowItWorks() {
             className="relative"
           >
             <img
-              src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=500"
-              alt="Brand collaboration meeting"
+              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=500"
+              alt="Creative team collaboration"
               className="rounded-2xl shadow-lg w-full"
             />
             

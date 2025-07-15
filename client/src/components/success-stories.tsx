@@ -4,6 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import type { Campaign } from "@shared/schema";
 
+// Import cooking image
+import cookingImage from "@assets/medium-shot-women-cooking-together_1752546339467.jpg";
+
 export function SuccessStories() {
   const { data: campaigns, isLoading } = useQuery<Campaign[]>({
     queryKey: ["/api/campaigns"],
@@ -54,7 +57,7 @@ export function SuccessStories() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-gray-600 text-lg"
           >
-            Real results from brands that trust Hiverr for their UGC campaigns
+            Real results from brands that trust Hiver for their UGC campaigns
           </motion.p>
         </div>
 

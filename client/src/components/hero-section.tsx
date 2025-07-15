@@ -29,17 +29,14 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
+            className="text-5xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight"
           >
-            Connect Brands with{" "}
-            <span className="relative">
-              <Video className="inline-block brand-purple mr-2" size={48} />
-              Content Creators
-            </span>
+            UGC That Converts.{" "}
             <br />
-            for Authentic UGC Campaigns
-            <span className="inline-flex items-center justify-center w-12 h-8 bg-brand-orange rounded-lg ml-2">
-              <span className="text-white text-sm font-bold">Pro</span>
+            Influencers Who Fit.{" "}
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-cyan-500">
+              Campaigns That Just Flow.
             </span>
           </motion.h1>
 
@@ -47,9 +44,9 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto"
+            className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed"
           >
-            Discover vetted content creators across Instagram, TikTok, and YouTube. Launch campaigns that drive engagement and authentic brand connections with Hiverr.
+            Hiver helps brands submit briefs, discover top-fit creators, and generate UGC content — all in one simple platform.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -68,7 +65,7 @@ export function HeroSection() {
                 className="bg-gray-900 text-white px-8 py-4 text-lg hover:bg-gray-800 transition-all duration-300 transform hover:shadow-2xl group"
               >
                 <Plus className="mr-2 transition-transform duration-300 group-hover:rotate-90" size={20} />
-                Find Creators
+                Start a Campaign
               </Button>
             </motion.div>
             <motion.div
@@ -80,7 +77,7 @@ export function HeroSection() {
                 size="lg"
                 className="px-8 py-4 text-lg transition-all duration-300 hover:bg-gray-50 hover:shadow-lg"
               >
-                Explore Campaigns
+                Browse Creators
               </Button>
             </motion.div>
           </motion.div>
@@ -95,7 +92,7 @@ export function HeroSection() {
         >
           <p className="text-center text-gray-500 text-sm mb-8">Trusted by</p>
           <div className="flex justify-center items-center space-x-12 opacity-60">
-            {["Nike", "Spotify", "Airbnb", "Slack", "Shopify"].map((brand, index) => (
+            {["Nike", "Glossier", "Shopify", "Notion", "Airbnb"].map((brand, index) => (
               <motion.div
                 key={brand}
                 className="text-2xl font-bold text-gray-400 hover:text-gray-600 transition-colors duration-300 cursor-pointer"
