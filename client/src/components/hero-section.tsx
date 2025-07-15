@@ -157,39 +157,12 @@ export function HeroSection() {
           transition={{ duration: 1, delay: 0.8 }}
           className="mt-12 sm:mt-16 relative max-w-5xl mx-auto px-4"
         >
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            <motion.div 
-              className="relative"
-              initial={{ y: 20 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
-            >
-              <div className="relative overflow-hidden rounded-2xl shadow-lg transform rotate-2 hover:rotate-4 transition-transform">
-                <img 
-                  src={smartphoneImage} 
-                  alt="Content Creator"
-                  className="w-full h-32 sm:h-40 lg:h-48 object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-3 left-3 right-3">
-                  <div className="flex items-center justify-between text-white text-xs">
-                    <span>Social Media</span>
-                    <div className="flex items-center">
-                      <Star size={12} fill="currentColor" />
-                      <span className="ml-1">4.9</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <motion.div 
               className="relative mt-8"
               initial={{ y: 20 }}
               animate={{ y: 0 }}
-              transition={{ duration: 0.6, delay: 1.2 }}
+              transition={{ duration: 0.6, delay: 1 }}
             >
               <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-1 hover:-rotate-3 transition-transform">
                 <img 
@@ -213,6 +186,33 @@ export function HeroSection() {
             </motion.div>
 
             <motion.div 
+              className="relative mt-12"
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.6, delay: 1.2 }}
+            >
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-2 hover:-rotate-4 transition-transform">
+                <img 
+                  src={foodPhotoImage} 
+                  alt="Food Content Creator"
+                  className="w-full h-32 sm:h-40 lg:h-48 object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center justify-between text-white text-xs">
+                    <span>Food & Lifestyle</span>
+                    <div className="flex items-center">
+                      <Star size={12} fill="currentColor" />
+                      <span className="ml-1">4.8</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
               className="relative mt-4"
               initial={{ y: 20 }}
               animate={{ y: 0 }}
@@ -222,7 +222,7 @@ export function HeroSection() {
                 <img 
                   src={beautyVloggerImage} 
                   alt="Beauty Vlogger"
-                  className="w-full h-48 object-cover"
+                  className="w-full h-32 sm:h-40 lg:h-48 object-cover"
                   loading="lazy"
                   decoding="async"
                 />
@@ -240,51 +240,16 @@ export function HeroSection() {
             </motion.div>
 
             <motion.div 
-              className="relative mt-12"
-              initial={{ y: 20 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.6, delay: 1.6 }}
-            >
-              <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-2 hover:-rotate-4 transition-transform">
-                <img 
-                  src={foodPhotoImage} 
-                  alt="Food Content Creator"
-                  className="w-full h-48 object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-3 left-3 right-3">
-                  <div className="flex items-center justify-between text-white text-xs">
-                    <span>Food & Lifestyle</span>
-                    <div className="flex items-center">
-                      <Star size={12} fill="currentColor" />
-                      <span className="ml-1">4.8</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-          
-          {/* Additional Creator Gallery Row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.8 }}
-            className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            <motion.div 
               className="relative"
               initial={{ y: 20 }}
               animate={{ y: 0 }}
-              transition={{ duration: 0.6, delay: 2 }}
+              transition={{ duration: 0.6, delay: 1.6 }}
             >
               <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-1 hover:-rotate-3 transition-transform">
                 <img 
                   src={gymImage} 
                   alt="Fitness Creator"
-                  className="w-full h-48 object-cover"
+                  className="w-full h-32 sm:h-40 lg:h-48 object-cover"
                   loading="lazy"
                   decoding="async"
                 />
@@ -300,88 +265,8 @@ export function HeroSection() {
                 </div>
               </div>
             </motion.div>
+          </div>
 
-            <motion.div 
-              className="relative mt-6"
-              initial={{ y: 20 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.6, delay: 2.2 }}
-            >
-              <div className="relative overflow-hidden rounded-2xl shadow-lg transform rotate-2 hover:rotate-4 transition-transform">
-                <img 
-                  src={musicImage} 
-                  alt="Music Creator"
-                  className="w-full h-48 object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-3 left-3 right-3">
-                  <div className="flex items-center justify-between text-white text-xs">
-                    <span>Music & Audio</span>
-                    <div className="flex items-center">
-                      <Star size={12} fill="currentColor" />
-                      <span className="ml-1">5.0</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              className="relative mt-2"
-              initial={{ y: 20 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.6, delay: 2.4 }}
-            >
-              <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-2 hover:-rotate-4 transition-transform">
-                <img 
-                  src={photographerImage} 
-                  alt="Photography Creator"
-                  className="w-full h-48 object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-3 left-3 right-3">
-                  <div className="flex items-center justify-between text-white text-xs">
-                    <span>Photography</span>
-                    <div className="flex items-center">
-                      <Star size={12} fill="currentColor" />
-                      <span className="ml-1">4.8</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              className="relative mt-10"
-              initial={{ y: 20 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.6, delay: 2.6 }}
-            >
-              <div className="relative overflow-hidden rounded-2xl shadow-lg transform rotate-1 hover:rotate-3 transition-transform">
-                <img 
-                  src={fitnessImage} 
-                  alt="Yoga Creator"
-                  className="w-full h-48 object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-3 left-3 right-3">
-                  <div className="flex items-center justify-between text-white text-xs">
-                    <span>Yoga & Mindfulness</span>
-                    <div className="flex items-center">
-                      <Star size={12} fill="currentColor" />
-                      <span className="ml-1">4.9</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
         </motion.div>
 
         {/* Trust Indicators */}
