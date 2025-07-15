@@ -7,6 +7,12 @@ import type { Campaign } from "@shared/schema";
 // Import cooking images
 import cookingImage from "@assets/medium-shot-women-cooking-together_1752546339467.jpg";
 import cookingImageNew from "@assets/medium-shot-women-cooking-together_1752546751336.jpg";
+// Import new creator images
+import youngFriendsImage from "@assets/young-friends-posing-together-low-angle_1752547296035.jpg";
+import beautyVloggerImage from "@assets/woman-beauty-vlogger-filming-vlog-about-creams_1752547296036.jpg";
+import foodPhotoImage from "@assets/woman-taking-photo-her-food_1752547296036.jpg";
+import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752547296037.jpg";
+import smartphoneImage from "@assets/portrait-woman-using-smartphone-with-pop-socket-outdoors_1752546751339.jpg";
 
 export function SuccessStories() {
   const { data: campaigns, isLoading } = useQuery<Campaign[]>({
@@ -157,18 +163,104 @@ export function SuccessStories() {
           )}
         </div>
 
-        {/* More Success Stories */}
+        {/* Creator Success Gallery */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-4 gap-6"
+        >
+          {/* Beauty Vlogger Success */}
+          <Card className="hover:shadow-lg transition-shadow duration-300">
+            <CardContent className="p-0">
+              <img
+                src={beautyVloggerImage}
+                alt="Beauty Vlogger Campaign"
+                className="w-full h-48 object-cover rounded-t-xl"
+              />
+              <div className="p-4">
+                <h4 className="font-bold text-gray-900 mb-2">Beauty Brand Launch</h4>
+                <p className="text-sm text-gray-600 mb-3">Skincare routine content drove 300% sales increase</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-green-600">+300%</span>
+                  <span className="text-xs text-gray-500">Sales Growth</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Food Photography Success */}
+          <Card className="hover:shadow-lg transition-shadow duration-300">
+            <CardContent className="p-0">
+              <img
+                src={foodPhotoImage}
+                alt="Food Photography Campaign"
+                className="w-full h-48 object-cover rounded-t-xl"
+              />
+              <div className="p-4">
+                <h4 className="font-bold text-gray-900 mb-2">Restaurant Partnership</h4>
+                <p className="text-sm text-gray-600 mb-3">Food content generated 50K+ restaurant visits</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-purple-600">50K+</span>
+                  <span className="text-xs text-gray-500">New Visits</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Fitness Success */}
+          <Card className="hover:shadow-lg transition-shadow duration-300">
+            <CardContent className="p-0">
+              <img
+                src={gymImage}
+                alt="Fitness Campaign"
+                className="w-full h-48 object-cover rounded-t-xl"
+              />
+              <div className="p-4">
+                <h4 className="font-bold text-gray-900 mb-2">Fitness App Launch</h4>
+                <p className="text-sm text-gray-600 mb-3">Workout content drove 100K+ app downloads</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-cyan-600">100K+</span>
+                  <span className="text-xs text-gray-500">Downloads</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Lifestyle Success */}
+          <Card className="hover:shadow-lg transition-shadow duration-300">
+            <CardContent className="p-0">
+              <img
+                src={youngFriendsImage}
+                alt="Lifestyle Campaign"
+                className="w-full h-48 object-cover rounded-t-xl"
+              />
+              <div className="p-4">
+                <h4 className="font-bold text-gray-900 mb-2">Fashion Collab</h4>
+                <p className="text-sm text-gray-600 mb-3">Lifestyle content reached 2M+ people</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-orange-600">2M+</span>
+                  <span className="text-xs text-gray-500">Reach</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Additional Success Stories */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8"
         >
           {campaigns?.slice(1).map((campaign, index) => (
             <Card key={campaign.id} className="hover:shadow-lg transition-shadow duration-300">
               <CardContent className="p-6">
                 <img
-                  src={campaign.campaignImage}
+                  src={index === 0 ? cookingImage : 
+                       index === 1 ? smartphoneImage : 
+                       campaign.campaignImage}
                   alt={campaign.title}
                   className="w-full h-32 object-cover rounded-xl mb-4"
                 />

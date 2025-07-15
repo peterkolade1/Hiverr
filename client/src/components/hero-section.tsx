@@ -7,6 +7,11 @@ import smartphoneImage from "@assets/portrait-woman-using-smartphone-with-pop-so
 import musicImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-home-studio_1752546751339.jpg";
 import photographerImage from "@assets/beautiful-young-smiling-photographer-girl-taking-photos-using-her-retro-camera_1752546339462.jpg";
 import fitnessImage from "@assets/fit-young-woman-doing-stretching-exercise-yoga-mat_1752546339467.jpg";
+// Import new creator images
+import youngFriendsImage from "@assets/young-friends-posing-together-low-angle_1752547296035.jpg";
+import beautyVloggerImage from "@assets/woman-beauty-vlogger-filming-vlog-about-creams_1752547296036.jpg";
+import foodPhotoImage from "@assets/woman-taking-photo-her-food_1752547296036.jpg";
+import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752547296037.jpg";
 
 export function HeroSection() {
   return (
@@ -130,6 +135,114 @@ export function HeroSection() {
             >
               <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-1 hover:-rotate-3 transition-transform">
                 <img 
+                  src={youngFriendsImage} 
+                  alt="Lifestyle Creators"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center justify-between text-white text-xs">
+                    <span>Lifestyle & Fashion</span>
+                    <div className="flex items-center">
+                      <Star size={12} fill="currentColor" />
+                      <span className="ml-1">4.8</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              className="relative mt-4"
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.6, delay: 1.4 }}
+            >
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform rotate-1 hover:rotate-2 transition-transform">
+                <img 
+                  src={beautyVloggerImage} 
+                  alt="Beauty Vlogger"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center justify-between text-white text-xs">
+                    <span>Beauty & Skincare</span>
+                    <div className="flex items-center">
+                      <Star size={12} fill="currentColor" />
+                      <span className="ml-1">4.9</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              className="relative mt-12"
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.6, delay: 1.6 }}
+            >
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-2 hover:-rotate-4 transition-transform">
+                <img 
+                  src={foodPhotoImage} 
+                  alt="Food Content Creator"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center justify-between text-white text-xs">
+                    <span>Food & Lifestyle</span>
+                    <div className="flex items-center">
+                      <Star size={12} fill="currentColor" />
+                      <span className="ml-1">4.8</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+          
+          {/* Additional Creator Gallery Row */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.8 }}
+            className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            <motion.div 
+              className="relative"
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.6, delay: 2 }}
+            >
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-1 hover:-rotate-3 transition-transform">
+                <img 
+                  src={gymImage} 
+                  alt="Fitness Creator"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <div className="flex items-center justify-between text-white text-xs">
+                    <span>Fitness & Wellness</span>
+                    <div className="flex items-center">
+                      <Star size={12} fill="currentColor" />
+                      <span className="ml-1">4.7</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div 
+              className="relative mt-6"
+              initial={{ y: 20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.6, delay: 2.2 }}
+            >
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform rotate-2 hover:rotate-4 transition-transform">
+                <img 
                   src={musicImage} 
                   alt="Music Creator"
                   className="w-full h-48 object-cover"
@@ -148,12 +261,12 @@ export function HeroSection() {
             </motion.div>
 
             <motion.div 
-              className="relative mt-4"
+              className="relative mt-2"
               initial={{ y: 20 }}
               animate={{ y: 0 }}
-              transition={{ duration: 0.6, delay: 1.4 }}
+              transition={{ duration: 0.6, delay: 2.4 }}
             >
-              <div className="relative overflow-hidden rounded-2xl shadow-lg transform rotate-1 hover:rotate-2 transition-transform">
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-2 hover:-rotate-4 transition-transform">
                 <img 
                   src={photographerImage} 
                   alt="Photography Creator"
@@ -173,30 +286,30 @@ export function HeroSection() {
             </motion.div>
 
             <motion.div 
-              className="relative mt-12"
+              className="relative mt-10"
               initial={{ y: 20 }}
               animate={{ y: 0 }}
-              transition={{ duration: 0.6, delay: 1.6 }}
+              transition={{ duration: 0.6, delay: 2.6 }}
             >
-              <div className="relative overflow-hidden rounded-2xl shadow-lg transform -rotate-2 hover:-rotate-4 transition-transform">
+              <div className="relative overflow-hidden rounded-2xl shadow-lg transform rotate-1 hover:rotate-3 transition-transform">
                 <img 
                   src={fitnessImage} 
-                  alt="Fitness Creator"
+                  alt="Yoga Creator"
                   className="w-full h-48 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
                   <div className="flex items-center justify-between text-white text-xs">
-                    <span>Health & Fitness</span>
+                    <span>Yoga & Mindfulness</span>
                     <div className="flex items-center">
                       <Star size={12} fill="currentColor" />
-                      <span className="ml-1">4.7</span>
+                      <span className="ml-1">4.9</span>
                     </div>
                   </div>
                 </div>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Trust Indicators */}

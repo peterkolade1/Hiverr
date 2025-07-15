@@ -11,6 +11,11 @@ import photographerImage from "@assets/beautiful-young-smiling-photographer-girl
 import fitnessImage from "@assets/fit-young-woman-doing-stretching-exercise-yoga-mat_1752546339467.jpg";
 import smartphoneImage from "@assets/portrait-woman-using-smartphone-with-pop-socket-outdoors_1752546751339.jpg";
 import musicImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-home-studio_1752546751339.jpg";
+// Import new creator images
+import youngFriendsImage from "@assets/young-friends-posing-together-low-angle_1752547296035.jpg";
+import beautyVloggerImage from "@assets/woman-beauty-vlogger-filming-vlog-about-creams_1752547296036.jpg";
+import foodPhotoImage from "@assets/woman-taking-photo-her-food_1752547296036.jpg";
+import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752547296037.jpg";
 
 export function CreatorShowcase() {
   const { data: creators, isLoading } = useQuery<Creator[]>({
@@ -123,6 +128,10 @@ export function CreatorShowcase() {
                          index === 1 ? smartphoneImage :
                          index === 2 ? fitnessImage :
                          index === 3 ? musicImage :
+                         index === 4 ? youngFriendsImage :
+                         index === 5 ? beautyVloggerImage :
+                         index === 6 ? foodPhotoImage :
+                         index === 7 ? gymImage :
                          creator.profileImage}
                     alt={`${creator.name} - ${creator.category}`}
                     className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
