@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { WaitlistForm } from "./waitlist-form";
@@ -9,6 +9,7 @@ import { Menu, Sparkles } from "lucide-react";
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
+  const [location] = useLocation();
 
   const NavLinks = () => (
     <>
@@ -36,14 +37,25 @@ export function Header() {
           </nav>
 
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => window.location.href = '/'}
-              className="border-purple-600 text-purple-600 hover:bg-purple-50 text-xs sm:text-sm px-2 sm:px-4"
-            >
-              For Brands
-            </Button>
+            {location === '/creators' ? (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => window.location.href = '/'}
+                className="border-purple-600 text-purple-600 hover:bg-purple-50 text-xs sm:text-sm px-2 sm:px-4"
+              >
+                For Brands
+              </Button>
+            ) : (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => window.location.href = '/creators'}
+                className="border-purple-600 text-purple-600 hover:bg-purple-50 text-xs sm:text-sm px-2 sm:px-4"
+              >
+                For Creators
+              </Button>
+            )}
             <Button 
               variant="default" 
               size="sm" 
