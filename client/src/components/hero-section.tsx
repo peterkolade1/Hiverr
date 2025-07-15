@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { HiverLogo } from "./hiver-logo";
@@ -21,11 +22,24 @@ import amplifyLogo from "@assets/Logo Main_1752551931487.png";
 import newBrandLogo from "@assets/image_1752552551607.png";
 
 export function HeroSection() {
+  const [searchMode, setSearchMode] = useState<'creators' | 'campaigns'>('creators');
+  
   // Preload critical images for better performance
   useImagePreloader({
     images: [smartphoneImage, youngFriendsImage, beautyVloggerImage, foodPhotoImage],
     priority: true
   });
+
+  const searchConfig = {
+    creators: {
+      placeholder: 'Try "skincare creator" or "tech reviewer"',
+      suggestions: 'Popular: Beauty Creators, Tech Reviewers, Fitness Influencers'
+    },
+    campaigns: {
+      placeholder: 'Try "beauty brand" or "tech startup"',
+      suggestions: 'Popular: Skincare Brands, Tech Companies, Fitness Apps'
+    }
+  };
 
   return (
     <section className="relative gradient-hero py-20 lg:py-32 overflow-hidden">
@@ -90,9 +104,13 @@ export function HeroSection() {
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 rounded-full w-full sm:w-auto"
+                  className={`px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 rounded-full w-full sm:w-auto ${
+                    searchMode === 'creators'
+                      ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white'
+                      : 'border-2 border-purple-600 text-purple-600 hover:bg-purple-50 bg-white'
+                  }`}
                   onClick={() => {
-                    document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' });
+                    setSearchMode('creators');
                   }}
                 >
                   Browse Creators
@@ -102,11 +120,13 @@ export function HeroSection() {
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 rounded-full w-full sm:w-auto"
+                  className={`px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 rounded-full w-full sm:w-auto ${
+                    searchMode === 'campaigns'
+                      ? 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white'
+                      : 'border-2 border-purple-600 text-purple-600 hover:bg-purple-50 bg-white'
+                  }`}
                   onClick={() => {
-                    // For now, scroll to creators section - can be updated to campaign section later
-                    document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' });
+                    setSearchMode('campaigns');
                   }}
                 >
                   Find Campaign
@@ -116,15 +136,16 @@ export function HeroSection() {
 
             {/* Search Bar */}
             <motion.div
+              key={searchMode}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
+              transition={{ duration: 0.4 }}
               className="relative w-full max-w-lg"
             >
               <div className="relative">
                 <input
                   type="text"
-                  placeholder='Try "skincare creator" or "tech reviewer"'
+                  placeholder={searchConfig[searchMode].placeholder}
                   className="w-full px-6 py-4 text-base border-2 border-gray-200 rounded-full focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition-all duration-300 pr-14"
                 />
                 <motion.button
@@ -142,12 +163,13 @@ export function HeroSection() {
 
             {/* Helper Text */}
             <motion.p
+              key={`${searchMode}-suggestions`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1 }}
+              transition={{ duration: 0.4 }}
               className="text-sm text-gray-500 text-center"
             >
-              Popular: Beauty Creators, Tech Reviewers, Fitness Influencers
+              {searchConfig[searchMode].suggestions}
             </motion.p>
           </motion.div>
         </div>
