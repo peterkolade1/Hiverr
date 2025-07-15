@@ -85,26 +85,19 @@ export default function Creators() {
               Join Hiverr and get matched with brands that value your authentic voice. Create content you love while earning what you deserve.
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* CTA Button */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+              className="flex justify-center items-center mb-12"
             >
               <Button
                 size="lg"
                 onClick={() => setIsWaitlistOpen(true)}
                 className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-8 py-4 text-lg font-semibold rounded-full"
               >
-                Join as Creator
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-purple-600 text-purple-600 hover:bg-purple-50 px-8 py-4 text-lg font-semibold rounded-full"
-              >
-                View Creator Guide
+                Join Waitlist
               </Button>
             </motion.div>
 
