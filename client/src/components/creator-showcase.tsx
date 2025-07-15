@@ -100,7 +100,7 @@ export function CreatorShowcase() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-gray-600 text-lg"
           >
-            Discover influencers with proven track records and high Aura Scores.
+            Discover influencers with proven track records and high Hive Scores.
           </motion.p>
         </div>
 
@@ -257,7 +257,7 @@ export function CreatorShowcase() {
                     <div className="text-xs text-gray-500 flex items-center">
                       <div className="flex items-center bg-gradient-to-r from-purple-100 to-cyan-100 px-2 py-1 rounded-full">
                         <Star className="mr-1 text-purple-600" size={12} fill="currentColor" />
-                        <span className="text-purple-600 font-medium">Aura Score: {Math.floor(Math.random() * 20) + 80}</span>
+                        <span className="text-purple-600 font-medium">Hive Score: {Math.floor(Math.random() * 20) + 80}</span>
                       </div>
                     </div>
                     <Button variant="link" className="text-purple-600 hover:text-purple-700 p-0 h-auto">

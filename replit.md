@@ -1,8 +1,8 @@
-# CreatorLink - UGC Platform
+# Hiver - UGC Influencer Marketing Platform
 
 ## Overview
 
-CreatorLink is a full-stack web application that connects brands with content creators for User-Generated Content (UGC) campaigns. The platform features a modern React frontend with TypeScript, an Express.js backend, and PostgreSQL database with Drizzle ORM. The application showcases creators, campaigns, and includes an inquiry system for connecting brands with creators.
+Hiver is a full-stack web application that connects brands with content creators for User-Generated Content (UGC) campaigns. The platform features a modern React frontend with TypeScript, an Express.js backend, and PostgreSQL database with Drizzle ORM. The application showcases creators with "Hive Score" ratings, campaigns, and includes an inquiry system for connecting brands with creators across multiple niches including Beauty & Skincare, Fitness & Health, Food & Cooking, Fashion & Lifestyle, Technology, Photography, Music & Audio, and Travel.
 
 ## User Preferences
 
@@ -39,11 +39,12 @@ Preferred communication style: Simple, everyday language.
 
 ### Frontend Components
 - **Landing Page** with hero section, creator showcase, services, and success stories
-- **Creator Showcase** displaying creator profiles with skills and social metrics
+- **Creator Showcase** displaying creator profiles with Hive Scores and niche filtering system
+- **Niche Filter System** allowing users to filter creators by 9 categories with interactive buttons
 - **Services Section** highlighting platform-specific creator categories
 - **Success Stories** featuring campaign metrics and testimonials
 - **Inquiry System** for brands to contact creators
-- **Responsive Design** optimized for mobile and desktop
+- **Responsive Design** optimized for mobile and desktop with Eudoxus Sans typography
 
 ### Backend Components
 - **Route Handlers** for creators, campaigns, and inquiries endpoints

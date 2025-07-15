@@ -17,7 +17,7 @@ export function HowItWorks() {
     {
       icon: <Handshake size={20} />,
       title: "Match with Creators",
-      description: "Get matched with top influencers using our Aura Score.",
+      description: "Get matched with top influencers using our Hive Score.",
       details: "Our algorithm analyzes creator performance, audience alignment, and engagement quality to match you with the perfect creators for your brand.",
     },
     {

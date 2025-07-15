@@ -44,7 +44,7 @@ export class MemStorage implements IStorage {
         bio: "Fashion & lifestyle content creator specializing in authentic brand storytelling and aesthetic flat-lay photography.",
         location: "Los Angeles",
         hourlyRate: 450,
-        category: "Fashion Creator",
+        category: "Fashion & Lifestyle",
         platforms: ["Instagram", "TikTok"],
         followerCount: 1200000,
         engagementRate: "95%",
@@ -58,7 +58,7 @@ export class MemStorage implements IStorage {
         bio: "Tech content creator specializing in authentic product reviews and app demonstrations for mobile and web platforms.",
         location: "San Francisco",
         hourlyRate: 650,
-        category: "Tech Creator",
+        category: "Technology",
         platforms: ["TikTok", "YouTube"],
         followerCount: 850000,
         engagementRate: "88%",
@@ -72,7 +72,7 @@ export class MemStorage implements IStorage {
         bio: "Fitness & wellness creator focused on authentic workout content and health product reviews.",
         location: "Miami",
         hourlyRate: 380,
-        category: "Fitness Creator",
+        category: "Fitness & Health",
         platforms: ["YouTube", "Instagram"],
         followerCount: 850000,
         engagementRate: "92%",
@@ -82,7 +82,83 @@ export class MemStorage implements IStorage {
       },
     ];
 
-    sampleCreators.forEach(creator => {
+    // Add more creators for different niches
+    const additionalCreators = [
+      {
+        name: "Isabella Beauty",
+        email: "isabella@example.com",
+        bio: "Beauty & skincare expert creating authentic product reviews and makeup tutorials.",
+        location: "New York",
+        hourlyRate: 420,
+        category: "Beauty & Skincare",
+        platforms: ["Instagram", "YouTube"],
+        followerCount: 950000,
+        engagementRate: "91%",
+        profileImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+        isAvailable: true,
+        isVerified: true,
+      },
+      {
+        name: "Chef Maria",
+        email: "maria@example.com",
+        bio: "Professional chef sharing authentic cooking tutorials and recipe development content.",
+        location: "Chicago",
+        hourlyRate: 380,
+        category: "Food & Cooking",
+        platforms: ["YouTube", "Instagram"],
+        followerCount: 720000,
+        engagementRate: "89%",
+        profileImage: "https://images.unsplash.com/photo-1607631568010-a87245c0daf8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+        isAvailable: true,
+        isVerified: true,
+      },
+      {
+        name: "Jake Music",
+        email: "jake@example.com",
+        bio: "Music producer and audio content creator specializing in music reviews and production tutorials.",
+        location: "Nashville",
+        hourlyRate: 500,
+        category: "Music & Audio",
+        platforms: ["YouTube", "Spotify"],
+        followerCount: 650000,
+        engagementRate: "87%",
+        profileImage: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+        isAvailable: true,
+        isVerified: true,
+      },
+      {
+        name: "Travel Sam",
+        email: "sam@example.com",
+        bio: "Adventure traveler documenting authentic destination experiences and travel gear reviews.",
+        location: "Austin",
+        hourlyRate: 450,
+        category: "Travel",
+        platforms: ["Instagram", "YouTube"],
+        followerCount: 880000,
+        engagementRate: "86%",
+        profileImage: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+        isAvailable: true,
+        isVerified: true,
+      },
+      {
+        name: "Photo Alex",
+        email: "alex@example.com",
+        bio: "Professional photographer creating stunning visual content and photography tutorials.",
+        location: "Portland",
+        hourlyRate: 520,
+        category: "Photography",
+        platforms: ["Instagram", "YouTube"],
+        followerCount: 680000,
+        engagementRate: "90%",
+        profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+        isAvailable: true,
+        isVerified: true,
+      }
+    ];
+
+    const allCreators = [...sampleCreators, ...additionalCreators];
+    
+    allCreators.forEach(creator => {
       const id = this.currentCreatorId++;
       this.creators.set(id, { 
         ...creator, 
