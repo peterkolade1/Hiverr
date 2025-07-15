@@ -450,31 +450,12 @@ export default function Creators() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-cyan-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-            Ready to monetize your creativity?
-          </h2>
-          <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of creators who've found their perfect brand matches on Hiverr. Your audience is waiting.
-          </p>
-          <Button
-            size="lg"
-            onClick={() => setIsWaitlistOpen(true)}
-            className="bg-white text-purple-600 hover:bg-gray-50 px-8 py-4 text-lg font-semibold rounded-full"
-          >
-            Start Your Creator Journey
-          </Button>
-        </div>
-      </section>
-
-      {/* Creators Leaderboard Section */}
+      {/* Hive Leaderboard Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-              Creators leaderboard
+              Hive Leaderboard
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Track your performance, compete with peers, and get recognized for your impact. Top creators get exclusive opportunities and higher rates.
@@ -581,6 +562,27 @@ export default function Creators() {
           </div>
         </div>
       </section>
+
+      {/* Final CTA */}
+      <section className="py-20 bg-gradient-to-r from-purple-600 to-cyan-600">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            Ready to monetize your creativity?
+          </h2>
+          <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
+            Join thousands of creators who've found their perfect brand matches on Hiverr. Your audience is waiting.
+          </p>
+          <Button
+            size="lg"
+            onClick={() => setIsWaitlistOpen(true)}
+            className="bg-white text-purple-600 hover:bg-gray-50 px-8 py-4 text-lg font-semibold rounded-full"
+          >
+            Start Your Creator Journey
+          </Button>
+        </div>
+      </section>
+
+
 
       <Footer />
 
