@@ -2,9 +2,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { HiverLogo } from "@/components/hiver-logo";
-import { Star, Plus, Video, Search, DollarSign, Users, TrendingUp, Calendar, Clock, Shield } from "lucide-react";
+import { Star, Plus, Video, Search, DollarSign, Users, TrendingUp, Calendar, Clock, Shield, Trophy, Medal, Award } from "lucide-react";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
 import { WaitlistForm } from "@/components/waitlist-form";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 // Import creator-focused images
 import smartphoneImage from "@assets/back-view-woman-with-blue-background_1752553805026.jpg";
@@ -26,6 +28,7 @@ export default function Creators() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-cyan-50">
+      <Header />
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-16 sm:pt-24 sm:pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -468,6 +471,121 @@ export default function Creators() {
           </Button>
         </div>
       </section>
+
+      {/* Creators Leaderboard Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Creators leaderboard
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Track your performance, compete with peers, and get recognized for your impact. Top creators get exclusive opportunities and higher rates.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Leaderboard Preview */}
+            <div className="bg-white rounded-2xl shadow-lg p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-gray-900">Top Performers This Month</h3>
+                <Trophy className="w-6 h-6 text-yellow-500" />
+              </div>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-yellow-200">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-white font-bold text-sm">1</span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">Emma R.</p>
+                      <p className="text-sm text-gray-600">Beauty & Lifestyle</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-gray-900">98.2</p>
+                    <p className="text-sm text-gray-600">Hive Score</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-200">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-white font-bold text-sm">2</span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">Jake M.</p>
+                      <p className="text-sm text-gray-600">Tech Reviews</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-gray-900">95.7</p>
+                    <p className="text-sm text-gray-600">Hive Score</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl border border-orange-200">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-white font-bold text-sm">3</span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">Maria L.</p>
+                      <p className="text-sm text-gray-600">Fitness & Health</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-gray-900">94.1</p>
+                    <p className="text-sm text-gray-600">Hive Score</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-purple-50 rounded-xl">
+                <p className="text-sm text-purple-700 text-center">
+                  Your current rank: #12 (89.3 Hive Score)
+                </p>
+              </div>
+            </div>
+
+            {/* How It Works */}
+            <div className="space-y-8">
+              <div>
+                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4">
+                  <TrendingUp className="w-6 h-6 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Performance tracking</h3>
+                <p className="text-gray-600">
+                  Your Hive Score is calculated based on engagement rates, brand satisfaction, content quality, and delivery speed. Higher scores unlock premium opportunities.
+                </p>
+              </div>
+
+              <div>
+                <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center mb-4">
+                  <Award className="w-6 h-6 text-cyan-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Recognition rewards</h3>
+                <p className="text-gray-600">
+                  Top performers get featured placement, early access to premium campaigns, higher rate negotiations, and exclusive brand partnerships.
+                </p>
+              </div>
+
+              <div>
+                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4">
+                  <Medal className="w-6 h-6 text-orange-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Monthly competitions</h3>
+                <p className="text-gray-600">
+                  Compete in monthly challenges across different niches. Winners receive cash bonuses, featured spots, and opportunities with tier-1 brands.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
 
       <WaitlistForm 
         isOpen={isWaitlistOpen} 
