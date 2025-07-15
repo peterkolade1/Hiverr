@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,11 +11,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { Users, Building2, Upload, CheckCircle } from "lucide-react";
+import { Users, Building2, Upload, CheckCircle, Check, ChevronsUpDown, X } from "lucide-react";
 
 const brandFormSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -44,7 +46,7 @@ const creatorFormSchema = z.object({
   twitter: z.string().optional(),
   facebook: z.string().optional(),
   location: z.string().min(2, "Location is required"),
-  languages: z.string().min(2, "Languages are required"),
+  languages: z.array(z.string()).min(1, "Select at least one language"),
   aiContent: z.boolean(),
   rateRange: z.string().optional(),
   portfolio: z.string().optional(),
@@ -53,9 +55,132 @@ const creatorFormSchema = z.object({
 type BrandForm = z.infer<typeof brandFormSchema>;
 type CreatorForm = z.infer<typeof creatorFormSchema>;
 
+// Country/City data
+const locations = [
+  "New York, USA", "Los Angeles, USA", "Chicago, USA", "Houston, USA", "Phoenix, USA",
+  "London, UK", "Manchester, UK", "Birmingham, UK", "Glasgow, UK", "Edinburgh, UK",
+  "Toronto, Canada", "Vancouver, Canada", "Montreal, Canada", "Calgary, Canada", "Ottawa, Canada",
+  "Sydney, Australia", "Melbourne, Australia", "Brisbane, Australia", "Perth, Australia", "Adelaide, Australia",
+  "Berlin, Germany", "Munich, Germany", "Hamburg, Germany", "Frankfurt, Germany", "Stuttgart, Germany",
+  "Paris, France", "Lyon, France", "Marseille, France", "Nice, France", "Toulouse, France",
+  "Tokyo, Japan", "Osaka, Japan", "Kyoto, Japan", "Yokohama, Japan", "Nagoya, Japan",
+  "Seoul, South Korea", "Busan, South Korea", "Incheon, South Korea", "Daegu, South Korea",
+  "Mumbai, India", "Delhi, India", "Bangalore, India", "Hyderabad, India", "Chennai, India",
+  "São Paulo, Brazil", "Rio de Janeiro, Brazil", "Brasília, Brazil", "Salvador, Brazil",
+  "Mexico City, Mexico", "Guadalajara, Mexico", "Monterrey, Mexico", "Puebla, Mexico",
+  "Amsterdam, Netherlands", "Rotterdam, Netherlands", "The Hague, Netherlands", "Utrecht, Netherlands",
+  "Stockholm, Sweden", "Gothenburg, Sweden", "Malmö, Sweden", "Uppsala, Sweden",
+  "Copenhagen, Denmark", "Aarhus, Denmark", "Odense, Denmark", "Aalborg, Denmark",
+  "Zurich, Switzerland", "Geneva, Switzerland", "Basel, Switzerland", "Bern, Switzerland",
+  "Vienna, Austria", "Graz, Austria", "Linz, Austria", "Salzburg, Austria",
+  "Brussels, Belgium", "Antwerp, Belgium", "Ghent, Belgium", "Bruges, Belgium",
+  "Dublin, Ireland", "Cork, Ireland", "Limerick, Ireland", "Galway, Ireland",
+  "Madrid, Spain", "Barcelona, Spain", "Valencia, Spain", "Seville, Spain",
+  "Rome, Italy", "Milan, Italy", "Naples, Italy", "Turin, Italy",
+  "Lisbon, Portugal", "Porto, Portugal", "Braga, Portugal", "Coimbra, Portugal",
+  "Oslo, Norway", "Bergen, Norway", "Trondheim, Norway", "Stavanger, Norway",
+  "Helsinki, Finland", "Espoo, Finland", "Tampere, Finland", "Vantaa, Finland",
+  "Warsaw, Poland", "Krakow, Poland", "Wrocław, Poland", "Poznań, Poland",
+  "Prague, Czech Republic", "Brno, Czech Republic", "Ostrava, Czech Republic",
+  "Budapest, Hungary", "Debrecen, Hungary", "Szeged, Hungary", "Miskolc, Hungary",
+  "Bucharest, Romania", "Cluj-Napoca, Romania", "Timișoara, Romania", "Iași, Romania",
+  "Sofia, Bulgaria", "Plovdiv, Bulgaria", "Varna, Bulgaria", "Burgas, Bulgaria",
+  "Zagreb, Croatia", "Split, Croatia", "Rijeka, Croatia", "Osijek, Croatia",
+  "Belgrade, Serbia", "Novi Sad, Serbia", "Niš, Serbia", "Kragujevac, Serbia",
+  "Ljubljana, Slovenia", "Maribor, Slovenia", "Celje, Slovenia", "Koper, Slovenia",
+  "Bratislava, Slovakia", "Košice, Slovakia", "Prešov, Slovakia", "Žilina, Slovakia",
+  "Tallinn, Estonia", "Tartu, Estonia", "Narva, Estonia", "Pärnu, Estonia",
+  "Riga, Latvia", "Daugavpils, Latvia", "Liepāja, Latvia", "Jelgava, Latvia",
+  "Vilnius, Lithuania", "Kaunas, Lithuania", "Klaipėda, Lithuania", "Šiauliai, Lithuania",
+  "Athens, Greece", "Thessaloniki, Greece", "Patras, Greece", "Heraklion, Greece",
+  "Istanbul, Turkey", "Ankara, Turkey", "Izmir, Turkey", "Bursa, Turkey",
+  "Tel Aviv, Israel", "Jerusalem, Israel", "Haifa, Israel", "Rishon LeZion, Israel",
+  "Cairo, Egypt", "Alexandria, Egypt", "Giza, Egypt", "Shubra El-Kheima, Egypt",
+  "Dubai, UAE", "Abu Dhabi, UAE", "Sharjah, UAE", "Al Ain, UAE",
+  "Riyadh, Saudi Arabia", "Jeddah, Saudi Arabia", "Mecca, Saudi Arabia", "Medina, Saudi Arabia",
+  "Doha, Qatar", "Al Rayyan, Qatar", "Umm Salal, Qatar", "Al Wakrah, Qatar",
+  "Kuwait City, Kuwait", "Hawalli, Kuwait", "Salmiya, Kuwait", "Farwaniya, Kuwait",
+  "Manama, Bahrain", "Riffa, Bahrain", "Muharraq, Bahrain", "Hamad Town, Bahrain",
+  "Muscat, Oman", "Seeb, Oman", "Salalah, Oman", "Bawshar, Oman",
+  "Amman, Jordan", "Zarqa, Jordan", "Irbid, Jordan", "Russeifa, Jordan",
+  "Beirut, Lebanon", "Tripoli, Lebanon", "Sidon, Lebanon", "Tyre, Lebanon",
+  "Damascus, Syria", "Aleppo, Syria", "Homs, Syria", "Lattakia, Syria",
+  "Baghdad, Iraq", "Basra, Iraq", "Mosul, Iraq", "Erbil, Iraq",
+  "Tehran, Iran", "Mashhad, Iran", "Isfahan, Iran", "Karaj, Iran",
+  "Kabul, Afghanistan", "Kandahar, Afghanistan", "Herat, Afghanistan", "Mazar-i-Sharif, Afghanistan",
+  "Karachi, Pakistan", "Lahore, Pakistan", "Faisalabad, Pakistan", "Rawalpindi, Pakistan",
+  "Dhaka, Bangladesh", "Chittagong, Bangladesh", "Sylhet, Bangladesh", "Khulna, Bangladesh",
+  "Colombo, Sri Lanka", "Dehiwala-Mount Lavinia, Sri Lanka", "Moratuwa, Sri Lanka", "Jaffna, Sri Lanka",
+  "Kathmandu, Nepal", "Pokhara, Nepal", "Lalitpur, Nepal", "Bharatpur, Nepal",
+  "Thimphu, Bhutan", "Phuentsholing, Bhutan", "Punakha, Bhutan", "Wangdue, Bhutan",
+  "Malé, Maldives", "Addu City, Maldives", "Fuvahmulah, Maldives", "Kulhudhuffushi, Maldives",
+  "Bangkok, Thailand", "Nonthaburi, Thailand", "Pak Kret, Thailand", "Hat Yai, Thailand",
+  "Ho Chi Minh City, Vietnam", "Hanoi, Vietnam", "Haiphong, Vietnam", "Can Tho, Vietnam",
+  "Phnom Penh, Cambodia", "Siem Reap, Cambodia", "Battambang, Cambodia", "Sihanoukville, Cambodia",
+  "Vientiane, Laos", "Savannakhet, Laos", "Pakse, Laos", "Luang Prabang, Laos",
+  "Yangon, Myanmar", "Mandalay, Myanmar", "Naypyidaw, Myanmar", "Mawlamyine, Myanmar",
+  "Kuala Lumpur, Malaysia", "George Town, Malaysia", "Ipoh, Malaysia", "Johor Bahru, Malaysia",
+  "Singapore", "Woodlands, Singapore", "Tampines, Singapore", "Jurong West, Singapore",
+  "Jakarta, Indonesia", "Surabaya, Indonesia", "Bandung, Indonesia", "Bekasi, Indonesia",
+  "Manila, Philippines", "Quezon City, Philippines", "Caloocan, Philippines", "Davao, Philippines",
+  "Bandar Seri Begawan, Brunei", "Kuala Belait, Brunei", "Seria, Brunei", "Tutong, Brunei",
+  "Dili, East Timor", "Baucau, East Timor", "Maliana, East Timor", "Suai, East Timor",
+  "Beijing, China", "Shanghai, China", "Guangzhou, China", "Shenzhen, China",
+  "Taipei, Taiwan", "Kaohsiung, Taiwan", "Taichung, Taiwan", "Tainan, Taiwan",
+  "Hong Kong", "Kowloon, Hong Kong", "New Territories, Hong Kong", "Lantau Island, Hong Kong",
+  "Macau", "Taipa, Macau", "Coloane, Macau", "Cotai, Macau",
+  "Ulaanbaatar, Mongolia", "Erdenet, Mongolia", "Darkhan, Mongolia", "Choibalsan, Mongolia",
+  "Pyongyang, North Korea", "Hamhung, North Korea", "Chongjin, North Korea", "Nampo, North Korea",
+  "Almaty, Kazakhstan", "Nur-Sultan, Kazakhstan", "Shymkent, Kazakhstan", "Aktobe, Kazakhstan",
+  "Bishkek, Kyrgyzstan", "Osh, Kyrgyzstan", "Jalal-Abad, Kyrgyzstan", "Karakol, Kyrgyzstan",
+  "Tashkent, Uzbekistan", "Samarkand, Uzbekistan", "Namangan, Uzbekistan", "Andijan, Uzbekistan",
+  "Dushanbe, Tajikistan", "Khujand, Tajikistan", "Kulob, Tajikistan", "Qurghonteppa, Tajikistan",
+  "Ashgabat, Turkmenistan", "Turkmenbashi, Turkmenistan", "Dashoguz, Turkmenistan", "Mary, Turkmenistan",
+  "Baku, Azerbaijan", "Ganja, Azerbaijan", "Sumqayit, Azerbaijan", "Mingachevir, Azerbaijan",
+  "Yerevan, Armenia", "Gyumri, Armenia", "Vanadzor, Armenia", "Vagharshapat, Armenia",
+  "Tbilisi, Georgia", "Kutaisi, Georgia", "Batumi, Georgia", "Rustavi, Georgia",
+  "Moscow, Russia", "Saint Petersburg, Russia", "Novosibirsk, Russia", "Yekaterinburg, Russia",
+  "Minsk, Belarus", "Gomel, Belarus", "Mogilev, Belarus", "Vitebsk, Belarus",
+  "Kyiv, Ukraine", "Kharkiv, Ukraine", "Odesa, Ukraine", "Dnipro, Ukraine",
+  "Chișinău, Moldova", "Tiraspol, Moldova", "Bălți, Moldova", "Bender, Moldova",
+  "Other"
+];
+
+// Language data
+const languages = [
+  "English", "Spanish", "French", "German", "Italian", "Portuguese", "Russian", "Chinese (Mandarin)",
+  "Chinese (Cantonese)", "Japanese", "Korean", "Arabic", "Hindi", "Bengali", "Punjabi", "Telugu",
+  "Marathi", "Tamil", "Urdu", "Gujarati", "Malayalam", "Kannada", "Odia", "Assamese",
+  "Maithili", "Santali", "Kashmiri", "Nepali", "Sindhi", "Konkani", "Dogri", "Manipuri",
+  "Bodo", "Sanskrit", "Thai", "Vietnamese", "Indonesian", "Malay", "Tagalog", "Burmese",
+  "Khmer", "Lao", "Mongolian", "Tibetan", "Dzongkha", "Sinhala", "Dari", "Pashto",
+  "Persian", "Kurdish", "Turkish", "Azerbaijani", "Georgian", "Armenian", "Hebrew",
+  "Amharic", "Somali", "Swahili", "Yoruba", "Igbo", "Hausa", "Zulu", "Xhosa",
+  "Afrikaans", "Shona", "Ndebele", "Setswana", "Sesotho", "Tsonga", "Venda", "Siswati",
+  "Malagasy", "Mauritanian Arabic", "Wolof", "Fula", "Mandinka", "Bambara", "Akan",
+  "Ewe", "Ga", "Dagbani", "Twi", "Fante", "Dagaare", "Kusaal", "Mampruli",
+  "Dutch", "Flemish", "Frisian", "Luxembourgish", "Walloon", "Breton", "Corsican",
+  "Catalan", "Basque", "Galician", "Asturian", "Aragonese", "Mirandese", "Leonese",
+  "Extremaduran", "Fala", "Sardinian", "Sicilian", "Neapolitan", "Venetian", "Lombard",
+  "Piedmontese", "Ligurian", "Emilian-Romagnol", "Friulian", "Ladin", "Romansh",
+  "Albanian", "Macedonian", "Bulgarian", "Serbian", "Croatian", "Bosnian", "Montenegrin",
+  "Slovenian", "Slovak", "Czech", "Polish", "Hungarian", "Romanian", "Moldovan",
+  "Ukrainian", "Belarusian", "Lithuanian", "Latvian", "Estonian", "Finnish", "Sami",
+  "Icelandic", "Faroese", "Norwegian", "Danish", "Swedish", "Yiddish", "Ladino",
+  "Romani", "Rusyn", "Silesian", "Kashubian", "Sorbian", "Maltese", "Irish", "Scottish Gaelic",
+  "Welsh", "Cornish", "Manx", "Occitan", "Franco-Provençal", "Walloon", "Picard",
+  "Norman", "Jèrriais", "Guernésiais", "Sercquiais", "Auregnais", "Other"
+];
+
 export default function Waitlist() {
   const [userType, setUserType] = useState<"brand" | "creator">("brand");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [brandLogoFile, setBrandLogoFile] = useState<File | null>(null);
+  const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
+  const [locationOpen, setLocationOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const brandLogoInputRef = useRef<HTMLInputElement>(null);
+  const profilePictureInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const brandForm = useForm<BrandForm>({
@@ -90,7 +215,7 @@ export default function Waitlist() {
       twitter: "",
       facebook: "",
       location: "",
-      languages: "",
+      languages: [],
       aiContent: false,
       rateRange: "",
       portfolio: "",
@@ -137,6 +262,70 @@ export default function Waitlist() {
 
   const onCreatorSubmit = (data: CreatorForm) => {
     waitlistMutation.mutate(data);
+  };
+
+  const handleBrandLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast({
+          title: "File too large",
+          description: "Please choose a file under 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please choose a JPG or PNG file",
+          variant: "destructive",
+        });
+        return;
+      }
+      setBrandLogoFile(file);
+      brandForm.setValue("brandLogo", file.name);
+    }
+  };
+
+  const handleProfilePictureUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast({
+          title: "File too large",
+          description: "Please choose a file under 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please choose a JPG or PNG file",
+          variant: "destructive",
+        });
+        return;
+      }
+      setProfilePictureFile(file);
+      creatorForm.setValue("profilePicture", file.name);
+    }
+  };
+
+  const removeBrandLogo = () => {
+    setBrandLogoFile(null);
+    brandForm.setValue("brandLogo", "");
+    if (brandLogoInputRef.current) {
+      brandLogoInputRef.current.value = "";
+    }
+  };
+
+  const removeProfilePicture = () => {
+    setProfilePictureFile(null);
+    creatorForm.setValue("profilePicture", "");
+    if (profilePictureInputRef.current) {
+      profilePictureInputRef.current.value = "";
+    }
   };
 
   const niches = [
@@ -408,12 +597,40 @@ export default function Waitlist() {
                 <div>
                   <Label htmlFor="brandLogo">Upload Brand Logo (Optional)</Label>
                   <div className="mt-2 flex items-center gap-4">
-                    <Button type="button" variant="outline" size="sm" disabled={waitlistMutation.isPending}>
+                    <input
+                      ref={brandLogoInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleBrandLogoUpload}
+                      className="hidden"
+                      disabled={waitlistMutation.isPending}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => brandLogoInputRef.current?.click()}
+                      disabled={waitlistMutation.isPending}
+                    >
                       <Upload size={16} className="mr-2" />
                       Upload Logo
                     </Button>
                     <span className="text-sm text-gray-500">JPG/PNG, under 5MB</span>
                   </div>
+                  {brandLogoFile && (
+                    <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
+                      <span>Selected: {brandLogoFile.name}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={removeBrandLogo}
+                        className="h-6 w-6 p-0"
+                      >
+                        <X size={12} />
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-purple-50 p-4 rounded-lg">
@@ -483,12 +700,40 @@ export default function Waitlist() {
                 <div>
                   <Label htmlFor="profilePicture">Profile Picture / Avatar Upload (Optional)</Label>
                   <div className="mt-2 flex items-center gap-4">
-                    <Button type="button" variant="outline" size="sm" disabled={waitlistMutation.isPending}>
+                    <input
+                      ref={profilePictureInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleProfilePictureUpload}
+                      className="hidden"
+                      disabled={waitlistMutation.isPending}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => profilePictureInputRef.current?.click()}
+                      disabled={waitlistMutation.isPending}
+                    >
                       <Upload size={16} className="mr-2" />
                       Upload Picture
                     </Button>
                     <span className="text-sm text-gray-500">JPG/PNG, under 5MB</span>
                   </div>
+                  {profilePictureFile && (
+                    <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
+                      <span>Selected: {profilePictureFile.name}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={removeProfilePicture}
+                        className="h-6 w-6 p-0"
+                      >
+                        <X size={12} />
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -610,15 +855,52 @@ export default function Waitlist() {
                   </div>
                 </div>
 
+
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="location">Your Country / City</Label>
-                    <Input
-                      id="location"
-                      {...creatorForm.register("location")}
-                      placeholder="e.g., New York, USA"
-                      disabled={waitlistMutation.isPending}
-                    />
+                    <Popover open={locationOpen} onOpenChange={setLocationOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={locationOpen}
+                          className="w-full justify-between"
+                          disabled={waitlistMutation.isPending}
+                        >
+                          {creatorForm.watch("location") || "Select location..."}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput placeholder="Search location..." />
+                          <CommandList>
+                            <CommandEmpty>No location found.</CommandEmpty>
+                            <CommandGroup>
+                              {locations.map((location) => (
+                                <CommandItem
+                                  key={location}
+                                  value={location}
+                                  onSelect={(currentValue) => {
+                                    creatorForm.setValue("location", currentValue);
+                                    setLocationOpen(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={`mr-2 h-4 w-4 ${
+                                      creatorForm.watch("location") === location ? "opacity-100" : "opacity-0"
+                                    }`}
+                                  />
+                                  {location}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                     {creatorForm.formState.errors.location && (
                       <p className="text-sm text-red-600 mt-1">
                         {creatorForm.formState.errors.location.message}
@@ -628,12 +910,79 @@ export default function Waitlist() {
 
                   <div>
                     <Label htmlFor="languages">Languages You Create In</Label>
-                    <Input
-                      id="languages"
-                      {...creatorForm.register("languages")}
-                      placeholder="e.g., English, Spanish"
-                      disabled={waitlistMutation.isPending}
-                    />
+                    <Popover open={languageOpen} onOpenChange={setLanguageOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={languageOpen}
+                          className="w-full justify-between"
+                          disabled={waitlistMutation.isPending}
+                        >
+                          {creatorForm.watch("languages").length > 0
+                            ? `${creatorForm.watch("languages").length} language${
+                                creatorForm.watch("languages").length > 1 ? "s" : ""
+                              } selected`
+                            : "Select languages..."}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-full p-0">
+                        <Command>
+                          <CommandInput placeholder="Search language..." />
+                          <CommandList>
+                            <CommandEmpty>No language found.</CommandEmpty>
+                            <CommandGroup>
+                              {languages.map((language) => (
+                                <CommandItem
+                                  key={language}
+                                  value={language}
+                                  onSelect={(currentValue) => {
+                                    const current = creatorForm.watch("languages");
+                                    const updated = current.includes(currentValue)
+                                      ? current.filter((lang) => lang !== currentValue)
+                                      : [...current, currentValue];
+                                    creatorForm.setValue("languages", updated);
+                                  }}
+                                >
+                                  <Check
+                                    className={`mr-2 h-4 w-4 ${
+                                      creatorForm.watch("languages").includes(language) ? "opacity-100" : "opacity-0"
+                                    }`}
+                                  />
+                                  {language}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                    {creatorForm.watch("languages").length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {creatorForm.watch("languages").map((language) => (
+                          <div
+                            key={language}
+                            className="flex items-center gap-1 bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-sm"
+                          >
+                            <span>{language}</span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                const current = creatorForm.watch("languages");
+                                const updated = current.filter((lang) => lang !== language);
+                                creatorForm.setValue("languages", updated);
+                              }}
+                              className="h-4 w-4 p-0 hover:bg-purple-200"
+                            >
+                              <X size={12} />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                     {creatorForm.formState.errors.languages && (
                       <p className="text-sm text-red-600 mt-1">
                         {creatorForm.formState.errors.languages.message}
