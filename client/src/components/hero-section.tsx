@@ -128,13 +128,7 @@ export function HeroSection() {
             </div>
 
             {/* Search Bar */}
-            <motion.div
-              key={searchMode}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-              className="relative w-full max-w-lg"
-            >
+            <div className="relative w-full max-w-lg">
               <div className="relative">
                 <input
                   type="text"
@@ -152,18 +146,12 @@ export function HeroSection() {
                   <Search size={20} />
                 </motion.button>
               </div>
-            </motion.div>
+            </div>
 
             {/* Helper Text */}
-            <motion.p
-              key={`${searchMode}-suggestions`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-              className="text-sm text-gray-500 text-center"
-            >
+            <p className="text-sm text-gray-500 text-center">
               {searchConfig[searchMode].suggestions}
-            </motion.p>
+            </p>
           </motion.div>
         </div>
 
