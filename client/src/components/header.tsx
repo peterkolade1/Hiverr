@@ -42,7 +42,6 @@ export function Header() {
           </nav>
 
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <span className="hidden lg:block text-sm text-gray-600">Hamburg, 2:30pm</span>
             <Button 
               variant="default" 
               size="sm" 

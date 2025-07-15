@@ -13,6 +13,10 @@ import youngFriendsImage from "@assets/young-friends-posing-together-low-angle_1
 import beautyVloggerImage from "@assets/woman-beauty-vlogger-filming-vlog-about-creams_1752547296036.jpg";
 import foodPhotoImage from "@assets/woman-taking-photo-her-food_1752547296036.jpg";
 import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752547296037.jpg";
+// Import brand logos
+import binanceLogo from "@assets/image_1752551686611.png";
+import shopifyLogo from "@assets/image_1752551752354.png";
+import amplifyLogo from "@assets/Logo Main_1752551931487.png";
 
 export function HeroSection() {
   return (
@@ -328,7 +332,7 @@ export function HeroSection() {
           <p className="text-center text-gray-500 text-sm mb-8">Trusted by</p>
           <div className="flex justify-center items-center space-x-8 sm:space-x-12 opacity-70">
             <motion.img
-              src="@assets/image_1752551686611.png"
+              src={binanceLogo}
               alt="Binance"
               className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
               whileHover={{ 
@@ -342,7 +346,7 @@ export function HeroSection() {
               }}
             />
             <motion.img
-              src="@assets/image_1752551752354.png"
+              src={shopifyLogo}
               alt="Shopify"
               className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
               whileHover={{ 
@@ -357,7 +361,7 @@ export function HeroSection() {
               }}
             />
             <motion.img
-              src="@assets/Logo Main_1752551931487.png"
+              src={amplifyLogo}
               alt="Amplify"
               className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
               whileHover={{ 
