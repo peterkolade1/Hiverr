@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { HiverLogo } from "./hiver-logo";
 import { Star, Plus, Video } from "lucide-react";
+import { useImagePreloader } from "@/hooks/useImagePreloader";
 
 // Import creator images
 import smartphoneImage from "@assets/portrait-woman-using-smartphone-with-pop-socket-outdoors_1752546751339.jpg";
@@ -20,6 +21,12 @@ import amplifyLogo from "@assets/Logo Main_1752551931487.png";
 import newBrandLogo from "@assets/image_1752552551607.png";
 
 export function HeroSection() {
+  // Preload critical images for better performance
+  useImagePreloader({
+    images: [smartphoneImage, youngFriendsImage, beautyVloggerImage, foodPhotoImage],
+    priority: true
+  });
+
   return (
     <section className="relative gradient-hero py-20 lg:py-32 overflow-hidden">
       {/* Floating orbs */}
@@ -124,6 +131,8 @@ export function HeroSection() {
                   src={smartphoneImage} 
                   alt="Content Creator"
                   className="w-full h-32 sm:h-40 lg:h-48 object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
@@ -149,6 +158,8 @@ export function HeroSection() {
                   src={youngFriendsImage} 
                   alt="Lifestyle Creators"
                   className="w-full h-32 sm:h-40 lg:h-48 object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
@@ -174,6 +185,8 @@ export function HeroSection() {
                   src={beautyVloggerImage} 
                   alt="Beauty Vlogger"
                   className="w-full h-48 object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
@@ -199,6 +212,8 @@ export function HeroSection() {
                   src={foodPhotoImage} 
                   alt="Food Content Creator"
                   className="w-full h-48 object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
@@ -232,6 +247,8 @@ export function HeroSection() {
                   src={gymImage} 
                   alt="Fitness Creator"
                   className="w-full h-48 object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
@@ -257,6 +274,8 @@ export function HeroSection() {
                   src={musicImage} 
                   alt="Music Creator"
                   className="w-full h-48 object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
@@ -282,6 +301,8 @@ export function HeroSection() {
                   src={photographerImage} 
                   alt="Photography Creator"
                   className="w-full h-48 object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
@@ -307,6 +328,8 @@ export function HeroSection() {
                   src={fitnessImage} 
                   alt="Yoga Creator"
                   className="w-full h-48 object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 <div className="absolute bottom-3 left-3 right-3">
@@ -336,6 +359,8 @@ export function HeroSection() {
               src={binanceLogo}
               alt="Binance"
               className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              loading="lazy"
+              decoding="async"
               whileHover={{ 
                 scale: 1.1,
                 y: -2,
@@ -350,6 +375,8 @@ export function HeroSection() {
               src={shopifyLogo}
               alt="Shopify"
               className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              loading="lazy"
+              decoding="async"
               whileHover={{ 
                 scale: 1.1,
                 y: -2,
@@ -365,6 +392,8 @@ export function HeroSection() {
               src={amplifyLogo}
               alt="Amplify"
               className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              loading="lazy"
+              decoding="async"
               whileHover={{ 
                 scale: 1.1,
                 y: -2,
@@ -380,6 +409,8 @@ export function HeroSection() {
               src={newBrandLogo}
               alt="Enterprise Partner"
               className="h-6 sm:h-8 object-contain grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+              loading="lazy"
+              decoding="async"
               whileHover={{ 
                 scale: 1.1,
                 y: -2,

@@ -224,7 +224,7 @@
   }
   
   .neon-background {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 25%, #f0f4ff 50%, #e6e7ff 75%, #f3e8ff 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 20%, #f8fafc 40%, #f1f5f9 60%, #f0f4ff 80%, #f8fafc 100%);
     position: relative;
   }
   
@@ -234,13 +234,13 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 200px;
+    height: 120px;
     background: linear-gradient(to bottom, 
       rgba(255, 255, 255, 1) 0%, 
-      rgba(255, 255, 255, 0.9) 20%,
-      rgba(252, 252, 253, 0.6) 50%,
-      rgba(248, 250, 252, 0.3) 80%,
-      rgba(240, 244, 255, 0) 100%);
+      rgba(255, 255, 255, 0.95) 25%,
+      rgba(252, 252, 253, 0.7) 60%,
+      rgba(248, 250, 252, 0.4) 85%,
+      rgba(255, 255, 255, 0) 100%);
     pointer-events: none;
     z-index: 20;
   }
@@ -251,12 +251,12 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 200px;
+    height: 120px;
     background: linear-gradient(to bottom, 
-      rgba(240, 244, 255, 0) 0%,
-      rgba(248, 250, 252, 0.3) 20%,
-      rgba(252, 252, 253, 0.6) 50%,
-      rgba(255, 255, 255, 0.9) 80%, 
+      rgba(255, 255, 255, 0) 0%,
+      rgba(248, 250, 252, 0.4) 15%,
+      rgba(252, 252, 253, 0.7) 40%,
+      rgba(255, 255, 255, 0.95) 75%, 
       rgba(255, 255, 255, 1) 100%);
     pointer-events: none;
     z-index: 20;
@@ -270,45 +270,63 @@
     right: 0;
     bottom: 0;
     background: 
-      radial-gradient(circle at 30% 40%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+      radial-gradient(circle at 30% 40%, rgba(168, 85, 247, 0.04) 0%, transparent 60%),
+      radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.04) 0%, transparent 60%),
+      radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.03) 0%, transparent 60%);
     pointer-events: none;
+    z-index: 1;
   }
   
   /* Floating orbs animation */
   .floating-orb {
     position: absolute;
     border-radius: 50%;
-    opacity: 0.6;
-    animation: float 6s ease-in-out infinite;
+    opacity: 0.3;
+    animation: float 8s ease-in-out infinite;
   }
   
   .floating-orb-1 {
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 75%);
     top: 10%;
     left: 10%;
     animation-delay: 0s;
   }
   
   .floating-orb-2 {
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 70%);
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 75%);
     top: 60%;
     right: 15%;
     animation-delay: 2s;
   }
   
   .floating-orb-3 {
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 75%);
     bottom: 20%;
     left: 20%;
     animation-delay: 4s;
+  }
+  
+  /* Smoother section transitions */
+  .smooth-section-transition {
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  
+  .how-it-works-blend {
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 1) 0%, 
+      rgba(250, 251, 252, 0.98) 15%,
+      rgba(248, 250, 252, 0.95) 30%, 
+      rgba(241, 245, 249, 0.9) 50%, 
+      rgba(240, 244, 255, 0.85) 70%,
+      rgba(248, 250, 252, 0.95) 85%,
+      rgba(255, 255, 255, 1) 100%);
+    position: relative;
   }
   
   @keyframes float {
@@ -324,6 +342,25 @@
     75% {
       transform: translateY(15px) translateX(5px);
     }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
+  /* Performance optimizations */
+  img {
+    content-visibility: auto;
+  }
+  
+  .performance-optimized {
+    will-change: transform;
+    transform: translateZ(0);
   }
   
   .gradient-brand {

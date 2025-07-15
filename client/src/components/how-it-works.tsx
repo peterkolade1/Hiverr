@@ -30,7 +30,7 @@ export function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-20 neon-background neon-background-top neon-background-bottom overflow-hidden">
+    <section id="how-it-works" className="py-16 how-it-works-blend neon-background-top neon-background-bottom overflow-hidden smooth-section-transition">
       {/* Floating orbs for How It Works */}
       <div className="floating-orb floating-orb-2" style={{ top: '20%', left: '80%', animationDelay: '1s' }}></div>
       <div className="floating-orb floating-orb-1" style={{ bottom: '30%', right: '10%', animationDelay: '3s' }}></div>
@@ -67,6 +67,8 @@ export function HowItWorks() {
               src={heroImage}
               alt="Creative content creator"
               className="rounded-2xl shadow-lg w-full object-cover h-[500px]"
+              loading="lazy"
+              decoding="async"
             />
             
             {/* Floating Profile Card */}
@@ -81,6 +83,8 @@ export function HowItWorks() {
                   src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"
                   alt="Content creator profile"
                   className="w-12 h-12 rounded-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="ml-3">
                   <h4 className="font-semibold text-gray-900 text-sm">Rebecca Johnson</h4>
