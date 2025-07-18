@@ -26,7 +26,7 @@ import fitnessGymImage from "@assets/tired-young-woman-resting-while-sitting-aft
 import beautyContentImage from "@assets/woman-beauty-vlogger-filming-vlog-about-creams_1752553805031.jpg";
 import foodContentImage from "@assets/woman-taking-photo-her-food_1752877367621.jpg";
 import lifestyleImage from "@assets/young-friends-posing-together-low-angle_1752874250111.jpg";
-import photographyTravelImage from "@assets/medium-shot-smiley-woman-sitting-bench_1752877367615.jpg";
+import photographyTravelImage from "@assets/back-view-stylish-traveller-taking-pictures-outdoors_1752878224672.jpg";
 import technologyImage from "@assets/close-up-happy-colleagues-applauding_1752874250105.jpg";
 import musicStudioUpdatedImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-home-studio_1752877367621.jpg";
 
