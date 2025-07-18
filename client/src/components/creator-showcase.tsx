@@ -112,7 +112,7 @@ export function CreatorShowcase() {
             transition={{ duration: 0.6 }}
             className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
           >
-            Top Creators on Hiverr{" "}
+            Top Creators on Hiver{" "}
             <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-lg ml-2">
               <Star className="text-white text-sm" size={16} fill="currentColor" />
             </span>
@@ -323,8 +323,6 @@ export function CreatorShowcase() {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
         />
-        
-
       </div>
     </section>
   );
