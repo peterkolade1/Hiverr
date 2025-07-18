@@ -38,7 +38,7 @@ Preferred communication style: Simple, everyday language.
 - Proper relationships and constraints with serial primary keys
 
 ## Recent Changes
-- **July 2025**: Updated Photography category to use new stylish traveller image for better visual representation
+- **July 2025**: Removed Photography filter and creator from showcase per user request
 - **July 2025**: Streamlined creator showcase to display exactly one influencer per category for cleaner filtering
 - **July 2025**: Updated creator showcase with high-quality category-specific images for all niches
 - **July 2025**: Added "Coming Soon" popup functionality for search button with branded styling and waitlist redirection

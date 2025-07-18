@@ -145,20 +145,7 @@ export class MemStorage implements IStorage {
         isAvailable: true,
         isVerified: true,
       },
-      {
-        name: "Photo Alex",
-        email: "alex@example.com",
-        bio: "Professional photographer creating stunning visual content and photography tutorials.",
-        location: "Portland",
-        hourlyRate: 520,
-        category: "Photography",
-        platforms: ["Instagram", "YouTube"],
-        followerCount: 680000,
-        engagementRate: "90%",
-        profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
+
     ];
 
     // Store all creators

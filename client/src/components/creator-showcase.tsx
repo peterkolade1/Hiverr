@@ -56,7 +56,6 @@ export function CreatorShowcase() {
     "Food & Cooking", 
     "Fashion & Lifestyle",
     "Technology",
-    "Photography",
     "Music & Audio",
     "Travel"
   ];
@@ -212,7 +211,6 @@ export function CreatorShowcase() {
                 <div className="relative overflow-hidden">
                   <img
                     src={
-                      creator.category === "Photography" ? photographyTravelImage :
                       creator.category === "Technology" ? technologyImage :
                       creator.category === "Fitness & Health" ? fitnessGymImage :
                       creator.category === "Music & Audio" ? musicStudioUpdatedImage :
@@ -220,14 +218,13 @@ export function CreatorShowcase() {
                       creator.category === "Beauty & Skincare" ? beautyContentImage :
                       creator.category === "Food & Cooking" ? foodContentImage :
                       creator.category === "Travel" ? photographyTravelImage :
-                      index === 0 ? photographyTravelImage : 
+                      index === 0 ? fashionImage : 
                       index === 1 ? technologyImage :
                       index === 2 ? fitnessGymImage :
                       index === 3 ? musicStudioUpdatedImage :
                       index === 4 ? lifestyleImage :
                       index === 5 ? beautyContentImage :
                       index === 6 ? foodContentImage :
-                      index === 7 ? fashionImage :
                       creator.profileImage
                     }
                     alt={`${creator.name} - ${creator.category}`}
