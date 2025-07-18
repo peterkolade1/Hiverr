@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { HiverLogo } from "./hiver-logo";
+import { ComingSoonPopup } from "./coming-soon-popup";
 import { Star, Plus, Video, Search } from "lucide-react";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
 
@@ -23,6 +24,7 @@ import newBrandLogo from "@assets/image_1752552551607.png";
 
 export function HeroSection() {
   const [searchMode, setSearchMode] = useState<'creators' | 'campaigns'>('creators');
+  const [showComingSoon, setShowComingSoon] = useState(false);
   
   // Preload critical images for better performance
   useImagePreloader({
@@ -134,9 +136,7 @@ export function HeroSection() {
                 />
                 <button
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-cyan-600 text-white p-2.5 rounded-full hover:from-purple-700 hover:to-cyan-700 transition-all duration-300 hover:scale-105 active:scale-95"
-                  onClick={() => {
-                    document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
+                  onClick={() => setShowComingSoon(true)}
                 >
                   <Search size={20} />
                 </button>
@@ -348,6 +348,12 @@ export function HeroSection() {
           </div>
         </motion.div>
       </div>
+      
+      {/* Coming Soon Popup */}
+      <ComingSoonPopup 
+        open={showComingSoon} 
+        onOpenChange={setShowComingSoon} 
+      />
     </section>
   );
 }
