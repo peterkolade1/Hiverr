@@ -128,10 +128,10 @@ export function CreatorShowcase() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg"
+            className="mt-2"
           >
-            <p className="text-sm text-blue-700">
-              <strong>Note:</strong> This section features demo profiles for demonstration purposes only. These are not real influencers.
+            <p className="text-xs text-gray-400 italic">
+              Demo profiles shown for illustration purposes
             </p>
           </motion.div>
         </div>
