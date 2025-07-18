@@ -38,6 +38,10 @@ Preferred communication style: Simple, everyday language.
 - Proper relationships and constraints with serial primary keys
 
 ## Recent Changes
+- **July 2025**: Updated creator showcase with high-quality category-specific images for all niches
+- **July 2025**: Added "Coming Soon" popup functionality for search button with branded styling and waitlist redirection
+- **July 2025**: Made disclaimer text extremely subtle using light gray italic styling for demo profiles
+- **July 2025**: Removed hourly rate displays from creator cards per user preference
 - **December 2024**: Created dedicated waitlist page with separate comprehensive forms for brands and creators
 - **December 2024**: Updated hero section to display only 4 core influence niches (Lifestyle & Fashion, Food & Lifestyle, Beauty & Skincare, Fitness & Wellness)
 - **December 2024**: Moved "Hive Leaderboard" section to appear before "Ready to monetize your creativity" section on creators page
