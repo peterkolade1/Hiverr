@@ -25,11 +25,10 @@ const brandFormSchema = z.object({
   companyName: z.string().min(2, "Company name is required"),
   companyWebsite: z.string().min(2, "Company website or IG handle is required"),
   role: z.string().min(1, "Role is required"),
-  creatorsLooking: z.string().min(2, "Please describe what creators you're looking for"),
+  creatorsLooking: z.string().min(1, "Please select a creator type"),
   budgetRange: z.string().min(1, "Budget range is required"),
   hasCampaign: z.boolean(),
   launchTiming: z.string().min(1, "Launch timing is required"),
-  brandLogo: z.string().optional(),
 });
 
 const creatorFormSchema = z.object({
@@ -173,11 +172,9 @@ const languages = [
 export default function Waitlist() {
   const [userType, setUserType] = useState<"brand" | "creator">("brand");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [brandLogoFile, setBrandLogoFile] = useState<File | null>(null);
   const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
   const [locationOpen, setLocationOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
-  const brandLogoInputRef = useRef<HTMLInputElement>(null);
   const profilePictureInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -193,7 +190,6 @@ export default function Waitlist() {
       budgetRange: "",
       hasCampaign: false,
       launchTiming: "",
-      brandLogo: "",
     },
   });
 
@@ -260,29 +256,7 @@ export default function Waitlist() {
     waitlistMutation.mutate(data);
   };
 
-  const handleBrandLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        toast({
-          title: "File too large",
-          description: "Please choose a file under 5MB",
-          variant: "destructive",
-        });
-        return;
-      }
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: "Invalid file type",
-          description: "Please choose a JPG or PNG file",
-          variant: "destructive",
-        });
-        return;
-      }
-      setBrandLogoFile(file);
-      brandForm.setValue("brandLogo", file.name);
-    }
-  };
+
 
   const handleProfilePictureUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -308,13 +282,7 @@ export default function Waitlist() {
     }
   };
 
-  const removeBrandLogo = () => {
-    setBrandLogoFile(null);
-    brandForm.setValue("brandLogo", "");
-    if (brandLogoInputRef.current) {
-      brandLogoInputRef.current.value = "";
-    }
-  };
+
 
   const removeProfilePicture = () => {
     setProfilePictureFile(null);
@@ -527,12 +495,27 @@ export default function Waitlist() {
 
                 <div>
                   <Label htmlFor="creatorsLooking">What kind of creators are you looking for?</Label>
-                  <Textarea
-                    id="creatorsLooking"
-                    {...brandForm.register("creatorsLooking")}
-                    placeholder="e.g., beauty, tech, UGC, nano influencers, etc."
-                    disabled={waitlistMutation.isPending}
-                  />
+                  <Select onValueChange={(value) => brandForm.setValue("creatorsLooking", value)} disabled={waitlistMutation.isPending}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select creator type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Beauty & Skincare Creators">Beauty & Skincare Creators</SelectItem>
+                      <SelectItem value="Fashion & Lifestyle Creators">Fashion & Lifestyle Creators</SelectItem>
+                      <SelectItem value="Fitness & Health Creators">Fitness & Health Creators</SelectItem>
+                      <SelectItem value="Food & Cooking Creators">Food & Cooking Creators</SelectItem>
+                      <SelectItem value="Technology Creators">Technology Creators</SelectItem>
+                      <SelectItem value="Music & Audio Creators">Music & Audio Creators</SelectItem>
+                      <SelectItem value="Travel Creators">Travel Creators</SelectItem>
+                      <SelectItem value="Nano Influencers (1K-10K followers)">Nano Influencers (1K-10K followers)</SelectItem>
+                      <SelectItem value="Micro Influencers (10K-100K followers)">Micro Influencers (10K-100K followers)</SelectItem>
+                      <SelectItem value="Macro Influencers (100K-1M followers)">Macro Influencers (100K-1M followers)</SelectItem>
+                      <SelectItem value="UGC Creators">UGC Creators</SelectItem>
+                      <SelectItem value="Video Content Creators">Video Content Creators</SelectItem>
+                      <SelectItem value="Photography Creators">Photography Creators</SelectItem>
+                      <SelectItem value="Mixed/Multiple Categories">Mixed/Multiple Categories</SelectItem>
+                    </SelectContent>
+                  </Select>
                   {brandForm.formState.errors.creatorsLooking && (
                     <p className="text-sm text-red-600 mt-1">
                       {brandForm.formState.errors.creatorsLooking.message}
@@ -590,44 +573,7 @@ export default function Waitlist() {
                   )}
                 </div>
 
-                <div>
-                  <Label htmlFor="brandLogo">Upload Brand Logo (Optional)</Label>
-                  <div className="mt-2 flex items-center gap-4">
-                    <input
-                      ref={brandLogoInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleBrandLogoUpload}
-                      className="hidden"
-                      disabled={waitlistMutation.isPending}
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => brandLogoInputRef.current?.click()}
-                      disabled={waitlistMutation.isPending}
-                    >
-                      <Upload size={16} className="mr-2" />
-                      Upload Logo
-                    </Button>
-                    <span className="text-sm text-gray-500">JPG/PNG, under 5MB</span>
-                  </div>
-                  {brandLogoFile && (
-                    <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
-                      <span>Selected: {brandLogoFile.name}</span>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={removeBrandLogo}
-                        className="h-6 w-6 p-0"
-                      >
-                        <X size={12} />
-                      </Button>
-                    </div>
-                  )}
-                </div>
+
 
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <p className="text-sm text-purple-700">
