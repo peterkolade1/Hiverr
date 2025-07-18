@@ -20,12 +20,13 @@ import gymImage from "@assets/tired-young-woman-resting-while-sitting-after-work
 
 // Import new niche images
 import fashionImage from "@assets/back-view-woman-with-blue-background_1752553805026.jpg";
-import cookingImage from "@assets/medium-shot-women-cooking-together_1752553805030.jpg";
-import musicStudioImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-home-studio_1752553805030.jpg";
-import fitnessGymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752553805030.jpg";
+import cookingImage from "@assets/medium-shot-women-cooking-together_1752874250110.jpg";
+import musicStudioImage from "@assets/teenage-boy-recording-music-with-his-guitar-his-home-studio_1752874250109.jpg";
+import fitnessGymImage from "@assets/tired-young-woman-resting-while-sitting-after-working-out-gym_1752874250110.jpg";
 import beautyContentImage from "@assets/woman-beauty-vlogger-filming-vlog-about-creams_1752553805031.jpg";
-import foodContentImage from "@assets/woman-taking-photo-her-food_1752553805031.jpg";
-import lifestyleImage from "@assets/young-friends-posing-together-low-angle_1752553805032.jpg";
+import foodContentImage from "@assets/woman-taking-photo-her-food_1752874250111.jpg";
+import lifestyleImage from "@assets/young-friends-posing-together-low-angle_1752874250111.jpg";
+import photographyTravelImage from "@assets/medium-shot-smiley-woman-sitting-bench_1752874293836.jpg";
 
 export function CreatorShowcase() {
   const [selectedNiche, setSelectedNiche] = useState<string>("All");
@@ -209,21 +210,21 @@ export function CreatorShowcase() {
                 <div className="relative overflow-hidden">
                   <img
                     src={
-                      creator.category === "Photography" ? photographerImage :
+                      creator.category === "Photography" ? photographyTravelImage :
                       creator.category === "Technology" ? smartphoneImage :
                       creator.category === "Fitness & Health" ? fitnessGymImage :
                       creator.category === "Music & Audio" ? musicStudioImage :
                       creator.category === "Fashion & Lifestyle" ? fashionImage :
                       creator.category === "Beauty & Skincare" ? beautyContentImage :
-                      creator.category === "Food & Cooking" ? cookingImage :
-                      creator.category === "Travel" ? lifestyleImage :
-                      index === 0 ? photographerImage : 
+                      creator.category === "Food & Cooking" ? foodContentImage :
+                      creator.category === "Travel" ? photographyTravelImage :
+                      index === 0 ? photographyTravelImage : 
                       index === 1 ? smartphoneImage :
                       index === 2 ? fitnessGymImage :
                       index === 3 ? musicStudioImage :
                       index === 4 ? lifestyleImage :
                       index === 5 ? beautyContentImage :
-                      index === 6 ? cookingImage :
+                      index === 6 ? foodContentImage :
                       index === 7 ? fashionImage :
                       creator.profileImage
                     }
