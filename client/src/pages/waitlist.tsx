@@ -17,7 +17,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { Users, Building2, Upload, CheckCircle, Check, ChevronsUpDown, X } from "lucide-react";
+import { Users, Building2, Upload, CheckCircle, Check, ChevronsUpDown, X, Shield } from "lucide-react";
 
 const brandFormSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -48,8 +48,6 @@ const creatorFormSchema = z.object({
   location: z.string().min(2, "Location is required"),
   languages: z.array(z.string()).min(1, "Select at least one language"),
   aiContent: z.boolean(),
-  rateRange: z.string().optional(),
-  portfolio: z.string().optional(),
 });
 
 type BrandForm = z.infer<typeof brandFormSchema>;
@@ -217,8 +215,6 @@ export default function Waitlist() {
       location: "",
       languages: [],
       aiContent: false,
-      rateRange: "",
-      portfolio: "",
     },
   });
 
@@ -698,42 +694,28 @@ export default function Waitlist() {
                 </div>
 
                 <div>
-                  <Label htmlFor="profilePicture">Profile Picture / Avatar Upload (Optional)</Label>
-                  <div className="mt-2 flex items-center gap-4">
-                    <input
-                      ref={profilePictureInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleProfilePictureUpload}
-                      className="hidden"
-                      disabled={waitlistMutation.isPending}
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => profilePictureInputRef.current?.click()}
-                      disabled={waitlistMutation.isPending}
-                    >
-                      <Upload size={16} className="mr-2" />
-                      Upload Picture
-                    </Button>
-                    <span className="text-sm text-gray-500">JPG/PNG, under 5MB</span>
-                  </div>
-                  {profilePictureFile && (
-                    <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
-                      <span>Selected: {profilePictureFile.name}</span>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={removeProfilePicture}
-                        className="h-6 w-6 p-0"
-                      >
-                        <X size={12} />
-                      </Button>
+                  <Label htmlFor="platformVerification">Social Platform Ownership Verification</Label>
+                  <div className="mt-2 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <Shield size={16} className="text-blue-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-sm font-medium text-blue-900 mb-1">Verify Your Social Media Ownership</h4>
+                        <p className="text-sm text-blue-700 mb-3">
+                          To help brands trust your authenticity, please verify ownership of at least one social platform by posting a verification message.
+                        </p>
+                        <div className="space-y-2 text-sm text-blue-600">
+                          <p><strong>Option 1:</strong> Post "Joining @Hiverr soon! 🚀" in your bio or recent post</p>
+                          <p><strong>Option 2:</strong> Post a story mentioning Hiverr with your handle visible</p>
+                          <p><strong>Option 3:</strong> Send us a DM from your verified account</p>
+                        </div>
+                        <p className="text-xs text-blue-600 mt-2">
+                          Our team will verify your ownership during the approval process.
+                        </p>
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
 
                 <div>
@@ -1001,31 +983,7 @@ export default function Waitlist() {
                   <Label htmlFor="aiContent">Are you open to creating AI-generated content using your avatar?</Label>
                 </div>
 
-                <div>
-                  <Label htmlFor="rateRange">Your Rate Range Per Post / Campaign (Optional)</Label>
-                  <Select onValueChange={(value) => creatorForm.setValue("rateRange", value)} disabled={waitlistMutation.isPending}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select rate range" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="<$100">Less than $100</SelectItem>
-                      <SelectItem value="$100-$500">$100 - $500</SelectItem>
-                      <SelectItem value="$500-$1K">$500 - $1,000</SelectItem>
-                      <SelectItem value="$1K-$5K">$1,000 - $5,000</SelectItem>
-                      <SelectItem value="$5K+">$5,000+</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
 
-                <div>
-                  <Label htmlFor="portfolio">Link to Portfolio / Linktree / Personal Website (Optional)</Label>
-                  <Input
-                    id="portfolio"
-                    {...creatorForm.register("portfolio")}
-                    placeholder="https://yourportfolio.com"
-                    disabled={waitlistMutation.isPending}
-                  />
-                </div>
 
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <p className="text-sm text-purple-700">
