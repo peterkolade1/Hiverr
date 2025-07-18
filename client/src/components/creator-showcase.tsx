@@ -27,6 +27,7 @@ import beautyContentImage from "@assets/woman-beauty-vlogger-filming-vlog-about-
 import foodContentImage from "@assets/woman-taking-photo-her-food_1752874250111.jpg";
 import lifestyleImage from "@assets/young-friends-posing-together-low-angle_1752874250111.jpg";
 import photographyTravelImage from "@assets/medium-shot-smiley-woman-sitting-bench_1752874293836.jpg";
+import technologyImage from "@assets/close-up-happy-colleagues-applauding_1752874250105.jpg";
 
 export function CreatorShowcase() {
   const [selectedNiche, setSelectedNiche] = useState<string>("All");
@@ -211,20 +212,20 @@ export function CreatorShowcase() {
                   <img
                     src={
                       creator.category === "Photography" ? photographyTravelImage :
-                      creator.category === "Technology" ? smartphoneImage :
+                      creator.category === "Technology" ? technologyImage :
                       creator.category === "Fitness & Health" ? fitnessGymImage :
                       creator.category === "Music & Audio" ? musicStudioImage :
                       creator.category === "Fashion & Lifestyle" ? fashionImage :
                       creator.category === "Beauty & Skincare" ? beautyContentImage :
-                      creator.category === "Food & Cooking" ? foodContentImage :
+                      creator.category === "Food & Cooking" ? cookingImage :
                       creator.category === "Travel" ? photographyTravelImage :
                       index === 0 ? photographyTravelImage : 
-                      index === 1 ? smartphoneImage :
+                      index === 1 ? technologyImage :
                       index === 2 ? fitnessGymImage :
                       index === 3 ? musicStudioImage :
                       index === 4 ? lifestyleImage :
                       index === 5 ? beautyContentImage :
-                      index === 6 ? foodContentImage :
+                      index === 6 ? cookingImage :
                       index === 7 ? fashionImage :
                       creator.profileImage
                     }
