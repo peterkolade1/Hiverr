@@ -124,6 +124,16 @@ export function CreatorShowcase() {
           >
             Discover influencers with proven track records and high Hive Scores.
           </motion.p>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg"
+          >
+            <p className="text-sm text-blue-700">
+              <strong>Note:</strong> This section features demo profiles for demonstration purposes only. These are not real influencers.
+            </p>
+          </motion.div>
         </div>
 
         {/* Niche Filter */}
@@ -248,8 +258,6 @@ export function CreatorShowcase() {
                     <div>
                       <h3 className="text-xl font-bold text-gray-900">{creator.name}</h3>
                       <div className="flex items-center mt-1">
-                        <span className="text-sm font-medium text-gray-600">${creator.hourlyRate}/hr</span>
-                        <span className="mx-2 text-gray-400">•</span>
                         <span className="text-sm text-gray-600">{creator.location}</span>
                       </div>
                     </div>
