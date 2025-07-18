@@ -1,24 +1,23 @@
-import { creators, campaigns, inquiries, waitlist, type Creator, type Campaign, type Inquiry, type Waitlist, type InsertCreator, type InsertCampaign, type InsertInquiry, type InsertWaitlist } from "@shared/schema";
 import { db } from "./db";
+import { creators, campaigns, inquiries, waitlist, type Creator, type Campaign, type Inquiry, type Waitlist } from "@shared/schema";
 import { eq } from "drizzle-orm";
 
 export interface IStorage {
-  // Creator methods
-  getAllCreators(): Promise<Creator[]>;
+  // Creator operations
+  getCreators(): Promise<Creator[]>;
   getCreator(id: number): Promise<Creator | undefined>;
-  createCreator(creator: InsertCreator): Promise<Creator>;
   
-  // Campaign methods
-  getAllCampaigns(): Promise<Campaign[]>;
+  // Campaign operations
+  getCampaigns(): Promise<Campaign[]>;
   getCampaign(id: number): Promise<Campaign | undefined>;
-  createCampaign(campaign: InsertCampaign): Promise<Campaign>;
   
-  // Inquiry methods
-  createInquiry(inquiry: InsertInquiry): Promise<Inquiry>;
+  // Inquiry operations
+  createInquiry(inquiry: Omit<Inquiry, "id" | "createdAt">): Promise<Inquiry>;
+  getInquiries(): Promise<Inquiry[]>;
   
-  // Waitlist methods
-  createWaitlistEntry(entry: InsertWaitlist): Promise<Waitlist>;
-  getAllWaitlistEntries(): Promise<Waitlist[]>;
+  // Waitlist operations
+  addToWaitlist(entry: Omit<Waitlist, "id" | "createdAt">): Promise<Waitlist>;
+  getWaitlistEntries(): Promise<Waitlist[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -46,7 +45,7 @@ export class MemStorage implements IStorage {
   }
 
   private initializeSampleData() {
-    // Sample creators
+    // One creator per category for clean filter display
     const sampleCreators = [
       {
         name: "Emma Rodriguez",
@@ -90,10 +89,6 @@ export class MemStorage implements IStorage {
         isAvailable: true,
         isVerified: true,
       },
-    ];
-
-    // Add more creators for different niches
-    const additionalCreators = [
       {
         name: "Isabella Beauty",
         email: "isabella@example.com",
@@ -164,229 +159,69 @@ export class MemStorage implements IStorage {
         isAvailable: true,
         isVerified: true,
       },
-      // More Beauty & Skincare creators
-      {
-        name: "Victoria Glow",
-        email: "victoria@example.com",
-        bio: "Skincare specialist focused on natural beauty products and authentic skincare routines.",
-        location: "Seattle",
-        hourlyRate: 390,
-        category: "Beauty & Skincare",
-        platforms: ["TikTok", "Instagram"],
-        followerCount: 820000,
-        engagementRate: "93%",
-        profileImage: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
-      {
-        name: "Maya Wellness",
-        email: "maya@example.com",
-        bio: "Holistic wellness creator sharing authentic self-care routines and mindfulness content.",
-        location: "Denver",
-        hourlyRate: 340,
-        category: "Beauty & Skincare",
-        platforms: ["YouTube", "Instagram"],
-        followerCount: 460000,
-        engagementRate: "89%",
-        profileImage: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
-      // More Fashion & Lifestyle creators
-      {
-        name: "Ryan Style",
-        email: "ryan@example.com",
-        bio: "Men's fashion influencer creating modern style guides and authentic outfit inspiration.",
-        location: "Atlanta",
-        hourlyRate: 420,
-        category: "Fashion & Lifestyle",
-        platforms: ["Instagram", "TikTok"],
-        followerCount: 750000,
-        engagementRate: "87%",
-        profileImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
-      {
-        name: "Luna Fashion",
-        email: "luna@example.com",
-        bio: "Sustainable fashion advocate creating content about ethical brands and timeless style.",
-        location: "San Diego",
-        hourlyRate: 380,
-        category: "Fashion & Lifestyle",
-        platforms: ["Instagram", "YouTube"],
-        followerCount: 620000,
-        engagementRate: "91%",
-        profileImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
-      // More Fitness & Health creators
-      {
-        name: "Carlos Fit",
-        email: "carlos@example.com",
-        bio: "Personal trainer creating authentic workout content and fitness product reviews.",
-        location: "Phoenix",
-        hourlyRate: 350,
-        category: "Fitness & Health",
-        platforms: ["YouTube", "TikTok"],
-        followerCount: 590000,
-        engagementRate: "88%",
-        profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
-      {
-        name: "Zoe Health",
-        email: "zoe@example.com",
-        bio: "Nutrition expert sharing healthy recipes and wellness product reviews.",
-        location: "Boston",
-        hourlyRate: 400,
-        category: "Fitness & Health",
-        platforms: ["Instagram", "YouTube"],
-        followerCount: 440000,
-        engagementRate: "90%",
-        profileImage: "https://images.unsplash.com/photo-1594736797933-d0d9bba5d387?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
-      // More Technology creators
-      {
-        name: "Tech Sarah",
-        email: "sarah@example.com",
-        bio: "Software developer creating coding tutorials and tech product reviews.",
-        location: "Seattle",
-        hourlyRate: 580,
-        category: "Technology",
-        platforms: ["YouTube", "TikTok"],
-        followerCount: 380000,
-        engagementRate: "85%",
-        profileImage: "https://images.unsplash.com/photo-1494790108755-2616b332c3eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
-      {
-        name: "David Gadgets",
-        email: "david@example.com",
-        bio: "Tech reviewer specializing in consumer electronics and mobile devices.",
-        location: "Austin",
-        hourlyRate: 520,
-        category: "Technology",
-        platforms: ["YouTube", "Instagram"],
-        followerCount: 720000,
-        engagementRate: "83%",
-        profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
-      // More Food & Cooking creators
-      {
-        name: "Chef Antonio",
-        email: "antonio@example.com",
-        bio: "Italian chef sharing authentic recipes and cooking techniques.",
-        location: "Las Vegas",
-        hourlyRate: 420,
-        category: "Food & Cooking",
-        platforms: ["YouTube", "Instagram"],
-        followerCount: 560000,
-        engagementRate: "92%",
-        profileImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      },
-      {
-        name: "Lily Bakes",
-        email: "lily@example.com",
-        bio: "Pastry chef creating baking tutorials and dessert recipe content.",
-        location: "Nashville",
-        hourlyRate: 360,
-        category: "Food & Cooking",
-        platforms: ["Instagram", "TikTok"],
-        followerCount: 430000,
-        engagementRate: "94%",
-        profileImage: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-        isAvailable: true,
-        isVerified: true,
-      }
     ];
 
-    const allCreators = [...sampleCreators, ...additionalCreators];
-    
-    allCreators.forEach(creator => {
-      const id = this.currentCreatorId++;
-      this.creators.set(id, { 
-        ...creator, 
-        id,
-        platforms: creator.platforms as string[]
-      });
+    // Store all creators
+    const allCreators = sampleCreators;
+
+    allCreators.forEach((creator) => {
+      this.creators.set(this.currentCreatorId, { ...creator, id: this.currentCreatorId });
+      this.currentCreatorId++;
     });
 
     // Sample campaigns
     const sampleCampaigns = [
       {
-        brandName: "TechFlow",
-        title: "TechFlow App Launch",
-        description: "SaaS Productivity Platform",
-        budget: 15000,
-        platform: "TikTok",
-        category: "Tech",
-        metrics: {
-          downloads: "50K+",
-          reach: "1.8M",
-          conversions: "4.2%"
+        title: "Tech Product Launch",
+        description: "Innovative tech startup needs authentic product reviews and unboxing content",
+        budget: 50000,
+        timeline: "2 weeks",
+        requiresVideo: true,
+        targetAudience: "Tech-savvy millennials",
+        platforms: ["YouTube", "TikTok"],
+        successMetrics: {
+          views: 2500000,
+          engagement: "94%",
+          conversions: 15000,
         },
-        testimonial: "Working with CreatorLink transformed our app launch strategy. The UGC content from tech reviewers generated over 50K app downloads in the first month and established authentic credibility in a crowded market.",
-        clientName: "Sarah Chen",
-        clientTitle: "Marketing Director",
-        campaignImage: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
-        rating: 5,
       },
       {
-        brandName: "StyleCo",
-        title: "StyleCo Summer Collection",
-        description: "Fashion influencers showcased new summer pieces through authentic styling content.",
-        budget: 8000,
-        platform: "Instagram",
-        category: "Fashion",
-        metrics: {
-          engagement: "+425%",
-          reach: "2.3M",
+        title: "Fitness Brand Campaign",
+        description: "Premium fitness equipment brand seeking authentic workout demonstrations",
+        budget: 35000,
+        timeline: "3 weeks",
+        requiresVideo: true,
+        targetAudience: "Fitness enthusiasts",
+        platforms: ["Instagram", "YouTube"],
+        successMetrics: {
+          views: 1800000,
+          engagement: "91%",
+          conversions: 8500,
         },
-        campaignImage: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
-        rating: 5,
       },
       {
-        brandName: "FitNutrition",
-        title: "FitNutrition Brand Awareness",
-        description: "Fitness creators demonstrated product benefits through workout content.",
-        budget: 12000,
-        platform: "YouTube",
-        category: "Health",
-        metrics: {
-          reach: "+280%",
-          engagement: "92%",
+        title: "Beauty Product Reviews",
+        description: "Luxury skincare brand needs genuine product testing and reviews",
+        budget: 40000,
+        timeline: "4 weeks",
+        requiresVideo: false,
+        targetAudience: "Beauty-conscious women 25-35",
+        platforms: ["Instagram", "TikTok"],
+        successMetrics: {
+          views: 3200000,
+          engagement: "96%",
+          conversions: 12000,
         },
-        campaignImage: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
-        rating: 5,
       },
     ];
 
-    sampleCampaigns.forEach(campaign => {
-      const id = this.currentCampaignId++;
-      this.campaigns.set(id, { 
-        ...campaign, 
-        id, 
-        createdAt: new Date(),
-        testimonial: campaign.testimonial || null,
-        clientName: campaign.clientName || null,
-        clientTitle: campaign.clientTitle || null,
-        metrics: campaign.metrics as { engagement?: string; reach?: string; conversions?: string; downloads?: string; }
-      });
+    sampleCampaigns.forEach((campaign) => {
+      this.campaigns.set(this.currentCampaignId, { ...campaign, id: this.currentCampaignId });
+      this.currentCampaignId++;
     });
   }
 
-  async getAllCreators(): Promise<Creator[]> {
+  async getCreators(): Promise<Creator[]> {
     return Array.from(this.creators.values());
   }
 
@@ -394,20 +229,7 @@ export class MemStorage implements IStorage {
     return this.creators.get(id);
   }
 
-  async createCreator(insertCreator: InsertCreator): Promise<Creator> {
-    const id = this.currentCreatorId++;
-    const creator: Creator = { 
-      ...insertCreator, 
-      id,
-      isVerified: false,
-      isAvailable: insertCreator.isAvailable ?? true,
-      platforms: insertCreator.platforms as string[]
-    };
-    this.creators.set(id, creator);
-    return creator;
-  }
-
-  async getAllCampaigns(): Promise<Campaign[]> {
+  async getCampaigns(): Promise<Campaign[]> {
     return Array.from(this.campaigns.values());
   }
 
@@ -415,56 +237,39 @@ export class MemStorage implements IStorage {
     return this.campaigns.get(id);
   }
 
-  async createCampaign(insertCampaign: InsertCampaign): Promise<Campaign> {
-    const id = this.currentCampaignId++;
-    const campaign: Campaign = { 
-      ...insertCampaign, 
-      id,
+  async createInquiry(inquiry: Omit<Inquiry, "id" | "createdAt">): Promise<Inquiry> {
+    const newInquiry: Inquiry = {
+      ...inquiry,
+      id: this.currentInquiryId,
       createdAt: new Date(),
-      testimonial: insertCampaign.testimonial || null,
-      clientName: insertCampaign.clientName || null,
-      clientTitle: insertCampaign.clientTitle || null,
-      rating: insertCampaign.rating ?? 5,
-      metrics: insertCampaign.metrics as { engagement?: string; reach?: string; conversions?: string; downloads?: string; }
     };
-    this.campaigns.set(id, campaign);
-    return campaign;
+    this.inquiries.set(this.currentInquiryId, newInquiry);
+    this.currentInquiryId++;
+    return newInquiry;
   }
 
-  async createInquiry(insertInquiry: InsertInquiry): Promise<Inquiry> {
-    const id = this.currentInquiryId++;
-    const inquiry: Inquiry = { 
-      ...insertInquiry, 
-      id,
-      createdAt: new Date(),
-      company: insertInquiry.company || null
-    };
-    this.inquiries.set(id, inquiry);
-    return inquiry;
+  async getInquiries(): Promise<Inquiry[]> {
+    return Array.from(this.inquiries.values());
   }
 
-  async createWaitlistEntry(insertWaitlist: InsertWaitlist): Promise<Waitlist> {
-    const id = this.currentWaitlistId++;
-    const waitlistEntry: Waitlist = { 
-      ...insertWaitlist, 
-      id,
+  async addToWaitlist(entry: Omit<Waitlist, "id" | "createdAt">): Promise<Waitlist> {
+    const newEntry: Waitlist = {
+      ...entry,
+      id: this.currentWaitlistId,
       createdAt: new Date(),
-      company: insertWaitlist.company || null,
-      role: insertWaitlist.role || null
     };
-    this.waitlistEntries.set(id, waitlistEntry);
-    return waitlistEntry;
+    this.waitlistEntries.set(this.currentWaitlistId, newEntry);
+    this.currentWaitlistId++;
+    return newEntry;
   }
 
-  async getAllWaitlistEntries(): Promise<Waitlist[]> {
-    return Array.from(this.waitlistEntries.values()).sort((a, b) => 
-      new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-    );
+  async getWaitlistEntries(): Promise<Waitlist[]> {
+    return Array.from(this.waitlistEntries.values());
   }
 }
 
 export class DatabaseStorage implements IStorage {
-  async getAllCreators(): Promise<Creator[]> {
+  async getCreators(): Promise<Creator[]> {
     return await db.select().from(creators);
   }
 
@@ -473,15 +278,7 @@ export class DatabaseStorage implements IStorage {
     return creator || undefined;
   }
 
-  async createCreator(insertCreator: InsertCreator): Promise<Creator> {
-    const [creator] = await db
-      .insert(creators)
-      .values([insertCreator])
-      .returning();
-    return creator;
-  }
-
-  async getAllCampaigns(): Promise<Campaign[]> {
+  async getCampaigns(): Promise<Campaign[]> {
     return await db.select().from(campaigns);
   }
 
@@ -490,31 +287,33 @@ export class DatabaseStorage implements IStorage {
     return campaign || undefined;
   }
 
-  async createCampaign(insertCampaign: InsertCampaign): Promise<Campaign> {
-    const [campaign] = await db
-      .insert(campaigns)
-      .values([insertCampaign])
-      .returning();
-    return campaign;
-  }
-
-  async createInquiry(insertInquiry: InsertInquiry): Promise<Inquiry> {
+  async createInquiry(inquiryData: Omit<Inquiry, "id" | "createdAt">): Promise<Inquiry> {
     const [inquiry] = await db
       .insert(inquiries)
-      .values([insertInquiry])
+      .values({
+        ...inquiryData,
+        createdAt: new Date(),
+      })
       .returning();
     return inquiry;
   }
 
-  async createWaitlistEntry(insertWaitlist: InsertWaitlist): Promise<Waitlist> {
-    const [waitlistEntry] = await db
-      .insert(waitlist)
-      .values([insertWaitlist])
-      .returning();
-    return waitlistEntry;
+  async getInquiries(): Promise<Inquiry[]> {
+    return await db.select().from(inquiries).orderBy(inquiries.createdAt);
   }
 
-  async getAllWaitlistEntries(): Promise<Waitlist[]> {
+  async addToWaitlist(entryData: Omit<Waitlist, "id" | "createdAt">): Promise<Waitlist> {
+    const [entry] = await db
+      .insert(waitlist)
+      .values({
+        ...entryData,
+        createdAt: new Date(),
+      })
+      .returning();
+    return entry;
+  }
+
+  async getWaitlistEntries(): Promise<Waitlist[]> {
     return await db.select().from(waitlist).orderBy(waitlist.createdAt);
   }
 }

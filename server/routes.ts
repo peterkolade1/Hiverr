@@ -9,7 +9,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all creators
   app.get("/api/creators", async (req, res) => {
     try {
-      const creators = await storage.getAllCreators();
+      const creators = await storage.getCreators();
       res.json(creators);
     } catch (error) {
       console.error("Error fetching creators:", error);
@@ -20,7 +20,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all campaigns
   app.get("/api/campaigns", async (req, res) => {
     try {
-      const campaigns = await storage.getAllCampaigns();
+      const campaigns = await storage.getCampaigns();
       res.json(campaigns);
     } catch (error) {
       console.error("Error fetching campaigns:", error);
