@@ -8,14 +8,10 @@ export const creators = pgTable("creators", {
   email: text("email").notNull().unique(),
   bio: text("bio").notNull(),
   location: text("location").notNull(),
-  hourlyRate: integer("hourly_rate").notNull(),
   category: text("category").notNull(),
   platforms: json("platforms").$type<string[]>().notNull(),
   followerCount: integer("follower_count").notNull(),
   engagementRate: text("engagement_rate").notNull(),
-  profileImage: text("profile_image").notNull(),
-  isAvailable: boolean("is_available").notNull().default(true),
-  isVerified: boolean("is_verified").notNull().default(false),
 });
 
 export const campaigns = pgTable("campaigns", {
@@ -52,7 +48,6 @@ export const inquiries = pgTable("inquiries", {
 
 export const insertCreatorSchema = createInsertSchema(creators).omit({
   id: true,
-  isVerified: true,
 });
 
 export const insertCampaignSchema = createInsertSchema(campaigns).omit({

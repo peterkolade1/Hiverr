@@ -38,6 +38,7 @@ Preferred communication style: Simple, everyday language.
 - Proper relationships and constraints with serial primary keys
 
 ## Recent Changes
+- **July 2025**: Removed all optional fields from creator schema (hourlyRate, profileImage, isAvailable, isVerified)
 - **July 2025**: Removed Photography filter and creator from showcase per user request
 - **July 2025**: Streamlined creator showcase to display exactly one influencer per category for cleaner filtering
 - **July 2025**: Updated creator showcase with high-quality category-specific images for all niches

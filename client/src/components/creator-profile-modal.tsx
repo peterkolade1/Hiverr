@@ -59,13 +59,9 @@ export function CreatorProfileModal({ creator, isOpen, onClose }: CreatorProfile
           {/* Header Section */}
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-shrink-0">
-              <img
-                src={creator.profileImage}
-                alt={creator.name}
-                className="w-32 h-32 rounded-2xl object-cover"
-                loading="lazy"
-                decoding="async"
-              />
+              <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-purple-400 to-cyan-400 flex items-center justify-center text-white text-2xl font-bold">
+                {creator.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+              </div>
             </div>
             
             <div className="flex-1 space-y-4">
@@ -75,7 +71,7 @@ export function CreatorProfileModal({ creator, isOpen, onClose }: CreatorProfile
                   <div className="flex items-center space-x-1">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     <span className="text-sm text-green-600 font-medium">
-                      {creator.isAvailable ? "Available" : "Busy"}
+                      Available
                     </span>
                   </div>
                 </div>

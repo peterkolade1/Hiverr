@@ -225,7 +225,7 @@ export function CreatorShowcase() {
                       index === 4 ? lifestyleImage :
                       index === 5 ? beautyContentImage :
                       index === 6 ? foodContentImage :
-                      creator.profileImage
+                      fashionImage
                     }
                     alt={`${creator.name} - ${creator.category}`}
                     className="w-full h-64 object-cover"
@@ -264,7 +264,7 @@ export function CreatorShowcase() {
                     <div className="flex items-center space-x-1">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       <span className="text-sm text-green-600 font-medium">
-                        {creator.isAvailable ? "Available" : "Busy"}
+                        Available
                       </span>
                     </div>
                   </div>
