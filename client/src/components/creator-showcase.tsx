@@ -4,10 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { CreatorProfileModal } from "./creator-profile-modal";
-import { ComingSoonBanner } from "./coming-soon-banner";
-import { Check, Star, Eye, Filter, Search } from "lucide-react";
+import { Check, Star, Eye, Filter } from "lucide-react";
 import type { Creator } from "@shared/schema";
 
 // Import creator images
@@ -34,8 +32,6 @@ export function CreatorShowcase() {
   const [selectedNiche, setSelectedNiche] = useState<string>("All");
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showComingSoon, setShowComingSoon] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   
   const { data: creators, isLoading } = useQuery<Creator[]>({
     queryKey: ["/api/creators"],
@@ -116,7 +112,7 @@ export function CreatorShowcase() {
             transition={{ duration: 0.6 }}
             className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4"
           >
-            Top Creators on Hiver{" "}
+            Top Creators on Hiverr{" "}
             <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-purple-600 to-cyan-500 rounded-lg ml-2">
               <Star className="text-white text-sm" size={16} fill="currentColor" />
             </span>
@@ -141,34 +137,13 @@ export function CreatorShowcase() {
           </motion.div>
         </div>
 
-        {/* Search and Filter Section */}
+        {/* Niche Filter */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mb-8"
         >
-          {/* Search Bar */}
-          <div className="flex items-center gap-4 mb-6">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <Input
-                placeholder="Search creators by name, niche, or skills..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-3 text-sm border-gray-200 focus:border-purple-300 focus:ring-purple-200"
-              />
-            </div>
-            <Button
-              onClick={() => setShowComingSoon(true)}
-              className="bg-gradient-to-r from-purple-600 to-cyan-500 text-white px-6 py-3 text-sm font-medium hover:from-purple-700 hover:to-cyan-600 transition-all duration-300"
-            >
-              <Search size={16} className="mr-2" />
-              Search
-            </Button>
-          </div>
-
-          {/* Niche Filter */}
           <div className="flex items-center gap-3 mb-4">
             <Filter size={20} className="text-gray-500" />
             <span className="text-sm font-medium text-gray-700">Filter by niche:</span>
@@ -349,10 +324,7 @@ export function CreatorShowcase() {
           onClose={handleCloseModal}
         />
         
-        <ComingSoonBanner
-          isOpen={showComingSoon}
-          onClose={() => setShowComingSoon(false)}
-        />
+
       </div>
     </section>
   );
