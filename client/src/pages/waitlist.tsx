@@ -170,6 +170,37 @@ const languages = [
   "Norman", "Jèrriais", "Guernésiais", "Sercquiais", "Auregnais", "Other"
 ];
 
+const followerRanges = [
+  "1K - 5K",
+  "5K - 10K", 
+  "10K - 25K",
+  "25K - 50K",
+  "50K - 100K",
+  "100K - 250K",
+  "250K - 500K",
+  "500K - 1M",
+  "1M - 2.5M",
+  "2.5M - 5M",
+  "5M - 10M",
+  "10M+"
+];
+
+const subscriberRanges = [
+  "100 - 1K",
+  "1K - 5K",
+  "5K - 10K",
+  "10K - 25K", 
+  "25K - 50K",
+  "50K - 100K",
+  "100K - 250K",
+  "250K - 500K",
+  "500K - 1M",
+  "1M - 2.5M",
+  "2.5M - 5M",
+  "5M - 10M",
+  "10M+"
+];
+
 export default function Waitlist() {
   const [userType, setUserType] = useState<"brand" | "creator">("brand");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -183,6 +214,9 @@ export default function Waitlist() {
   });
   const [locationOpen, setLocationOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
+  const [instagramFollowersOpen, setInstagramFollowersOpen] = useState(false);
+  const [tiktokFollowersOpen, setTiktokFollowersOpen] = useState(false);
+  const [youtubeSubsOpen, setYoutubeSubsOpen] = useState(false);
   const profilePictureInputRef = useRef<HTMLInputElement>(null);
   const platformInputRefs = useRef<Record<string, HTMLInputElement | null>>({
     instagram: null,
@@ -996,10 +1030,20 @@ export default function Waitlist() {
                             } else {
                               creatorForm.setValue("selectedPlatforms", current.filter(p => p !== platform.key));
                               // Clear the platform fields when unchecked
-                              creatorForm.setValue(platform.key as keyof CreatorForm, "");
-                              if (platform.key === 'instagram') creatorForm.setValue("instagramFollowers", "");
-                              if (platform.key === 'tiktok') creatorForm.setValue("tiktokFollowers", "");
-                              if (platform.key === 'youtube') creatorForm.setValue("youtubeSubs", "");
+                              if (platform.key === 'instagram') {
+                                creatorForm.setValue("instagram", "");
+                                creatorForm.setValue("instagramFollowers", "");
+                              }
+                              if (platform.key === 'tiktok') {
+                                creatorForm.setValue("tiktok", "");
+                                creatorForm.setValue("tiktokFollowers", "");
+                              }
+                              if (platform.key === 'youtube') {
+                                creatorForm.setValue("youtube", "");
+                                creatorForm.setValue("youtubeSubs", "");
+                              }
+                              if (platform.key === 'twitter') creatorForm.setValue("twitter", "");
+                              if (platform.key === 'facebook') creatorForm.setValue("facebook", "");
                               // Clear uploaded file for this platform
                               removePlatformImage(platform.key);
                             }
@@ -1089,12 +1133,47 @@ export default function Waitlist() {
                           </div>
                           <div>
                             <Label htmlFor="instagramFollowers">Instagram Followers</Label>
-                            <Input
-                              id="instagramFollowers"
-                              {...creatorForm.register("instagramFollowers")}
-                              placeholder="e.g., 10K"
-                              disabled={waitlistMutation.isPending}
-                            />
+                            <Popover open={instagramFollowersOpen} onOpenChange={setInstagramFollowersOpen}>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  role="combobox"
+                                  aria-expanded={instagramFollowersOpen}
+                                  className="w-full justify-between"
+                                  disabled={waitlistMutation.isPending}
+                                >
+                                  {creatorForm.watch("instagramFollowers") || "Select follower range..."}
+                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-full p-0">
+                                <Command>
+                                  <CommandInput placeholder="Search range..." />
+                                  <CommandList>
+                                    <CommandEmpty>No range found.</CommandEmpty>
+                                    <CommandGroup>
+                                      {followerRanges.map((range) => (
+                                        <CommandItem
+                                          key={range}
+                                          value={range}
+                                          onSelect={(currentValue) => {
+                                            creatorForm.setValue("instagramFollowers", currentValue);
+                                            setInstagramFollowersOpen(false);
+                                          }}
+                                        >
+                                          <Check
+                                            className={`mr-2 h-4 w-4 ${
+                                              creatorForm.watch("instagramFollowers") === range ? "opacity-100" : "opacity-0"
+                                            }`}
+                                          />
+                                          {range}
+                                        </CommandItem>
+                                      ))}
+                                    </CommandGroup>
+                                  </CommandList>
+                                </Command>
+                              </PopoverContent>
+                            </Popover>
                           </div>
                         </div>
                         <div>
@@ -1160,12 +1239,47 @@ export default function Waitlist() {
                           </div>
                           <div>
                             <Label htmlFor="tiktokFollowers">TikTok Followers</Label>
-                            <Input
-                              id="tiktokFollowers"
-                              {...creatorForm.register("tiktokFollowers")}
-                              placeholder="e.g., 50K"
-                              disabled={waitlistMutation.isPending}
-                            />
+                            <Popover open={tiktokFollowersOpen} onOpenChange={setTiktokFollowersOpen}>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  role="combobox"
+                                  aria-expanded={tiktokFollowersOpen}
+                                  className="w-full justify-between"
+                                  disabled={waitlistMutation.isPending}
+                                >
+                                  {creatorForm.watch("tiktokFollowers") || "Select follower range..."}
+                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-full p-0">
+                                <Command>
+                                  <CommandInput placeholder="Search range..." />
+                                  <CommandList>
+                                    <CommandEmpty>No range found.</CommandEmpty>
+                                    <CommandGroup>
+                                      {followerRanges.map((range) => (
+                                        <CommandItem
+                                          key={range}
+                                          value={range}
+                                          onSelect={(currentValue) => {
+                                            creatorForm.setValue("tiktokFollowers", currentValue);
+                                            setTiktokFollowersOpen(false);
+                                          }}
+                                        >
+                                          <Check
+                                            className={`mr-2 h-4 w-4 ${
+                                              creatorForm.watch("tiktokFollowers") === range ? "opacity-100" : "opacity-0"
+                                            }`}
+                                          />
+                                          {range}
+                                        </CommandItem>
+                                      ))}
+                                    </CommandGroup>
+                                  </CommandList>
+                                </Command>
+                              </PopoverContent>
+                            </Popover>
                           </div>
                         </div>
                         <div>
@@ -1231,12 +1345,47 @@ export default function Waitlist() {
                           </div>
                           <div>
                             <Label htmlFor="youtubeSubs">YouTube Subscribers</Label>
-                            <Input
-                              id="youtubeSubs"
-                              {...creatorForm.register("youtubeSubs")}
-                              placeholder="e.g., 5K"
-                              disabled={waitlistMutation.isPending}
-                            />
+                            <Popover open={youtubeSubsOpen} onOpenChange={setYoutubeSubsOpen}>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  role="combobox"
+                                  aria-expanded={youtubeSubsOpen}
+                                  className="w-full justify-between"
+                                  disabled={waitlistMutation.isPending}
+                                >
+                                  {creatorForm.watch("youtubeSubs") || "Select subscriber range..."}
+                                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-full p-0">
+                                <Command>
+                                  <CommandInput placeholder="Search range..." />
+                                  <CommandList>
+                                    <CommandEmpty>No range found.</CommandEmpty>
+                                    <CommandGroup>
+                                      {subscriberRanges.map((range) => (
+                                        <CommandItem
+                                          key={range}
+                                          value={range}
+                                          onSelect={(currentValue) => {
+                                            creatorForm.setValue("youtubeSubs", currentValue);
+                                            setYoutubeSubsOpen(false);
+                                          }}
+                                        >
+                                          <Check
+                                            className={`mr-2 h-4 w-4 ${
+                                              creatorForm.watch("youtubeSubs") === range ? "opacity-100" : "opacity-0"
+                                            }`}
+                                          />
+                                          {range}
+                                        </CommandItem>
+                                      ))}
+                                    </CommandGroup>
+                                  </CommandList>
+                                </Command>
+                              </PopoverContent>
+                            </Popover>
                           </div>
                         </div>
                         <div>
