@@ -17,6 +17,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { OptimizedImageUpload } from "@/components/optimized-image-upload";
 import { Users, Building2, Upload, CheckCircle, Check, ChevronsUpDown, X, Shield, AlertCircle, Loader2 } from "lucide-react";
 import facebookIcon from "@assets/2023_Facebook_icon.svg_1752884478102.webp";
 import tiktokIcon from "@assets/download (18)_1752884478109.png";
@@ -324,12 +325,20 @@ export default function Waitlist() {
   const [userType, setUserType] = useState<"brand" | "creator">("brand");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
-  const [platformFiles, setPlatformFiles] = useState<Record<string, File | null>>({
+  const [platformImages, setPlatformImages] = useState<Record<string, {
+    optimized: string;
+    placeholder: string;
+  } | null>>({
     instagram: null,
     tiktok: null,
     youtube: null,
     twitter: null,
     facebook: null,
+  });
+
+  const [uploadCounts, setUploadCounts] = useState({
+    total: 0,
+    perPlatform: { instagram: 0, tiktok: 0, youtube: 0, twitter: 0, facebook: 0 }
   });
   const [locationOpen, setLocationOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
@@ -502,31 +511,15 @@ export default function Waitlist() {
   };
 
   const onCreatorSubmit = async (data: CreatorForm) => {
-    // Helper function to convert file to base64
-    const fileToBase64 = (file: File): Promise<string> => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = error => reject(error);
-      });
-    };
-
-    // Convert platform images to base64
-    const imagePromises = Object.entries(platformFiles).map(async ([platform, file]) => {
-      if (file) {
-        try {
-          const base64 = await fileToBase64(file);
-          return { [`${platform}Image`]: base64 };
-        } catch {
-          return { [`${platform}Image`]: null };
-        }
+    // Convert platform images to the correct format for backend
+    const platformImageData = Object.entries(platformImages).reduce((acc, [platform, imageData]) => {
+      if (imageData) {
+        acc[`${platform}Image`] = imageData.optimized;
+      } else {
+        acc[`${platform}Image`] = null;
       }
-      return { [`${platform}Image`]: null };
-    });
-
-    const imageData = await Promise.all(imagePromises);
-    const platformImages = imageData.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+      return acc;
+    }, {} as Record<string, string | null>);
 
     // Transform arrays to JSON strings for backend and include platform images
     const transformedData = {
@@ -534,7 +527,7 @@ export default function Waitlist() {
       niches: JSON.stringify(data.niches),
       selectedPlatforms: JSON.stringify(data.selectedPlatforms),
       languages: JSON.stringify(data.languages),
-      ...platformImages,
+      ...platformImageData,
     };
     waitlistMutation.mutate(transformedData);
   };
@@ -573,6 +566,31 @@ export default function Waitlist() {
     if (profilePictureInputRef.current) {
       profilePictureInputRef.current.value = "";
     }
+  };
+
+  // New optimized platform image handlers
+  const handleOptimizedImageUpload = (platform: string, optimizedImage: string, placeholder: string) => {
+    setPlatformImages(prev => ({
+      ...prev,
+      [platform]: { optimized: optimizedImage, placeholder }
+    }));
+    
+    setUploadCounts(prev => ({
+      total: prev.total + (prev.perPlatform[platform] === 0 ? 1 : 0),
+      perPlatform: { ...prev.perPlatform, [platform]: 1 }
+    }));
+  };
+
+  const handleOptimizedImageRemove = (platform: string) => {
+    setPlatformImages(prev => ({
+      ...prev,
+      [platform]: null
+    }));
+    
+    setUploadCounts(prev => ({
+      total: Math.max(0, prev.total - 1),
+      perPlatform: { ...prev.perPlatform, [platform]: 0 }
+    }));
   };
 
   const handlePlatformImageUpload = (platform: string, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -1412,46 +1430,18 @@ export default function Waitlist() {
                             </Popover>
                           </div>
                         </div>
-                        <div>
-                          <Label htmlFor="instagram-screenshot">Instagram Analytics Screenshot</Label>
-                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your Instagram Insights showing your username and analytics data</p>
-                          <div className="flex items-center gap-4">
-                            <input
-                              type="file"
-                              ref={(el) => (platformInputRefs.current.instagram = el)}
-                              onChange={(e) => handlePlatformImageUpload('instagram', e)}
-                              accept="image/*"
-                              className="hidden"
-                              id="instagram-file-upload"
-                              disabled={waitlistMutation.isPending}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => platformInputRefs.current.instagram?.click()}
-                              disabled={waitlistMutation.isPending}
-                              className="flex items-center gap-2"
-                            >
-                              <Upload size={16} />
-                              Choose File
-                            </Button>
-                            {platformFiles.instagram && (
-                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
-                                <CheckCircle size={16} className="text-green-600" />
-                                <span className="text-sm text-green-700">{platformFiles.instagram.name}</span>
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => removePlatformImage('instagram')}
-                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
-                                >
-                                  <X size={12} />
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
+                        <OptimizedImageUpload
+                          id="instagram-screenshot"
+                          label="Instagram Analytics Screenshot"
+                          description="Upload a screenshot of your Instagram Insights showing your username and analytics data"
+                          onImageChange={(optimized, placeholder) => handleOptimizedImageUpload('instagram', optimized, placeholder)}
+                          onImageRemove={() => handleOptimizedImageRemove('instagram')}
+                          currentImage={platformImages.instagram?.optimized}
+                          options={{ maxWidth: 600, maxHeight: 400, quality: 0.8 }}
+                          disabled={waitlistMutation.isPending}
+                          maxUploads={5}
+                          uploadCount={uploadCounts.total}
+                        />
                       </div>
                     )}
 
@@ -1516,46 +1506,18 @@ export default function Waitlist() {
                             </Popover>
                           </div>
                         </div>
-                        <div>
-                          <Label htmlFor="tiktok-screenshot">TikTok Analytics Screenshot</Label>
-                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your TikTok Analytics showing your username and performance data</p>
-                          <div className="flex items-center gap-4">
-                            <input
-                              type="file"
-                              ref={(el) => (platformInputRefs.current.tiktok = el)}
-                              onChange={(e) => handlePlatformImageUpload('tiktok', e)}
-                              accept="image/*"
-                              className="hidden"
-                              id="tiktok-file-upload"
-                              disabled={waitlistMutation.isPending}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => platformInputRefs.current.tiktok?.click()}
-                              disabled={waitlistMutation.isPending}
-                              className="flex items-center gap-2"
-                            >
-                              <Upload size={16} />
-                              Choose File
-                            </Button>
-                            {platformFiles.tiktok && (
-                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
-                                <CheckCircle size={16} className="text-green-600" />
-                                <span className="text-sm text-green-700">{platformFiles.tiktok.name}</span>
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => removePlatformImage('tiktok')}
-                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
-                                >
-                                  <X size={12} />
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
+                        <OptimizedImageUpload
+                          id="tiktok-screenshot"
+                          label="TikTok Analytics Screenshot"
+                          description="Upload a screenshot of your TikTok Analytics showing your username and performance data"
+                          onImageChange={(optimized, placeholder) => handleOptimizedImageUpload('tiktok', optimized, placeholder)}
+                          onImageRemove={() => handleOptimizedImageRemove('tiktok')}
+                          currentImage={platformImages.tiktok?.optimized}
+                          options={{ maxWidth: 600, maxHeight: 400, quality: 0.8 }}
+                          disabled={waitlistMutation.isPending}
+                          maxUploads={5}
+                          uploadCount={uploadCounts.total}
+                        />
                       </div>
                     )}
 

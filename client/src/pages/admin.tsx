@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { LazyImage } from "@/components/lazy-image";
 import { Users, Mail, Calendar, Search, Download, Eye, User, Building2, MapPin, Globe, Star, DollarSign, Link, Filter, UserCheck, Briefcase, Instagram, Youtube, Twitter, Facebook } from "lucide-react";
 import type { Waitlist } from "@shared/schema";
 
@@ -707,10 +708,10 @@ export default function Admin() {
                               {selectedEntry.instagramImage && (
                                 <div className="space-y-2">
                                   <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
-                                  <img 
+                                  <LazyImage
                                     src={selectedEntry.instagramImage} 
                                     alt="Instagram Analytics" 
-                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    className="max-w-full h-48 rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
                                     onClick={() => window.open(selectedEntry.instagramImage, '_blank')}
                                   />
                                   <p className="text-xs text-gray-500">Click to view full size</p>
@@ -736,10 +737,10 @@ export default function Admin() {
                               {selectedEntry.tiktokImage && (
                                 <div className="space-y-2">
                                   <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
-                                  <img 
+                                  <LazyImage
                                     src={selectedEntry.tiktokImage} 
                                     alt="TikTok Analytics" 
-                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    className="max-w-full h-48 rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
                                     onClick={() => window.open(selectedEntry.tiktokImage, '_blank')}
                                   />
                                   <p className="text-xs text-gray-500">Click to view full size</p>
@@ -763,10 +764,10 @@ export default function Admin() {
                               {selectedEntry.youtubeImage && (
                                 <div className="space-y-2">
                                   <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
-                                  <img 
+                                  <LazyImage
                                     src={selectedEntry.youtubeImage} 
                                     alt="YouTube Analytics" 
-                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    className="max-w-full h-48 rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
                                     onClick={() => window.open(selectedEntry.youtubeImage, '_blank')}
                                   />
                                   <p className="text-xs text-gray-500">Click to view full size</p>
@@ -787,10 +788,10 @@ export default function Admin() {
                               {selectedEntry.twitterImage && (
                                 <div className="space-y-2">
                                   <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
-                                  <img 
+                                  <LazyImage
                                     src={selectedEntry.twitterImage} 
                                     alt="Twitter Analytics" 
-                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    className="max-w-full h-48 rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
                                     onClick={() => window.open(selectedEntry.twitterImage, '_blank')}
                                   />
                                   <p className="text-xs text-gray-500">Click to view full size</p>
@@ -811,10 +812,10 @@ export default function Admin() {
                               {selectedEntry.facebookImage && (
                                 <div className="space-y-2">
                                   <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
-                                  <img 
+                                  <LazyImage
                                     src={selectedEntry.facebookImage} 
                                     alt="Facebook Analytics" 
-                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    className="max-w-full h-48 rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
                                     onClick={() => window.open(selectedEntry.facebookImage, '_blank')}
                                   />
                                   <p className="text-xs text-gray-500">Click to view full size</p>
