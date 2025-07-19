@@ -29,7 +29,7 @@ export function ComingSoonBanner() {
           >
             Early access benefits for{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-              brands and influencers
+              brands and creators
             </span>
           </motion.h2>
           
