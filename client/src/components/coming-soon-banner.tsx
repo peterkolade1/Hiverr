@@ -89,7 +89,7 @@ export function ComingSoonBanner() {
             </div>
             <div className="w-px h-4 bg-gray-600"></div>
             <div className="text-sm text-gray-400">
-              <span className="font-semibold text-white">Q2 2025</span> launch
+              <span className="font-semibold text-white">Q4 2025</span> launch
             </div>
           </motion.div>
         </motion.div>
