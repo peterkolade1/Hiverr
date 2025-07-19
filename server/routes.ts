@@ -58,7 +58,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      const waitlistEntry = await storage.createWaitlistEntry(result.data);
+      const waitlistEntry = await storage.addToWaitlist(result.data);
       res.status(201).json(waitlistEntry);
     } catch (error: any) {
       console.error("Error creating waitlist entry:", error);
@@ -78,7 +78,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin routes
   app.get("/api/admin/waitlist", async (req, res) => {
     try {
-      const waitlistEntries = await storage.getAllWaitlistEntries();
+      const waitlistEntries = await storage.getWaitlistEntries();
       res.json(waitlistEntries);
     } catch (error) {
       console.error("Error fetching waitlist entries:", error);
