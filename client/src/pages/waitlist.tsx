@@ -27,7 +27,9 @@ import xIcon from "@assets/X_icon.svg_1752884478111.png";
 
 const brandFormSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
-  email: z.string().email("Valid email is required"),
+  email: z.string().email("Please enter a valid email address").refine((email) => {
+    return email.includes('@') && email.includes('.') && email.length > 5;
+  }, "Please enter a valid email address"),
   companyName: z.string().min(2, "Company name is required"),
   companyWebsite: z.string().min(2, "Company website or IG handle is required"),
   role: z.string().min(1, "Role is required"),
@@ -39,7 +41,9 @@ const brandFormSchema = z.object({
 
 const creatorFormSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
-  email: z.string().email("Valid email is required"),
+  email: z.string().email("Please enter a valid email address").refine((email) => {
+    return email.includes('@') && email.includes('.') && email.length > 5;
+  }, "Please enter a valid email address"),
   profilePicture: z.string().optional(),
   selectedPlatforms: z.array(z.string()).min(1, "Select at least one platform"),
   niches: z.array(z.string()).min(1, "Select at least one niche"),

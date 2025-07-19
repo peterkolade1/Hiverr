@@ -38,6 +38,9 @@ Preferred communication style: Simple, everyday language.
 - Proper relationships and constraints with serial primary keys
 
 ## Recent Changes
+- **July 2025**: Enhanced email validation in waitlist forms with robust checks and user-friendly error messages
+- **July 2025**: Cleared waitlist database for fresh start and added missing brand fields (campaign_ready, company_website, company_handle)
+- **July 2025**: Fixed admin interface by removing non-existent "Interest" field and fixing image click functionality for analytics screenshots
 - **July 2025**: Implemented comprehensive image optimization system with client-side validation, WebP auto-conversion, lazy loading, and upload limits (max 5 images per user)
 - **July 2025**: Added advanced image utilities including size validation, format restrictions (JPG/PNG/WebP only), compression with quality control, and blur placeholders for performance
 - **July 2025**: Created optimized image upload components with real-time compression feedback, drag-and-drop support, and file size reduction statistics
