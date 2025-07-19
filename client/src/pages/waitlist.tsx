@@ -35,6 +35,7 @@ const creatorFormSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
   email: z.string().email("Valid email is required"),
   profilePicture: z.string().optional(),
+  selectedPlatforms: z.array(z.string()).min(1, "Select at least one platform"),
   niches: z.array(z.string()).min(1, "Select at least one niche"),
   instagram: z.string().optional(),
   instagramFollowers: z.string().optional(),
@@ -199,6 +200,7 @@ export default function Waitlist() {
       fullName: "",
       email: "",
       profilePicture: "",
+      selectedPlatforms: [],
       niches: [],
       instagram: "",
       instagramFollowers: "",
@@ -640,27 +642,66 @@ export default function Waitlist() {
                 </div>
 
                 <div>
-                  <Label htmlFor="platformVerification">Social Platform Ownership Verification</Label>
+                  <Label>Social Platform Verification</Label>
                   <div className="mt-2 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-start gap-3">
                       <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                         <Shield size={16} className="text-blue-600" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-sm font-medium text-blue-900 mb-1">Verify Your Social Media Ownership</h4>
+                        <h4 className="text-sm font-medium text-blue-900 mb-1">Platform Ownership Verification Required</h4>
                         <p className="text-sm text-blue-700 mb-3">
-                          To help brands trust your authenticity, please verify ownership of at least one social platform by posting a verification message.
+                          To verify your social media ownership, upload a screenshot of your analytics dashboard for each platform you use. The screenshot must clearly show your username/handle in the same image.
                         </p>
                         <div className="space-y-2 text-sm text-blue-600">
-                          <p><strong>Option 1:</strong> Post "Joining @Hiverr soon! 🚀" in your bio or recent post</p>
-                          <p><strong>Option 2:</strong> Post a story mentioning Hiverr with your handle visible</p>
-                          <p><strong>Option 3:</strong> Send us a DM from your verified account</p>
+                          <p><strong>Instagram:</strong> Screenshot of Insights page showing username and analytics</p>
+                          <p><strong>TikTok:</strong> Screenshot of Analytics dashboard with username visible</p>
+                          <p><strong>YouTube:</strong> Screenshot of YouTube Studio analytics with channel name</p>
+                          <p><strong>Other platforms:</strong> Screenshot of native analytics showing your account details</p>
                         </div>
                         <p className="text-xs text-blue-600 mt-2">
-                          Our team will verify your ownership during the approval process.
+                          Screenshots will be reviewed during our verification process. Only platforms you select below will require verification.
                         </p>
                       </div>
                     </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Select Your Active Social Media Platforms</Label>
+                  <p className="text-sm text-gray-600 mb-3">Choose the platforms where you actively create content. Only show fields for platforms you actually use.</p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {[
+                      { key: 'instagram', label: 'Instagram' },
+                      { key: 'tiktok', label: 'TikTok' },
+                      { key: 'youtube', label: 'YouTube' },
+                      { key: 'twitter', label: 'X (Twitter)' },
+                      { key: 'facebook', label: 'Facebook' }
+                    ].map((platform) => (
+                      <div key={platform.key} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`platform-${platform.key}`}
+                          checked={creatorForm.watch("selectedPlatforms")?.includes(platform.key) || false}
+                          onCheckedChange={(checked) => {
+                            const current = creatorForm.watch("selectedPlatforms") || [];
+                            if (checked) {
+                              creatorForm.setValue("selectedPlatforms", [...current, platform.key]);
+                            } else {
+                              creatorForm.setValue("selectedPlatforms", current.filter(p => p !== platform.key));
+                              // Clear the platform fields when unchecked
+                              creatorForm.setValue(platform.key as keyof CreatorForm, "");
+                              if (platform.key === 'instagram') creatorForm.setValue("instagramFollowers", "");
+                              if (platform.key === 'tiktok') creatorForm.setValue("tiktokFollowers", "");
+                              if (platform.key === 'youtube') creatorForm.setValue("youtubeSubs", "");
+                            }
+                          }}
+                          disabled={waitlistMutation.isPending}
+                        />
+                        <Label htmlFor={`platform-${platform.key}`} className="text-sm font-normal">
+                          {platform.label}
+                        </Label>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -695,93 +736,104 @@ export default function Waitlist() {
                   )}
                 </div>
 
-                <div className="space-y-4">
-                  <Label>Where do you create content? (Check all that apply)</Label>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="instagram">Instagram Handle</Label>
-                      <Input
-                        id="instagram"
-                        {...creatorForm.register("instagram")}
-                        placeholder="@yourhandle"
-                        disabled={waitlistMutation.isPending}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="instagramFollowers">Instagram Followers</Label>
-                      <Input
-                        id="instagramFollowers"
-                        {...creatorForm.register("instagramFollowers")}
-                        placeholder="e.g., 10K"
-                        disabled={waitlistMutation.isPending}
-                      />
-                    </div>
-                  </div>
+                {creatorForm.watch("selectedPlatforms")?.length > 0 && (
+                  <div className="space-y-4">
+                    <Label>Platform Details - Only for Selected Platforms</Label>
+                    
+                    {creatorForm.watch("selectedPlatforms")?.includes('instagram') && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="instagram">Instagram Handle</Label>
+                          <Input
+                            id="instagram"
+                            {...creatorForm.register("instagram")}
+                            placeholder="@yourhandle"
+                            disabled={waitlistMutation.isPending}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="instagramFollowers">Instagram Followers</Label>
+                          <Input
+                            id="instagramFollowers"
+                            {...creatorForm.register("instagramFollowers")}
+                            placeholder="e.g., 10K"
+                            disabled={waitlistMutation.isPending}
+                          />
+                        </div>
+                      </div>
+                    )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="tiktok">TikTok Handle</Label>
-                      <Input
-                        id="tiktok"
-                        {...creatorForm.register("tiktok")}
-                        placeholder="@yourhandle"
-                        disabled={waitlistMutation.isPending}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="tiktokFollowers">TikTok Followers</Label>
-                      <Input
-                        id="tiktokFollowers"
-                        {...creatorForm.register("tiktokFollowers")}
-                        placeholder="e.g., 50K"
-                        disabled={waitlistMutation.isPending}
-                      />
-                    </div>
-                  </div>
+                    {creatorForm.watch("selectedPlatforms")?.includes('tiktok') && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="tiktok">TikTok Handle</Label>
+                          <Input
+                            id="tiktok"
+                            {...creatorForm.register("tiktok")}
+                            placeholder="@yourhandle"
+                            disabled={waitlistMutation.isPending}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="tiktokFollowers">TikTok Followers</Label>
+                          <Input
+                            id="tiktokFollowers"
+                            {...creatorForm.register("tiktokFollowers")}
+                            placeholder="e.g., 50K"
+                            disabled={waitlistMutation.isPending}
+                          />
+                        </div>
+                      </div>
+                    )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="youtube">YouTube Channel Link</Label>
-                      <Input
-                        id="youtube"
-                        {...creatorForm.register("youtube")}
-                        placeholder="Channel URL"
-                        disabled={waitlistMutation.isPending}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="youtubeSubs">YouTube Subscribers</Label>
-                      <Input
-                        id="youtubeSubs"
-                        {...creatorForm.register("youtubeSubs")}
-                        placeholder="e.g., 5K"
-                        disabled={waitlistMutation.isPending}
-                      />
-                    </div>
-                  </div>
+                    {creatorForm.watch("selectedPlatforms")?.includes('youtube') && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="youtube">YouTube Channel Link</Label>
+                          <Input
+                            id="youtube"
+                            {...creatorForm.register("youtube")}
+                            placeholder="Channel URL"
+                            disabled={waitlistMutation.isPending}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="youtubeSubs">YouTube Subscribers</Label>
+                          <Input
+                            id="youtubeSubs"
+                            {...creatorForm.register("youtubeSubs")}
+                            placeholder="e.g., 5K"
+                            disabled={waitlistMutation.isPending}
+                          />
+                        </div>
+                      </div>
+                    )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="twitter">X (Twitter) Handle</Label>
-                      <Input
-                        id="twitter"
-                        {...creatorForm.register("twitter")}
-                        placeholder="@yourhandle"
-                        disabled={waitlistMutation.isPending}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="facebook">Facebook Page or Profile</Label>
-                      <Input
-                        id="facebook"
-                        {...creatorForm.register("facebook")}
-                        placeholder="Facebook URL"
-                        disabled={waitlistMutation.isPending}
-                      />
-                    </div>
+                    {creatorForm.watch("selectedPlatforms")?.includes('twitter') && (
+                      <div>
+                        <Label htmlFor="twitter">X (Twitter) Handle</Label>
+                        <Input
+                          id="twitter"
+                          {...creatorForm.register("twitter")}
+                          placeholder="@yourhandle"
+                          disabled={waitlistMutation.isPending}
+                        />
+                      </div>
+                    )}
+
+                    {creatorForm.watch("selectedPlatforms")?.includes('facebook') && (
+                      <div>
+                        <Label htmlFor="facebook">Facebook Page or Profile</Label>
+                        <Input
+                          id="facebook"
+                          {...creatorForm.register("facebook")}
+                          placeholder="Facebook URL"
+                          disabled={waitlistMutation.isPending}
+                        />
+                      </div>
+                    )}
                   </div>
-                </div>
+                )}
 
 
 

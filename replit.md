@@ -38,6 +38,7 @@ Preferred communication style: Simple, everyday language.
 - Proper relationships and constraints with serial primary keys
 
 ## Recent Changes
+- **July 2025**: Enhanced creator verification system with analytics dashboard screenshot requirements and platform selection functionality
 - **July 2025**: Updated brand waitlist form with dropdown for creator types and removed brand logo upload field
 - **July 2025**: Updated waitlist form to remove portfolio link and rate per post fields, changed avatar upload to social platform ownership verification
 - **July 2025**: Removed all optional fields from creator schema (hourlyRate, profileImage, isAvailable, isVerified)
