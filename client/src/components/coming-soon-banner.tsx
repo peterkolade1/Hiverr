@@ -27,9 +27,9 @@ export function ComingSoonBanner() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl lg:text-6xl font-bold mb-6 leading-tight"
           >
-            Early Access Benefits for{" "}
+            Early access benefits for{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-              Brands and Influencers
+              brands and influencers
             </span>
           </motion.h2>
           
