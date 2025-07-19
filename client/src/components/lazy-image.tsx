@@ -62,6 +62,7 @@ export function LazyImage({
       ref={imgRef}
       className={cn(
         "relative overflow-hidden bg-gray-100",
+        onClick && "cursor-pointer",
         className
       )}
       style={{ width, height }}
