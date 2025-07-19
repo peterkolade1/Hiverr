@@ -254,6 +254,21 @@ export default function Waitlist() {
     }
   };
 
+  // Helper function to check if brand form is complete
+  const isBrandFormComplete = () => {
+    const formValues = brandForm.watch();
+    return (
+      formValues.fullName?.length > 1 &&
+      formValues.email?.includes('@') &&
+      formValues.companyName?.length > 1 &&
+      formValues.companyWebsite?.length > 1 &&
+      formValues.role?.length > 0 &&
+      formValues.creatorsLooking?.length > 0 &&
+      formValues.budgetRange?.length > 0 &&
+      formValues.launchTiming?.length > 0
+    );
+  };
+
   // Helper function to validate field in real-time
   const validateField = async (fieldName: string, value: any, schema: any) => {
     setFieldValidation(prev => ({ ...prev, [fieldName]: 'validating' }));
@@ -934,15 +949,15 @@ export default function Waitlist() {
 
                 <motion.div
                   animate={{
-                    scale: brandForm.formState.isValid ? 1.02 : 1
+                    scale: isBrandFormComplete() ? 1.02 : 1
                   }}
                   transition={{ duration: 0.2 }}
                 >
                   <Button
                     type="submit"
-                    disabled={waitlistMutation.isPending || !brandForm.formState.isValid}
+                    disabled={waitlistMutation.isPending || !isBrandFormComplete()}
                     className={`w-full transition-all duration-300 ${
-                      brandForm.formState.isValid && !waitlistMutation.isPending
+                      isBrandFormComplete() && !waitlistMutation.isPending
                         ? 'bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg'
                         : 'bg-gray-400 cursor-not-allowed'
                     }`}
@@ -956,10 +971,19 @@ export default function Waitlist() {
                         />
                         Joining...
                       </div>
-                    ) : brandForm.formState.isValid ? (
+                    ) : isBrandFormComplete() ? (
                       "Join Waitlist 🚀"
                     ) : (
-                      `Complete ${Object.keys(brandForm.formState.errors).length} more field${Object.keys(brandForm.formState.errors).length > 1 ? 's' : ''}`
+                      (() => {
+                        const formValues = brandForm.watch();
+                        const requiredFields = ["fullName", "email", "companyName", "companyWebsite", "role", "creatorsLooking", "budgetRange", "launchTiming"];
+                        const completedFields = requiredFields.filter(field => {
+                          const value = formValues[field];
+                          return value && value.length > 0;
+                        });
+                        const remaining = requiredFields.length - completedFields.length;
+                        return `Complete ${remaining} more field${remaining > 1 ? 's' : ''}`;
+                      })()
                     )}
                   </Button>
                 </motion.div>
