@@ -23,6 +23,9 @@ export default function Admin() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [userTypeFilter, setUserTypeFilter] = useState<"all" | "brands" | "creators">("all");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "pending">("all");
+  const [dateFilter, setDateFilter] = useState<"all" | "today" | "week" | "month" | "custom">("all");
+  const [customDateFrom, setCustomDateFrom] = useState<string>("");
+  const [customDateTo, setCustomDateTo] = useState<string>("");
 
   const { data: waitlistEntries, isLoading } = useQuery<Waitlist[]>({
     queryKey: ["/api/admin/waitlist"],
@@ -54,6 +57,43 @@ export default function Admin() {
     return "creator";
   };
 
+  // Helper function to check if entry matches date filter
+  const matchesDateFilter = (entry: Waitlist): boolean => {
+    if (!entry.createdAt || dateFilter === "all") return true;
+    
+    const entryDate = new Date(entry.createdAt);
+    const now = new Date();
+    
+    switch (dateFilter) {
+      case "today":
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        return entryDate >= today && entryDate < tomorrow;
+        
+      case "week":
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        return entryDate >= weekAgo;
+        
+      case "month":
+        const monthAgo = new Date();
+        monthAgo.setMonth(monthAgo.getMonth() - 1);
+        return entryDate >= monthAgo;
+        
+      case "custom":
+        if (!customDateFrom && !customDateTo) return true;
+        const fromDate = customDateFrom ? new Date(customDateFrom) : new Date("1900-01-01");
+        const toDate = customDateTo ? new Date(customDateTo) : new Date("2100-01-01");
+        toDate.setHours(23, 59, 59, 999); // Include the entire end date
+        return entryDate >= fromDate && entryDate <= toDate;
+        
+      default:
+        return true;
+    }
+  };
+
   // Enhanced filtering logic
   const filteredEntries = waitlistEntries?.filter(entry => {
     const matchesSearch = entry.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -64,7 +104,9 @@ export default function Admin() {
       (userTypeFilter === "brands" && userType === "brand") ||
       (userTypeFilter === "creators" && userType === "creator");
     
-    return matchesSearch && matchesUserType;
+    const matchesDate = matchesDateFilter(entry);
+    
+    return matchesSearch && matchesUserType && matchesDate;
   }) || [];
 
   // Statistics calculations
@@ -275,21 +317,116 @@ export default function Admin() {
                         </SelectContent>
                       </Select>
                     </div>
+                    
+                    <div className="flex flex-col gap-2">
+                      <Label htmlFor="date-filter" className="text-sm">Date Range</Label>
+                      <Select value={dateFilter} onValueChange={setDateFilter}>
+                        <SelectTrigger className="w-32">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Time</SelectItem>
+                          <SelectItem value="today">
+                            <div className="flex items-center gap-2">
+                              <Calendar size={14} />
+                              Today
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="week">
+                            <div className="flex items-center gap-2">
+                              <Calendar size={14} />
+                              Last 7 Days
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="month">
+                            <div className="flex items-center gap-2">
+                              <Calendar size={14} />
+                              Last 30 Days
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="custom">
+                            <div className="flex items-center gap-2">
+                              <Calendar size={14} />
+                              Custom Range
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
+                  
+                  {/* Custom Date Range Inputs */}
+                  {dateFilter === "custom" && (
+                    <div className="flex gap-4 items-end mt-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor="date-from" className="text-sm">From Date</Label>
+                        <Input
+                          id="date-from"
+                          type="date"
+                          value={customDateFrom}
+                          onChange={(e) => setCustomDateFrom(e.target.value)}
+                          className="w-40"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor="date-to" className="text-sm">To Date</Label>
+                        <Input
+                          id="date-to"
+                          type="date"
+                          value={customDateTo}
+                          onChange={(e) => setCustomDateTo(e.target.value)}
+                          className="w-40"
+                        />
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setCustomDateFrom("");
+                          setCustomDateTo("");
+                        }}
+                        className="mb-0"
+                      >
+                        Clear
+                      </Button>
+                    </div>
+                  )}
                   
                   {/* Quick filter badges */}
                   <div className="flex gap-2 flex-wrap">
-                    <Badge variant={userTypeFilter === "all" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setUserTypeFilter("all")}>
-                      All ({waitlistEntries?.length || 0})
-                    </Badge>
-                    <Badge variant={userTypeFilter === "brands" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setUserTypeFilter("brands")}>
-                      <Building2 size={12} className="mr-1" />
-                      Brands ({brandEntries.length})
-                    </Badge>
-                    <Badge variant={userTypeFilter === "creators" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setUserTypeFilter("creators")}>
-                      <UserCheck size={12} className="mr-1" />
-                      Creators ({creatorEntries.length})
-                    </Badge>
+                    <div className="flex gap-2 items-center">
+                      <span className="text-xs font-medium text-gray-500 mr-1">User Type:</span>
+                      <Badge variant={userTypeFilter === "all" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setUserTypeFilter("all")}>
+                        All ({waitlistEntries?.length || 0})
+                      </Badge>
+                      <Badge variant={userTypeFilter === "brands" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setUserTypeFilter("brands")}>
+                        <Building2 size={12} className="mr-1" />
+                        Brands ({brandEntries.length})
+                      </Badge>
+                      <Badge variant={userTypeFilter === "creators" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setUserTypeFilter("creators")}>
+                        <UserCheck size={12} className="mr-1" />
+                        Creators ({creatorEntries.length})
+                      </Badge>
+                    </div>
+                    
+                    <div className="flex gap-2 items-center">
+                      <span className="text-xs font-medium text-gray-500 mr-1">Date:</span>
+                      <Badge variant={dateFilter === "all" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setDateFilter("all")}>
+                        All Time
+                      </Badge>
+                      <Badge variant={dateFilter === "today" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setDateFilter("today")}>
+                        <Calendar size={12} className="mr-1" />
+                        Today
+                      </Badge>
+                      <Badge variant={dateFilter === "week" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setDateFilter("week")}>
+                        <Calendar size={12} className="mr-1" />
+                        7 Days
+                      </Badge>
+                      <Badge variant={dateFilter === "month" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setDateFilter("month")}>
+                        <Calendar size={12} className="mr-1" />
+                        30 Days
+                      </Badge>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -299,9 +436,24 @@ export default function Admin() {
           {/* Waitlist Table */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users size={20} />
-                Waitlist Entries ({filteredEntries.length})
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Users size={20} />
+                  Waitlist Entries ({filteredEntries.length})
+                </div>
+                {(userTypeFilter !== "all" || dateFilter !== "all" || searchTerm.trim() !== "") && (
+                  <div className="text-sm text-gray-500 font-normal">
+                    Showing filtered results
+                    {dateFilter !== "all" && (
+                      <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                        {dateFilter === "today" && "Today"}
+                        {dateFilter === "week" && "Last 7 days"}
+                        {dateFilter === "month" && "Last 30 days"}
+                        {dateFilter === "custom" && `${customDateFrom || "Start"} to ${customDateTo || "End"}`}
+                      </span>
+                    )}
+                  </div>
+                )}
               </CardTitle>
             </CardHeader>
             <CardContent>
