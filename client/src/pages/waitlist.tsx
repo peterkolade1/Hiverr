@@ -410,32 +410,78 @@ export default function Waitlist() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="fullName">Full Name</Label>
-                    <Input
-                      id="fullName"
-                      {...brandForm.register("fullName")}
-                      placeholder="Enter your full name"
-                      disabled={waitlistMutation.isPending}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="fullName"
+                        {...brandForm.register("fullName")}
+                        placeholder="Enter your full name"
+                        disabled={waitlistMutation.isPending}
+                        className={`transition-all duration-200 ${
+                          brandForm.formState.errors.fullName 
+                            ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500' 
+                            : brandForm.watch("fullName") 
+                            ? 'border-green-500 bg-green-50' 
+                            : ''
+                        }`}
+                      />
+                      {brandForm.watch("fullName") && !brandForm.formState.errors.fullName && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                        >
+                          <CheckCircle size={16} className="text-green-500" />
+                        </motion.div>
+                      )}
+                    </div>
                     {brandForm.formState.errors.fullName && (
-                      <p className="text-sm text-red-600 mt-1">
+                      <motion.p 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                      >
+                        <X size={12} />
                         {brandForm.formState.errors.fullName.message}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
 
                   <div>
                     <Label htmlFor="email">Work Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      {...brandForm.register("email")}
-                      placeholder="Enter your work email"
-                      disabled={waitlistMutation.isPending}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="email"
+                        type="email"
+                        {...brandForm.register("email")}
+                        placeholder="Enter your work email"
+                        disabled={waitlistMutation.isPending}
+                        className={`transition-all duration-200 ${
+                          brandForm.formState.errors.email 
+                            ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500' 
+                            : brandForm.watch("email") && /\S+@\S+\.\S+/.test(brandForm.watch("email"))
+                            ? 'border-green-500 bg-green-50' 
+                            : ''
+                        }`}
+                      />
+                      {brandForm.watch("email") && /\S+@\S+\.\S+/.test(brandForm.watch("email")) && !brandForm.formState.errors.email && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                        >
+                          <CheckCircle size={16} className="text-green-500" />
+                        </motion.div>
+                      )}
+                    </div>
                     {brandForm.formState.errors.email && (
-                      <p className="text-sm text-red-600 mt-1">
+                      <motion.p 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                      >
+                        <X size={12} />
                         {brandForm.formState.errors.email.message}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
                 </div>
@@ -443,16 +489,39 @@ export default function Waitlist() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="companyName">Company / Brand Name</Label>
-                    <Input
-                      id="companyName"
-                      {...brandForm.register("companyName")}
-                      placeholder="Enter your company name"
-                      disabled={waitlistMutation.isPending}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="companyName"
+                        {...brandForm.register("companyName")}
+                        placeholder="Enter your company name"
+                        disabled={waitlistMutation.isPending}
+                        className={`transition-all duration-200 ${
+                          brandForm.formState.errors.companyName 
+                            ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500' 
+                            : brandForm.watch("companyName") 
+                            ? 'border-green-500 bg-green-50' 
+                            : ''
+                        }`}
+                      />
+                      {brandForm.watch("companyName") && !brandForm.formState.errors.companyName && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                        >
+                          <CheckCircle size={16} className="text-green-500" />
+                        </motion.div>
+                      )}
+                    </div>
                     {brandForm.formState.errors.companyName && (
-                      <p className="text-sm text-red-600 mt-1">
+                      <motion.p 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                      >
+                        <X size={12} />
                         {brandForm.formState.errors.companyName.message}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
 
@@ -475,7 +544,13 @@ export default function Waitlist() {
                 <div>
                   <Label htmlFor="role">Your Role</Label>
                   <Select onValueChange={(value) => brandForm.setValue("role", value)} disabled={waitlistMutation.isPending}>
-                    <SelectTrigger>
+                    <SelectTrigger className={`transition-all duration-200 ${
+                      brandForm.formState.errors.role 
+                        ? 'border-red-500 bg-red-50' 
+                        : brandForm.watch("role") 
+                        ? 'border-green-500 bg-green-50' 
+                        : ''
+                    }`}>
                       <SelectValue placeholder="Select your role" />
                     </SelectTrigger>
                     <SelectContent>
@@ -489,16 +564,37 @@ export default function Waitlist() {
                     </SelectContent>
                   </Select>
                   {brandForm.formState.errors.role && (
-                    <p className="text-sm text-red-600 mt-1">
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                    >
+                      <X size={12} />
                       {brandForm.formState.errors.role.message}
-                    </p>
+                    </motion.p>
+                  )}
+                  {brandForm.watch("role") && !brandForm.formState.errors.role && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-green-600 mt-1 flex items-center gap-1"
+                    >
+                      <CheckCircle size={12} />
+                      Role selected
+                    </motion.p>
                   )}
                 </div>
 
                 <div>
                   <Label htmlFor="creatorsLooking">What kind of creators are you looking for?</Label>
                   <Select onValueChange={(value) => brandForm.setValue("creatorsLooking", value)} disabled={waitlistMutation.isPending}>
-                    <SelectTrigger>
+                    <SelectTrigger className={`transition-all duration-200 ${
+                      brandForm.formState.errors.creatorsLooking 
+                        ? 'border-red-500 bg-red-50' 
+                        : brandForm.watch("creatorsLooking") 
+                        ? 'border-green-500 bg-green-50' 
+                        : ''
+                    }`}>
                       <SelectValue placeholder="Select creator type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -519,16 +615,37 @@ export default function Waitlist() {
                     </SelectContent>
                   </Select>
                   {brandForm.formState.errors.creatorsLooking && (
-                    <p className="text-sm text-red-600 mt-1">
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                    >
+                      <X size={12} />
                       {brandForm.formState.errors.creatorsLooking.message}
-                    </p>
+                    </motion.p>
+                  )}
+                  {brandForm.watch("creatorsLooking") && !brandForm.formState.errors.creatorsLooking && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-green-600 mt-1 flex items-center gap-1"
+                    >
+                      <CheckCircle size={12} />
+                      Creator type selected
+                    </motion.p>
                   )}
                 </div>
 
                 <div>
                   <Label htmlFor="budgetRange">Campaign Budget Range</Label>
                   <Select onValueChange={(value) => brandForm.setValue("budgetRange", value)} disabled={waitlistMutation.isPending}>
-                    <SelectTrigger>
+                    <SelectTrigger className={`transition-all duration-200 ${
+                      brandForm.formState.errors.budgetRange 
+                        ? 'border-red-500 bg-red-50' 
+                        : brandForm.watch("budgetRange") 
+                        ? 'border-green-500 bg-green-50' 
+                        : ''
+                    }`}>
                       <SelectValue placeholder="Select budget range" />
                     </SelectTrigger>
                     <SelectContent>
@@ -540,9 +657,24 @@ export default function Waitlist() {
                     </SelectContent>
                   </Select>
                   {brandForm.formState.errors.budgetRange && (
-                    <p className="text-sm text-red-600 mt-1">
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                    >
+                      <X size={12} />
                       {brandForm.formState.errors.budgetRange.message}
-                    </p>
+                    </motion.p>
+                  )}
+                  {brandForm.watch("budgetRange") && !brandForm.formState.errors.budgetRange && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-green-600 mt-1 flex items-center gap-1"
+                    >
+                      <CheckCircle size={12} />
+                      Budget range selected
+                    </motion.p>
                   )}
                 </div>
 
@@ -559,7 +691,13 @@ export default function Waitlist() {
                 <div>
                   <Label htmlFor="launchTiming">How soon do you plan to launch your next campaign?</Label>
                   <Select onValueChange={(value) => brandForm.setValue("launchTiming", value)} disabled={waitlistMutation.isPending}>
-                    <SelectTrigger>
+                    <SelectTrigger className={`transition-all duration-200 ${
+                      brandForm.formState.errors.launchTiming 
+                        ? 'border-red-500 bg-red-50' 
+                        : brandForm.watch("launchTiming") 
+                        ? 'border-green-500 bg-green-50' 
+                        : ''
+                    }`}>
                       <SelectValue placeholder="Select timing" />
                     </SelectTrigger>
                     <SelectContent>
@@ -569,9 +707,24 @@ export default function Waitlist() {
                     </SelectContent>
                   </Select>
                   {brandForm.formState.errors.launchTiming && (
-                    <p className="text-sm text-red-600 mt-1">
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                    >
+                      <X size={12} />
                       {brandForm.formState.errors.launchTiming.message}
-                    </p>
+                    </motion.p>
+                  )}
+                  {brandForm.watch("launchTiming") && !brandForm.formState.errors.launchTiming && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-green-600 mt-1 flex items-center gap-1"
+                    >
+                      <CheckCircle size={12} />
+                      Timeline selected
+                    </motion.p>
                   )}
                 </div>
 
@@ -588,13 +741,37 @@ export default function Waitlist() {
                   </ul>
                 </div>
 
-                <Button
-                  type="submit"
-                  disabled={waitlistMutation.isPending}
-                  className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700"
+                <motion.div
+                  animate={{
+                    scale: brandForm.formState.isValid ? 1.02 : 1
+                  }}
+                  transition={{ duration: 0.2 }}
                 >
-                  {waitlistMutation.isPending ? "Joining..." : "Join Waitlist"}
-                </Button>
+                  <Button
+                    type="submit"
+                    disabled={waitlistMutation.isPending || !brandForm.formState.isValid}
+                    className={`w-full transition-all duration-300 ${
+                      brandForm.formState.isValid && !waitlistMutation.isPending
+                        ? 'bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg'
+                        : 'bg-gray-400 cursor-not-allowed'
+                    }`}
+                  >
+                    {waitlistMutation.isPending ? (
+                      <div className="flex items-center gap-2">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                        />
+                        Joining...
+                      </div>
+                    ) : brandForm.formState.isValid ? (
+                      "Join Waitlist 🚀"
+                    ) : (
+                      `Complete ${Object.keys(brandForm.formState.errors).length} more field${Object.keys(brandForm.formState.errors).length > 1 ? 's' : ''}`
+                    )}
+                  </Button>
+                </motion.div>
               </form>
             </motion.div>
           )}
@@ -608,35 +785,114 @@ export default function Waitlist() {
               className="bg-white rounded-2xl shadow-lg p-8"
             >
               <form onSubmit={creatorForm.handleSubmit(onCreatorSubmit)} className="space-y-6">
+                {/* Form Progress Indicator */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">Form Progress</span>
+                    <span className="text-gray-600">
+                      {(() => {
+                        const totalFields = ['fullName', 'email', 'selectedPlatforms', 'niches', 'location', 'languages'];
+                        const completedFields = totalFields.filter(field => {
+                          const value = creatorForm.watch(field);
+                          return value && (Array.isArray(value) ? value.length > 0 : value.length > 0);
+                        });
+                        return `${completedFields.length}/${totalFields.length}`;
+                      })()}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                    <motion.div 
+                      className="bg-gradient-to-r from-purple-600 to-cyan-600 h-2 rounded-full"
+                      initial={{ width: "0%" }}
+                      animate={{ 
+                        width: `${(() => {
+                          const totalFields = ['fullName', 'email', 'selectedPlatforms', 'niches', 'location', 'languages'];
+                          const completedFields = totalFields.filter(field => {
+                            const value = creatorForm.watch(field);
+                            return value && (Array.isArray(value) ? value.length > 0 : value.length > 0);
+                          });
+                          return (completedFields.length / totalFields.length) * 100;
+                        })()}%`
+                      }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="fullName">Full Name</Label>
-                    <Input
-                      id="fullName"
-                      {...creatorForm.register("fullName")}
-                      placeholder="Enter your full name"
-                      disabled={waitlistMutation.isPending}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="fullName"
+                        {...creatorForm.register("fullName")}
+                        placeholder="Enter your full name"
+                        disabled={waitlistMutation.isPending}
+                        className={`transition-all duration-200 ${
+                          creatorForm.formState.errors.fullName 
+                            ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500' 
+                            : creatorForm.watch("fullName") 
+                            ? 'border-green-500 bg-green-50' 
+                            : ''
+                        }`}
+                      />
+                      {creatorForm.watch("fullName") && !creatorForm.formState.errors.fullName && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                        >
+                          <CheckCircle size={16} className="text-green-500" />
+                        </motion.div>
+                      )}
+                    </div>
                     {creatorForm.formState.errors.fullName && (
-                      <p className="text-sm text-red-600 mt-1">
+                      <motion.p 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                      >
+                        <X size={12} />
                         {creatorForm.formState.errors.fullName.message}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
 
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      {...creatorForm.register("email")}
-                      placeholder="Enter your email"
-                      disabled={waitlistMutation.isPending}
-                    />
+                    <div className="relative">
+                      <Input
+                        id="email"
+                        type="email"
+                        {...creatorForm.register("email")}
+                        placeholder="Enter your email"
+                        disabled={waitlistMutation.isPending}
+                        className={`transition-all duration-200 ${
+                          creatorForm.formState.errors.email 
+                            ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500' 
+                            : creatorForm.watch("email") && /\S+@\S+\.\S+/.test(creatorForm.watch("email"))
+                            ? 'border-green-500 bg-green-50' 
+                            : ''
+                        }`}
+                      />
+                      {creatorForm.watch("email") && /\S+@\S+\.\S+/.test(creatorForm.watch("email")) && !creatorForm.formState.errors.email && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2"
+                        >
+                          <CheckCircle size={16} className="text-green-500" />
+                        </motion.div>
+                      )}
+                    </div>
                     {creatorForm.formState.errors.email && (
-                      <p className="text-sm text-red-600 mt-1">
+                      <motion.p 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                      >
+                        <X size={12} />
                         {creatorForm.formState.errors.email.message}
-                      </p>
+                      </motion.p>
                     )}
                   </div>
                 </div>
@@ -696,6 +952,11 @@ export default function Waitlist() {
                             }
                           }}
                           disabled={waitlistMutation.isPending}
+                          className={`transition-all duration-200 ${
+                            creatorForm.watch("selectedPlatforms")?.includes(platform.key) 
+                              ? 'border-green-500 bg-green-50' 
+                              : ''
+                          }`}
                         />
                         <Label htmlFor={`platform-${platform.key}`} className="text-sm font-normal">
                           {platform.label}
@@ -730,9 +991,24 @@ export default function Waitlist() {
                     ))}
                   </div>
                   {creatorForm.formState.errors.niches && (
-                    <p className="text-sm text-red-600 mt-1">
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                    >
+                      <X size={12} />
                       {creatorForm.formState.errors.niches.message}
-                    </p>
+                    </motion.p>
+                  )}
+                  {creatorForm.watch("niches")?.length > 0 && !creatorForm.formState.errors.niches && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-green-600 mt-1 flex items-center gap-1"
+                    >
+                      <CheckCircle size={12} />
+                      {creatorForm.watch("niches").length} niche{creatorForm.watch("niches").length > 1 ? 's' : ''} selected
+                    </motion.p>
                   )}
                 </div>
 
@@ -882,9 +1158,24 @@ export default function Waitlist() {
                       </PopoverContent>
                     </Popover>
                     {creatorForm.formState.errors.location && (
-                      <p className="text-sm text-red-600 mt-1">
+                      <motion.p 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                      >
+                        <X size={12} />
                         {creatorForm.formState.errors.location.message}
-                      </p>
+                      </motion.p>
+                    )}
+                    {creatorForm.watch("location") && !creatorForm.formState.errors.location && (
+                      <motion.p 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-sm text-green-600 mt-1 flex items-center gap-1"
+                      >
+                        <CheckCircle size={12} />
+                        Location selected: {creatorForm.watch("location")}
+                      </motion.p>
                     )}
                   </div>
 
@@ -964,9 +1255,24 @@ export default function Waitlist() {
                       </div>
                     )}
                     {creatorForm.formState.errors.languages && (
-                      <p className="text-sm text-red-600 mt-1">
+                      <motion.p 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                      >
+                        <X size={12} />
                         {creatorForm.formState.errors.languages.message}
-                      </p>
+                      </motion.p>
+                    )}
+                    {creatorForm.watch("languages")?.length > 0 && !creatorForm.formState.errors.languages && (
+                      <motion.p 
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-sm text-green-600 mt-1 flex items-center gap-1"
+                      >
+                        <CheckCircle size={12} />
+                        {creatorForm.watch("languages").length} language{creatorForm.watch("languages").length > 1 ? 's' : ''} selected
+                      </motion.p>
                     )}
                   </div>
                 </div>
@@ -994,13 +1300,63 @@ export default function Waitlist() {
                   </ul>
                 </div>
 
-                <Button
-                  type="submit"
-                  disabled={waitlistMutation.isPending}
-                  className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700"
+                <motion.div
+                  animate={{
+                    scale: (() => {
+                      const totalFields = ['fullName', 'email', 'selectedPlatforms', 'niches', 'location', 'languages'];
+                      const completedFields = totalFields.filter(field => {
+                        const value = creatorForm.watch(field);
+                        return value && (Array.isArray(value) ? value.length > 0 : value.length > 0);
+                      });
+                      return completedFields.length === totalFields.length ? 1.02 : 1;
+                    })()
+                  }}
+                  transition={{ duration: 0.2 }}
                 >
-                  {waitlistMutation.isPending ? "Joining..." : "Join Waitlist"}
-                </Button>
+                  <Button
+                    type="submit"
+                    disabled={waitlistMutation.isPending || (() => {
+                      const totalFields = ['fullName', 'email', 'selectedPlatforms', 'niches', 'location', 'languages'];
+                      const completedFields = totalFields.filter(field => {
+                        const value = creatorForm.watch(field);
+                        return value && (Array.isArray(value) ? value.length > 0 : value.length > 0);
+                      });
+                      return completedFields.length < totalFields.length;
+                    })()}
+                    className={`w-full transition-all duration-300 ${
+                      (() => {
+                        const totalFields = ['fullName', 'email', 'selectedPlatforms', 'niches', 'location', 'languages'];
+                        const completedFields = totalFields.filter(field => {
+                          const value = creatorForm.watch(field);
+                          return value && (Array.isArray(value) ? value.length > 0 : value.length > 0);
+                        });
+                        return completedFields.length === totalFields.length 
+                          ? 'bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 shadow-lg'
+                          : 'bg-gray-400 cursor-not-allowed';
+                      })()
+                    }`}
+                  >
+                    {waitlistMutation.isPending ? (
+                      <div className="flex items-center gap-2">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                        />
+                        Joining...
+                      </div>
+                    ) : (() => {
+                      const totalFields = ['fullName', 'email', 'selectedPlatforms', 'niches', 'location', 'languages'];
+                      const completedFields = totalFields.filter(field => {
+                        const value = creatorForm.watch(field);
+                        return value && (Array.isArray(value) ? value.length > 0 : value.length > 0);
+                      });
+                      return completedFields.length === totalFields.length 
+                        ? "Join Waitlist 🚀" 
+                        : `Complete ${totalFields.length - completedFields.length} more field${totalFields.length - completedFields.length > 1 ? 's' : ''}`;
+                    })()}
+                  </Button>
+                </motion.div>
               </form>
             </motion.div>
           )}
