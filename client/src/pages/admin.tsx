@@ -41,7 +41,17 @@ export default function Admin() {
 
   // Helper function to determine if entry is a brand or creator
   const getUserType = (entry: Waitlist): "brand" | "creator" => {
-    return entry.companyName || entry.role ? "brand" : "creator";
+    // Check for creator-specific fields first (more specific indicators)
+    if (entry.niches || entry.selectedPlatforms || entry.profilePicture || 
+        entry.instagram || entry.tiktok || entry.youtube || entry.location) {
+      return "creator";
+    }
+    // Check for brand-specific fields
+    if (entry.companyName) {
+      return "brand";
+    }
+    // Default fallback - if no specific indicators, assume creator
+    return "creator";
   };
 
   // Enhanced filtering logic
