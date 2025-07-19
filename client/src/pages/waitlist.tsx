@@ -174,9 +174,23 @@ export default function Waitlist() {
   const [userType, setUserType] = useState<"brand" | "creator">("brand");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
+  const [platformFiles, setPlatformFiles] = useState<Record<string, File | null>>({
+    instagram: null,
+    tiktok: null,
+    youtube: null,
+    twitter: null,
+    facebook: null,
+  });
   const [locationOpen, setLocationOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
   const profilePictureInputRef = useRef<HTMLInputElement>(null);
+  const platformInputRefs = useRef<Record<string, HTMLInputElement | null>>({
+    instagram: null,
+    tiktok: null,
+    youtube: null,
+    twitter: null,
+    facebook: null,
+  });
   const { toast } = useToast();
 
   const brandForm = useForm<BrandForm>({
@@ -291,6 +305,36 @@ export default function Waitlist() {
     creatorForm.setValue("profilePicture", "");
     if (profilePictureInputRef.current) {
       profilePictureInputRef.current.value = "";
+    }
+  };
+
+  const handlePlatformImageUpload = (platform: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast({
+          title: "File too large",
+          description: "Please choose a file under 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please choose a JPG or PNG file",
+          variant: "destructive",
+        });
+        return;
+      }
+      setPlatformFiles(prev => ({ ...prev, [platform]: file }));
+    }
+  };
+
+  const removePlatformImage = (platform: string) => {
+    setPlatformFiles(prev => ({ ...prev, [platform]: null }));
+    if (platformInputRefs.current[platform]) {
+      platformInputRefs.current[platform]!.value = "";
     }
   };
 
@@ -949,6 +993,8 @@ export default function Waitlist() {
                               if (platform.key === 'instagram') creatorForm.setValue("instagramFollowers", "");
                               if (platform.key === 'tiktok') creatorForm.setValue("tiktokFollowers", "");
                               if (platform.key === 'youtube') creatorForm.setValue("youtubeSubs", "");
+                              // Clear uploaded file for this platform
+                              removePlatformImage(platform.key);
                             }
                           }}
                           disabled={waitlistMutation.isPending}
@@ -1017,95 +1063,335 @@ export default function Waitlist() {
                     <Label>Platform Details - Only for Selected Platforms</Label>
                     
                     {creatorForm.watch("selectedPlatforms")?.includes('instagram') && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="instagram">Instagram Handle</Label>
-                          <Input
-                            id="instagram"
-                            {...creatorForm.register("instagram")}
-                            placeholder="@yourhandle"
-                            disabled={waitlistMutation.isPending}
-                          />
+                      <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                        <h4 className="font-medium text-gray-900 flex items-center gap-2">
+                          <div className="w-6 h-6 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">IG</span>
+                          </div>
+                          Instagram Verification
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor="instagram">Instagram Handle</Label>
+                            <Input
+                              id="instagram"
+                              {...creatorForm.register("instagram")}
+                              placeholder="@yourhandle"
+                              disabled={waitlistMutation.isPending}
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="instagramFollowers">Instagram Followers</Label>
+                            <Input
+                              id="instagramFollowers"
+                              {...creatorForm.register("instagramFollowers")}
+                              placeholder="e.g., 10K"
+                              disabled={waitlistMutation.isPending}
+                            />
+                          </div>
                         </div>
                         <div>
-                          <Label htmlFor="instagramFollowers">Instagram Followers</Label>
-                          <Input
-                            id="instagramFollowers"
-                            {...creatorForm.register("instagramFollowers")}
-                            placeholder="e.g., 10K"
-                            disabled={waitlistMutation.isPending}
-                          />
+                          <Label htmlFor="instagram-screenshot">Instagram Analytics Screenshot</Label>
+                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your Instagram Insights showing your username and analytics data</p>
+                          <div className="flex items-center gap-4">
+                            <input
+                              type="file"
+                              ref={(el) => (platformInputRefs.current.instagram = el)}
+                              onChange={(e) => handlePlatformImageUpload('instagram', e)}
+                              accept="image/*"
+                              className="hidden"
+                              id="instagram-file-upload"
+                              disabled={waitlistMutation.isPending}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => platformInputRefs.current.instagram?.click()}
+                              disabled={waitlistMutation.isPending}
+                              className="flex items-center gap-2"
+                            >
+                              <Upload size={16} />
+                              Choose File
+                            </Button>
+                            {platformFiles.instagram && (
+                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
+                                <CheckCircle size={16} className="text-green-600" />
+                                <span className="text-sm text-green-700">{platformFiles.instagram.name}</span>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => removePlatformImage('instagram')}
+                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
+                                >
+                                  <X size={12} />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     )}
 
                     {creatorForm.watch("selectedPlatforms")?.includes('tiktok') && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="tiktok">TikTok Handle</Label>
-                          <Input
-                            id="tiktok"
-                            {...creatorForm.register("tiktok")}
-                            placeholder="@yourhandle"
-                            disabled={waitlistMutation.isPending}
-                          />
+                      <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                        <h4 className="font-medium text-gray-900 flex items-center gap-2">
+                          <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">TT</span>
+                          </div>
+                          TikTok Verification
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor="tiktok">TikTok Handle</Label>
+                            <Input
+                              id="tiktok"
+                              {...creatorForm.register("tiktok")}
+                              placeholder="@yourhandle"
+                              disabled={waitlistMutation.isPending}
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="tiktokFollowers">TikTok Followers</Label>
+                            <Input
+                              id="tiktokFollowers"
+                              {...creatorForm.register("tiktokFollowers")}
+                              placeholder="e.g., 50K"
+                              disabled={waitlistMutation.isPending}
+                            />
+                          </div>
                         </div>
                         <div>
-                          <Label htmlFor="tiktokFollowers">TikTok Followers</Label>
-                          <Input
-                            id="tiktokFollowers"
-                            {...creatorForm.register("tiktokFollowers")}
-                            placeholder="e.g., 50K"
-                            disabled={waitlistMutation.isPending}
-                          />
+                          <Label htmlFor="tiktok-screenshot">TikTok Analytics Screenshot</Label>
+                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your TikTok Analytics showing your username and performance data</p>
+                          <div className="flex items-center gap-4">
+                            <input
+                              type="file"
+                              ref={(el) => (platformInputRefs.current.tiktok = el)}
+                              onChange={(e) => handlePlatformImageUpload('tiktok', e)}
+                              accept="image/*"
+                              className="hidden"
+                              id="tiktok-file-upload"
+                              disabled={waitlistMutation.isPending}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => platformInputRefs.current.tiktok?.click()}
+                              disabled={waitlistMutation.isPending}
+                              className="flex items-center gap-2"
+                            >
+                              <Upload size={16} />
+                              Choose File
+                            </Button>
+                            {platformFiles.tiktok && (
+                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
+                                <CheckCircle size={16} className="text-green-600" />
+                                <span className="text-sm text-green-700">{platformFiles.tiktok.name}</span>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => removePlatformImage('tiktok')}
+                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
+                                >
+                                  <X size={12} />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     )}
 
                     {creatorForm.watch("selectedPlatforms")?.includes('youtube') && (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="youtube">YouTube Channel Link</Label>
-                          <Input
-                            id="youtube"
-                            {...creatorForm.register("youtube")}
-                            placeholder="Channel URL"
-                            disabled={waitlistMutation.isPending}
-                          />
+                      <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                        <h4 className="font-medium text-gray-900 flex items-center gap-2">
+                          <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">YT</span>
+                          </div>
+                          YouTube Verification
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor="youtube">YouTube Channel Link</Label>
+                            <Input
+                              id="youtube"
+                              {...creatorForm.register("youtube")}
+                              placeholder="Channel URL"
+                              disabled={waitlistMutation.isPending}
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="youtubeSubs">YouTube Subscribers</Label>
+                            <Input
+                              id="youtubeSubs"
+                              {...creatorForm.register("youtubeSubs")}
+                              placeholder="e.g., 5K"
+                              disabled={waitlistMutation.isPending}
+                            />
+                          </div>
                         </div>
                         <div>
-                          <Label htmlFor="youtubeSubs">YouTube Subscribers</Label>
-                          <Input
-                            id="youtubeSubs"
-                            {...creatorForm.register("youtubeSubs")}
-                            placeholder="e.g., 5K"
-                            disabled={waitlistMutation.isPending}
-                          />
+                          <Label htmlFor="youtube-screenshot">YouTube Studio Analytics Screenshot</Label>
+                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your YouTube Studio Analytics showing your channel name and metrics</p>
+                          <div className="flex items-center gap-4">
+                            <input
+                              type="file"
+                              ref={(el) => (platformInputRefs.current.youtube = el)}
+                              onChange={(e) => handlePlatformImageUpload('youtube', e)}
+                              accept="image/*"
+                              className="hidden"
+                              id="youtube-file-upload"
+                              disabled={waitlistMutation.isPending}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => platformInputRefs.current.youtube?.click()}
+                              disabled={waitlistMutation.isPending}
+                              className="flex items-center gap-2"
+                            >
+                              <Upload size={16} />
+                              Choose File
+                            </Button>
+                            {platformFiles.youtube && (
+                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
+                                <CheckCircle size={16} className="text-green-600" />
+                                <span className="text-sm text-green-700">{platformFiles.youtube.name}</span>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => removePlatformImage('youtube')}
+                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
+                                >
+                                  <X size={12} />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     )}
 
                     {creatorForm.watch("selectedPlatforms")?.includes('twitter') && (
-                      <div>
-                        <Label htmlFor="twitter">X (Twitter) Handle</Label>
-                        <Input
-                          id="twitter"
-                          {...creatorForm.register("twitter")}
-                          placeholder="@yourhandle"
-                          disabled={waitlistMutation.isPending}
-                        />
+                      <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                        <h4 className="font-medium text-gray-900 flex items-center gap-2">
+                          <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">X</span>
+                          </div>
+                          X (Twitter) Verification
+                        </h4>
+                        <div>
+                          <Label htmlFor="twitter">X (Twitter) Handle</Label>
+                          <Input
+                            id="twitter"
+                            {...creatorForm.register("twitter")}
+                            placeholder="@yourhandle"
+                            disabled={waitlistMutation.isPending}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="twitter-screenshot">X Analytics Screenshot</Label>
+                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your X Analytics or profile showing your handle and engagement metrics</p>
+                          <div className="flex items-center gap-4">
+                            <input
+                              type="file"
+                              ref={(el) => (platformInputRefs.current.twitter = el)}
+                              onChange={(e) => handlePlatformImageUpload('twitter', e)}
+                              accept="image/*"
+                              className="hidden"
+                              id="twitter-file-upload"
+                              disabled={waitlistMutation.isPending}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => platformInputRefs.current.twitter?.click()}
+                              disabled={waitlistMutation.isPending}
+                              className="flex items-center gap-2"
+                            >
+                              <Upload size={16} />
+                              Choose File
+                            </Button>
+                            {platformFiles.twitter && (
+                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
+                                <CheckCircle size={16} className="text-green-600" />
+                                <span className="text-sm text-green-700">{platformFiles.twitter.name}</span>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => removePlatformImage('twitter')}
+                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
+                                >
+                                  <X size={12} />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     )}
 
                     {creatorForm.watch("selectedPlatforms")?.includes('facebook') && (
-                      <div>
-                        <Label htmlFor="facebook">Facebook Page or Profile</Label>
-                        <Input
-                          id="facebook"
-                          {...creatorForm.register("facebook")}
-                          placeholder="Facebook URL"
-                          disabled={waitlistMutation.isPending}
-                        />
+                      <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                        <h4 className="font-medium text-gray-900 flex items-center gap-2">
+                          <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">FB</span>
+                          </div>
+                          Facebook Verification
+                        </h4>
+                        <div>
+                          <Label htmlFor="facebook">Facebook Page or Profile</Label>
+                          <Input
+                            id="facebook"
+                            {...creatorForm.register("facebook")}
+                            placeholder="Facebook URL"
+                            disabled={waitlistMutation.isPending}
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="facebook-screenshot">Facebook Insights Screenshot</Label>
+                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your Facebook Page Insights showing your page name and analytics</p>
+                          <div className="flex items-center gap-4">
+                            <input
+                              type="file"
+                              ref={(el) => (platformInputRefs.current.facebook = el)}
+                              onChange={(e) => handlePlatformImageUpload('facebook', e)}
+                              accept="image/*"
+                              className="hidden"
+                              id="facebook-file-upload"
+                              disabled={waitlistMutation.isPending}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => platformInputRefs.current.facebook?.click()}
+                              disabled={waitlistMutation.isPending}
+                              className="flex items-center gap-2"
+                            >
+                              <Upload size={16} />
+                              Choose File
+                            </Button>
+                            {platformFiles.facebook && (
+                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
+                                <CheckCircle size={16} className="text-green-600" />
+                                <span className="text-sm text-green-700">{platformFiles.facebook.name}</span>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => removePlatformImage('facebook')}
+                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
+                                >
+                                  <X size={12} />
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>

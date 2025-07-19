@@ -38,6 +38,7 @@ Preferred communication style: Simple, everyday language.
 - Proper relationships and constraints with serial primary keys
 
 ## Recent Changes
+- **July 2025**: Added platform-specific image upload functionality for analytics dashboard screenshots with validation
 - **July 2025**: Started implementing smart form validation with real-time feedback animations and visual cues
 - **July 2025**: Enhanced creator verification system with analytics dashboard screenshot requirements and platform selection functionality
 - **July 2025**: Updated brand waitlist form with dropdown for creator types and removed brand logo upload field
