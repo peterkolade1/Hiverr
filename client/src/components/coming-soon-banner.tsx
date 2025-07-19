@@ -27,20 +27,37 @@ export function ComingSoonBanner() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl lg:text-6xl font-bold mb-6 leading-tight"
           >
-            AI-Generated Creator Avatars{" "}
+            Early Access Benefits for{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-              Are Coming.
+              Brands and Influencers
             </span>
           </motion.h2>
           
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
+            className="mb-8 max-w-3xl mx-auto"
           >
-            Join the waitlist now and unlock exclusive early access benefits: priority access to top-performing creators, special launch pricing with reduced commission rates, and direct input into our product development.
-          </motion.p>
+            <ul className="text-lg text-gray-300 space-y-3 text-left">
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span>Priority access to top-performing verified creators</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span>Special launch pricing with reduced commission rates</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span>Direct feedback line to our product team</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-purple-400 mt-1">•</span>
+                <span>Exclusive beta features and early campaign tools</span>
+              </li>
+            </ul>
+          </motion.div>
           
           <motion.div
             initial={{ opacity: 0, y: 20 }}
