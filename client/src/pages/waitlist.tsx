@@ -18,6 +18,11 @@ import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Users, Building2, Upload, CheckCircle, Check, ChevronsUpDown, X, Shield } from "lucide-react";
+import facebookIcon from "@assets/2023_Facebook_icon.svg_1752884478102.webp";
+import tiktokIcon from "@assets/download (18)_1752884478109.png";
+import instagramIcon from "@assets/Instagram_logo_2016.svg_1752884478110.png";
+import youtubeIcon from "@assets/YouTube_full-color_icon_(2017).svg_1752884478110.png";
+import xIcon from "@assets/X_icon.svg_1752884478111.png";
 
 const brandFormSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -1116,9 +1121,7 @@ export default function Waitlist() {
                     {creatorForm.watch("selectedPlatforms")?.includes('instagram') && (
                       <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
                         <h4 className="font-medium text-gray-900 flex items-center gap-2">
-                          <div className="w-6 h-6 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">IG</span>
-                          </div>
+                          <img src={instagramIcon} alt="Instagram" className="w-6 h-6 rounded-lg" />
                           Instagram Verification
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1222,9 +1225,7 @@ export default function Waitlist() {
                     {creatorForm.watch("selectedPlatforms")?.includes('tiktok') && (
                       <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
                         <h4 className="font-medium text-gray-900 flex items-center gap-2">
-                          <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">TT</span>
-                          </div>
+                          <img src={tiktokIcon} alt="TikTok" className="w-6 h-6 rounded-lg" />
                           TikTok Verification
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1328,9 +1329,7 @@ export default function Waitlist() {
                     {creatorForm.watch("selectedPlatforms")?.includes('youtube') && (
                       <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
                         <h4 className="font-medium text-gray-900 flex items-center gap-2">
-                          <div className="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">YT</span>
-                          </div>
+                          <img src={youtubeIcon} alt="YouTube" className="w-6 h-6 rounded-lg" />
                           YouTube Verification
                         </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1434,9 +1433,7 @@ export default function Waitlist() {
                     {creatorForm.watch("selectedPlatforms")?.includes('twitter') && (
                       <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
                         <h4 className="font-medium text-gray-900 flex items-center gap-2">
-                          <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">X</span>
-                          </div>
+                          <img src={xIcon} alt="X (Twitter)" className="w-6 h-6 rounded-lg" />
                           X (Twitter) Verification
                         </h4>
                         <div>
@@ -1494,9 +1491,7 @@ export default function Waitlist() {
                     {creatorForm.watch("selectedPlatforms")?.includes('facebook') && (
                       <div className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
                         <h4 className="font-medium text-gray-900 flex items-center gap-2">
-                          <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">FB</span>
-                          </div>
+                          <img src={facebookIcon} alt="Facebook" className="w-6 h-6 rounded-lg" />
                           Facebook Verification
                         </h4>
                         <div>
