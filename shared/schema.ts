@@ -84,6 +84,7 @@ export const waitlist = pgTable("waitlist", {
   
   // Creator-specific fields
   niches: text("niches"), // JSON string array
+  selectedPlatforms: text("selected_platforms"), // JSON string array
   profilePicture: text("profile_picture"),
   
   // Social media platforms

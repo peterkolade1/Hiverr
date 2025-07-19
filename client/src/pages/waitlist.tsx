@@ -269,7 +269,14 @@ export default function Waitlist() {
   };
 
   const onCreatorSubmit = (data: CreatorForm) => {
-    waitlistMutation.mutate(data);
+    // Transform arrays to JSON strings for backend
+    const transformedData = {
+      ...data,
+      niches: JSON.stringify(data.niches),
+      selectedPlatforms: JSON.stringify(data.selectedPlatforms),
+      languages: JSON.stringify(data.languages),
+    };
+    waitlistMutation.mutate(transformedData);
   };
 
 
