@@ -9,7 +9,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Users, Mail, Calendar, Search, Download, Eye, User, Building2, MapPin, Globe, Star, DollarSign, Link } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Users, Mail, Calendar, Search, Download, Eye, User, Building2, MapPin, Globe, Star, DollarSign, Link, Filter, UserCheck, Briefcase, Instagram, Youtube, Twitter, Facebook } from "lucide-react";
 import type { Waitlist } from "@shared/schema";
 
 export default function Admin() {
@@ -18,6 +21,8 @@ export default function Admin() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEntry, setSelectedEntry] = useState<Waitlist | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [userTypeFilter, setUserTypeFilter] = useState<"all" | "brands" | "creators">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "pending">("all");
 
   const { data: waitlistEntries, isLoading } = useQuery<Waitlist[]>({
     queryKey: ["/api/admin/waitlist"],
@@ -34,10 +39,27 @@ export default function Admin() {
     }
   };
 
-  const filteredEntries = waitlistEntries?.filter(entry =>
-    entry.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    entry.email.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
+  // Helper function to determine if entry is a brand or creator
+  const getUserType = (entry: Waitlist): "brand" | "creator" => {
+    return entry.companyName || entry.role ? "brand" : "creator";
+  };
+
+  // Enhanced filtering logic
+  const filteredEntries = waitlistEntries?.filter(entry => {
+    const matchesSearch = entry.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      entry.email.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const userType = getUserType(entry);
+    const matchesUserType = userTypeFilter === "all" || 
+      (userTypeFilter === "brands" && userType === "brand") ||
+      (userTypeFilter === "creators" && userType === "creator");
+    
+    return matchesSearch && matchesUserType;
+  }) || [];
+
+  // Statistics calculations
+  const brandEntries = waitlistEntries?.filter(entry => getUserType(entry) === "brand") || [];
+  const creatorEntries = waitlistEntries?.filter(entry => getUserType(entry) === "creator") || [];
 
   const exportToCSV = () => {
     if (!waitlistEntries) return;
@@ -121,7 +143,7 @@ export default function Admin() {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -130,6 +152,30 @@ export default function Admin() {
                     <p className="text-3xl font-bold text-gray-900">{waitlistEntries?.length || 0}</p>
                   </div>
                   <Users className="h-8 w-8 text-purple-600" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Brands</p>
+                    <p className="text-3xl font-bold text-gray-900">{brandEntries.length}</p>
+                  </div>
+                  <Building2 className="h-8 w-8 text-orange-600" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Creators</p>
+                    <p className="text-3xl font-bold text-gray-900">{creatorEntries.length}</p>
+                  </div>
+                  <UserCheck className="h-8 w-8 text-green-600" />
                 </div>
               </CardContent>
             </Card>
@@ -168,23 +214,74 @@ export default function Admin() {
             </Card>
           </div>
 
-          {/* Search and Export */}
+          {/* Search and Filters */}
           <Card className="mb-6">
             <CardContent className="p-6">
-              <div className="flex flex-col sm:flex-row gap-4 justify-between">
-                <div className="relative flex-1 max-w-md">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    placeholder="Search by name or email..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 justify-between">
+                  <div className="relative flex-1 max-w-md">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="Search by name or email..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                  <Button onClick={exportToCSV} variant="outline" className="gap-2">
+                    <Download size={16} />
+                    Export CSV
+                  </Button>
                 </div>
-                <Button onClick={exportToCSV} variant="outline" className="gap-2">
-                  <Download size={16} />
-                  Export CSV
-                </Button>
+                
+                {/* Filter Controls */}
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                  <div className="flex items-center gap-2">
+                    <Filter size={16} className="text-gray-600" />
+                    <span className="text-sm font-medium text-gray-600">Filters:</span>
+                  </div>
+                  
+                  <div className="flex gap-4">
+                    <div className="flex flex-col gap-2">
+                      <Label htmlFor="user-type-filter" className="text-sm">User Type</Label>
+                      <Select value={userTypeFilter} onValueChange={setUserTypeFilter}>
+                        <SelectTrigger className="w-32">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Users</SelectItem>
+                          <SelectItem value="brands">
+                            <div className="flex items-center gap-2">
+                              <Building2 size={14} />
+                              Brands
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="creators">
+                            <div className="flex items-center gap-2">
+                              <UserCheck size={14} />
+                              Creators
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  
+                  {/* Quick filter badges */}
+                  <div className="flex gap-2 flex-wrap">
+                    <Badge variant={userTypeFilter === "all" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setUserTypeFilter("all")}>
+                      All ({waitlistEntries?.length || 0})
+                    </Badge>
+                    <Badge variant={userTypeFilter === "brands" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setUserTypeFilter("brands")}>
+                      <Building2 size={12} className="mr-1" />
+                      Brands ({brandEntries.length})
+                    </Badge>
+                    <Badge variant={userTypeFilter === "creators" ? "default" : "secondary"} className="cursor-pointer" onClick={() => setUserTypeFilter("creators")}>
+                      <UserCheck size={12} className="mr-1" />
+                      Creators ({creatorEntries.length})
+                    </Badge>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -204,48 +301,76 @@ export default function Admin() {
                     <TableRow>
                       <TableHead>Name</TableHead>
                       <TableHead>Email</TableHead>
-                      <TableHead>Interest</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Details</TableHead>
                       <TableHead>Date Joined</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredEntries.map((entry) => (
-                      <TableRow key={entry.id}>
-                        <TableCell className="font-medium">{entry.name}</TableCell>
-                        <TableCell>{entry.email}</TableCell>
-                        <TableCell>
-                          {entry.interest ? (
-                            <Badge variant="secondary">{entry.interest}</Badge>
-                          ) : (
-                            <span className="text-gray-400">Not specified</span>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {entry.createdAt ? new Date(entry.createdAt).toLocaleDateString() : 'Unknown'}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                            Active
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedEntry(entry);
-                              setDetailsOpen(true);
-                            }}
-                            className="gap-1"
-                          >
-                            <Eye size={14} />
-                            View
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {filteredEntries.map((entry) => {
+                      const userType = getUserType(entry);
+                      return (
+                        <TableRow key={entry.id}>
+                          <TableCell className="font-medium">{entry.name}</TableCell>
+                          <TableCell>{entry.email}</TableCell>
+                          <TableCell>
+                            <Badge 
+                              variant={userType === "brand" ? "default" : "secondary"}
+                              className={`gap-1 ${userType === "brand" 
+                                ? "bg-orange-100 text-orange-800 border-orange-300" 
+                                : "bg-green-100 text-green-800 border-green-300"
+                              }`}
+                            >
+                              {userType === "brand" ? <Building2 size={12} /> : <UserCheck size={12} />}
+                              {userType === "brand" ? "Brand" : "Creator"}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="max-w-48">
+                            {userType === "brand" ? (
+                              <div className="text-sm">
+                                <div className="font-medium text-gray-900">{entry.companyName || "N/A"}</div>
+                                <div className="text-gray-500">{entry.role || "N/A"}</div>
+                              </div>
+                            ) : (
+                              <div className="text-sm">
+                                <div className="text-gray-900">{entry.location || "Location not specified"}</div>
+                                <div className="text-gray-500">
+                                  {entry.selectedPlatforms ? 
+                                    JSON.parse(entry.selectedPlatforms).slice(0, 2).join(", ") + 
+                                    (JSON.parse(entry.selectedPlatforms).length > 2 ? "..." : "")
+                                    : "No platforms"
+                                  }
+                                </div>
+                              </div>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {entry.createdAt ? new Date(entry.createdAt).toLocaleDateString() : 'Unknown'}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                              Active
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedEntry(entry);
+                                setDetailsOpen(true);
+                              }}
+                              className="gap-1"
+                            >
+                              <Eye size={14} />
+                              View
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
                 
@@ -272,20 +397,46 @@ export default function Admin() {
               </DialogHeader>
               
               {selectedEntry && (
-                <div className="space-y-6">
-                  {/* Basic Information */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Name</Label>
-                      <p className="text-sm text-gray-900">{selectedEntry.name}</p>
+                <ScrollArea className="max-h-[70vh]">
+                  <div className="space-y-6 pr-4">
+                    {/* User Type Badge and Basic Info */}
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-4">
+                          <Badge 
+                            variant={getUserType(selectedEntry) === "brand" ? "default" : "secondary"}
+                            className={`gap-2 px-3 py-1 text-sm ${getUserType(selectedEntry) === "brand" 
+                              ? "bg-orange-100 text-orange-800 border-orange-300" 
+                              : "bg-green-100 text-green-800 border-green-300"
+                            }`}
+                          >
+                            {getUserType(selectedEntry) === "brand" ? <Building2 size={14} /> : <UserCheck size={14} />}
+                            {getUserType(selectedEntry) === "brand" ? "Brand Account" : "Creator Account"}
+                          </Badge>
+                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                            Active
+                          </Badge>
+                        </div>
+                        
+                        {/* Basic Information */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Full Name</Label>
+                            <p className="text-base font-medium text-gray-900">{selectedEntry.name}</p>
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Email Address</Label>
+                            <p className="text-base text-gray-900">{selectedEntry.email}</p>
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Registration Date</Label>
+                            <p className="text-base text-gray-900">
+                              {selectedEntry.createdAt ? new Date(selectedEntry.createdAt).toLocaleDateString() : 'Unknown'}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Email</Label>
-                      <p className="text-sm text-gray-900">{selectedEntry.email}</p>
-                    </div>
-                  </div>
-
-                  {/* Interest and Date */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700">Interest</Label>
@@ -486,7 +637,8 @@ export default function Admin() {
                       </div>
                     </div>
                   )}
-                </div>
+                  </div>
+                </ScrollArea>
               )}
             </DialogContent>
           </Dialog>

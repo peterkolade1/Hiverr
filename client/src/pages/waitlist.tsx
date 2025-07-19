@@ -179,7 +179,7 @@ const locations = [
   "Bangui, Central African Republic", "Berbérati, Central African Republic", "Carnot, Central African Republic",
   "N'Djamena, Chad", "Moundou, Chad", "Sarh, Chad", "Abéché, Chad",
   "Yaoundé, Cameroon", "Douala, Cameroon", "Bamenda, Cameroon", "Bafoussam, Cameroon",
-  "Abuja, Nigeria", "Port Harcourt, Nigeria", "Benin City, Nigeria", "Maiduguri, Nigeria",
+  "Port Harcourt, Nigeria", "Benin City, Nigeria", "Maiduguri, Nigeria",
   "Niamey, Niger", "Zinder, Niger", "Maradi, Niger", "Agadez, Niger",
   "Ouagadougou, Burkina Faso", "Bobo-Dioulasso, Burkina Faso", "Koudougou, Burkina Faso",
   "Bamako, Mali", "Sikasso, Mali", "Mopti, Mali", "Koutiala, Mali",
