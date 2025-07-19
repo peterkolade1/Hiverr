@@ -348,13 +348,7 @@ export default function Waitlist() {
   const [fieldValidation, setFieldValidation] = useState<Record<string, 'idle' | 'validating' | 'valid' | 'error'>>({});
   const [formProgress, setFormProgress] = useState(0);
   const profilePictureInputRef = useRef<HTMLInputElement>(null);
-  const platformInputRefs = useRef<Record<string, HTMLInputElement | null>>({
-    instagram: null,
-    tiktok: null,
-    youtube: null,
-    twitter: null,
-    facebook: null,
-  });
+
   const { toast } = useToast();
 
   // Helper function to calculate form completion progress
@@ -593,35 +587,7 @@ export default function Waitlist() {
     }));
   };
 
-  const handlePlatformImageUpload = (platform: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        toast({
-          title: "File too large",
-          description: "Please choose a file under 5MB",
-          variant: "destructive",
-        });
-        return;
-      }
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: "Invalid file type",
-          description: "Please choose a JPG or PNG file",
-          variant: "destructive",
-        });
-        return;
-      }
-      setPlatformFiles(prev => ({ ...prev, [platform]: file }));
-    }
-  };
 
-  const removePlatformImage = (platform: string) => {
-    setPlatformFiles(prev => ({ ...prev, [platform]: null }));
-    if (platformInputRefs.current[platform]) {
-      platformInputRefs.current[platform]!.value = "";
-    }
-  };
 
   const niches = [
     "Beauty & Skincare",
@@ -1300,8 +1266,8 @@ export default function Waitlist() {
                               }
                               if (platform.key === 'twitter') creatorForm.setValue("twitter", "");
                               if (platform.key === 'facebook') creatorForm.setValue("facebook", "");
-                              // Clear uploaded file for this platform
-                              removePlatformImage(platform.key);
+                              // Clear uploaded image for this platform
+                              handleOptimizedImageRemove(platform.key);
                             }
                           }}
                           disabled={waitlistMutation.isPending}
@@ -1582,46 +1548,18 @@ export default function Waitlist() {
                             </Popover>
                           </div>
                         </div>
-                        <div>
-                          <Label htmlFor="youtube-screenshot">YouTube Studio Analytics Screenshot</Label>
-                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your YouTube Studio Analytics showing your channel name and metrics</p>
-                          <div className="flex items-center gap-4">
-                            <input
-                              type="file"
-                              ref={(el) => (platformInputRefs.current.youtube = el)}
-                              onChange={(e) => handlePlatformImageUpload('youtube', e)}
-                              accept="image/*"
-                              className="hidden"
-                              id="youtube-file-upload"
-                              disabled={waitlistMutation.isPending}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => platformInputRefs.current.youtube?.click()}
-                              disabled={waitlistMutation.isPending}
-                              className="flex items-center gap-2"
-                            >
-                              <Upload size={16} />
-                              Choose File
-                            </Button>
-                            {platformFiles.youtube && (
-                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
-                                <CheckCircle size={16} className="text-green-600" />
-                                <span className="text-sm text-green-700">{platformFiles.youtube.name}</span>
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => removePlatformImage('youtube')}
-                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
-                                >
-                                  <X size={12} />
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
+                        <OptimizedImageUpload
+                          id="youtube-screenshot"
+                          label="YouTube Studio Analytics Screenshot"
+                          description="Upload a screenshot of your YouTube Studio Analytics showing your channel name and metrics"
+                          onImageChange={(optimized, placeholder) => handleOptimizedImageUpload('youtube', optimized, placeholder)}
+                          onImageRemove={() => handleOptimizedImageRemove('youtube')}
+                          currentImage={platformImages.youtube?.optimized}
+                          options={{ maxWidth: 600, maxHeight: 400, quality: 0.8 }}
+                          disabled={waitlistMutation.isPending}
+                          maxUploads={5}
+                          uploadCount={uploadCounts.total}
+                        />
                       </div>
                     )}
 
@@ -1640,46 +1578,18 @@ export default function Waitlist() {
                             disabled={waitlistMutation.isPending}
                           />
                         </div>
-                        <div>
-                          <Label htmlFor="twitter-screenshot">X Analytics Screenshot</Label>
-                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your X Analytics or profile showing your handle and engagement metrics</p>
-                          <div className="flex items-center gap-4">
-                            <input
-                              type="file"
-                              ref={(el) => (platformInputRefs.current.twitter = el)}
-                              onChange={(e) => handlePlatformImageUpload('twitter', e)}
-                              accept="image/*"
-                              className="hidden"
-                              id="twitter-file-upload"
-                              disabled={waitlistMutation.isPending}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => platformInputRefs.current.twitter?.click()}
-                              disabled={waitlistMutation.isPending}
-                              className="flex items-center gap-2"
-                            >
-                              <Upload size={16} />
-                              Choose File
-                            </Button>
-                            {platformFiles.twitter && (
-                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
-                                <CheckCircle size={16} className="text-green-600" />
-                                <span className="text-sm text-green-700">{platformFiles.twitter.name}</span>
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => removePlatformImage('twitter')}
-                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
-                                >
-                                  <X size={12} />
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
+                        <OptimizedImageUpload
+                          id="twitter-screenshot"
+                          label="X Analytics Screenshot"
+                          description="Upload a screenshot of your X Analytics or profile showing your handle and engagement metrics"
+                          onImageChange={(optimized, placeholder) => handleOptimizedImageUpload('twitter', optimized, placeholder)}
+                          onImageRemove={() => handleOptimizedImageRemove('twitter')}
+                          currentImage={platformImages.twitter?.optimized}
+                          options={{ maxWidth: 600, maxHeight: 400, quality: 0.8 }}
+                          disabled={waitlistMutation.isPending}
+                          maxUploads={5}
+                          uploadCount={uploadCounts.total}
+                        />
                       </div>
                     )}
 
@@ -1698,46 +1608,18 @@ export default function Waitlist() {
                             disabled={waitlistMutation.isPending}
                           />
                         </div>
-                        <div>
-                          <Label htmlFor="facebook-screenshot">Facebook Insights Screenshot</Label>
-                          <p className="text-sm text-gray-600 mb-2">Upload a screenshot of your Facebook Page Insights showing your page name and analytics</p>
-                          <div className="flex items-center gap-4">
-                            <input
-                              type="file"
-                              ref={(el) => (platformInputRefs.current.facebook = el)}
-                              onChange={(e) => handlePlatformImageUpload('facebook', e)}
-                              accept="image/*"
-                              className="hidden"
-                              id="facebook-file-upload"
-                              disabled={waitlistMutation.isPending}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => platformInputRefs.current.facebook?.click()}
-                              disabled={waitlistMutation.isPending}
-                              className="flex items-center gap-2"
-                            >
-                              <Upload size={16} />
-                              Choose File
-                            </Button>
-                            {platformFiles.facebook && (
-                              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
-                                <CheckCircle size={16} className="text-green-600" />
-                                <span className="text-sm text-green-700">{platformFiles.facebook.name}</span>
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => removePlatformImage('facebook')}
-                                  className="h-5 w-5 p-0 text-green-600 hover:text-red-600"
-                                >
-                                  <X size={12} />
-                                </Button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
+                        <OptimizedImageUpload
+                          id="facebook-screenshot"
+                          label="Facebook Insights Screenshot"
+                          description="Upload a screenshot of your Facebook Page Insights showing your page name and analytics"
+                          onImageChange={(optimized, placeholder) => handleOptimizedImageUpload('facebook', optimized, placeholder)}
+                          onImageRemove={() => handleOptimizedImageRemove('facebook')}
+                          currentImage={platformImages.facebook?.optimized}
+                          options={{ maxWidth: 600, maxHeight: 400, quality: 0.8 }}
+                          disabled={waitlistMutation.isPending}
+                          maxUploads={5}
+                          uploadCount={uploadCounts.total}
+                        />
                       </div>
                     )}
                   </div>
