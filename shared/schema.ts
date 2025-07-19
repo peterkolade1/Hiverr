@@ -80,6 +80,9 @@ export const waitlist = pgTable("waitlist", {
   creatorPreference: varchar("creator_preference", { length: 100 }),
   budget: varchar("budget", { length: 100 }),
   campaignTiming: varchar("campaign_timing", { length: 100 }),
+  campaignReady: varchar("campaign_ready", { length: 50 }),
+  companyWebsite: varchar("company_website", { length: 255 }),
+  companyHandle: varchar("company_handle", { length: 100 }),
   brandLogo: text("brand_logo"),
   
   // Creator-specific fields

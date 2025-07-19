@@ -622,20 +622,42 @@ export default function Admin() {
                         )}
                         {selectedEntry.creatorPreference && (
                           <div className="space-y-2">
-                            <Label className="text-sm font-medium text-gray-700">Creator Preference</Label>
+                            <Label className="text-sm font-medium text-gray-700">What kind of creators are you looking for</Label>
                             <p className="text-sm text-gray-900">{selectedEntry.creatorPreference}</p>
                           </div>
                         )}
                         {selectedEntry.budget && (
                           <div className="space-y-2">
-                            <Label className="text-sm font-medium text-gray-700">Budget</Label>
+                            <Label className="text-sm font-medium text-gray-700">Campaign budget range</Label>
                             <p className="text-sm text-gray-900">{selectedEntry.budget}</p>
                           </div>
                         )}
                         {selectedEntry.campaignTiming && (
                           <div className="space-y-2">
-                            <Label className="text-sm font-medium text-gray-700">Campaign Timing</Label>
+                            <Label className="text-sm font-medium text-gray-700">How soon do you plan to start next campaign</Label>
                             <p className="text-sm text-gray-900">{selectedEntry.campaignTiming}</p>
+                          </div>
+                        )}
+                        {selectedEntry.campaignReady && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Do you already have a campaign in mind?</Label>
+                            <p className="text-sm text-gray-900">{selectedEntry.campaignReady}</p>
+                          </div>
+                        )}
+                        {selectedEntry.companyWebsite && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Company Website</Label>
+                            <p className="text-sm text-gray-900">
+                              <a href={selectedEntry.companyWebsite} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">
+                                {selectedEntry.companyWebsite}
+                              </a>
+                            </p>
+                          </div>
+                        )}
+                        {selectedEntry.companyHandle && (
+                          <div className="space-y-2">
+                            <Label className="text-sm font-medium text-gray-700">Company Handle</Label>
+                            <p className="text-sm text-gray-900">{selectedEntry.companyHandle}</p>
                           </div>
                         )}
                         {selectedEntry.brandLogo && (
