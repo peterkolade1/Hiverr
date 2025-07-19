@@ -974,39 +974,6 @@ export default function Waitlist() {
               className="bg-white rounded-2xl shadow-lg p-8"
             >
               <form onSubmit={creatorForm.handleSubmit(onCreatorSubmit)} className="space-y-6">
-                {/* Form Progress Indicator */}
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Form Progress</span>
-                    <span className="text-gray-600">
-                      {(() => {
-                        const totalFields = ['fullName', 'email', 'selectedPlatforms', 'niches', 'location', 'languages'];
-                        const completedFields = totalFields.filter(field => {
-                          const value = creatorForm.watch(field);
-                          return value && (Array.isArray(value) ? value.length > 0 : value.length > 0);
-                        });
-                        return `${completedFields.length}/${totalFields.length}`;
-                      })()}
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                    <motion.div 
-                      className="bg-gradient-to-r from-purple-600 to-cyan-600 h-2 rounded-full"
-                      initial={{ width: "0%" }}
-                      animate={{ 
-                        width: `${(() => {
-                          const totalFields = ['fullName', 'email', 'selectedPlatforms', 'niches', 'location', 'languages'];
-                          const completedFields = totalFields.filter(field => {
-                            const value = creatorForm.watch(field);
-                            return value && (Array.isArray(value) ? value.length > 0 : value.length > 0);
-                          });
-                          return (completedFields.length / totalFields.length) * 100;
-                        })()}%`
-                      }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  </div>
-                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="fullName">Full Name</Label>
