@@ -38,6 +38,9 @@ Preferred communication style: Simple, everyday language.
 - Proper relationships and constraints with serial primary keys
 
 ## Recent Changes
+- **July 2025**: Fixed "PayloadTooLargeError" by increasing Express body parser limit to 50MB for analytics screenshot uploads
+- **July 2025**: Added comprehensive date filtering system to admin panel with preset ranges and custom date selection
+- **July 2025**: Fixed analytics screenshot display issue in admin interface with proper base64 conversion and platform-specific sections
 - **July 2025**: Added platform-specific image upload functionality for analytics dashboard screenshots with validation
 - **July 2025**: Started implementing smart form validation with real-time feedback animations and visual cues
 - **July 2025**: Enhanced creator verification system with analytics dashboard screenshot requirements and platform selection functionality
