@@ -90,12 +90,17 @@ export const waitlist = pgTable("waitlist", {
   // Social media platforms
   instagram: varchar("instagram", { length: 255 }),
   instagramFollowers: varchar("instagram_followers", { length: 50 }),
+  instagramImage: text("instagram_image"), // Analytics screenshot
   tiktok: varchar("tiktok", { length: 255 }),
   tiktokFollowers: varchar("tiktok_followers", { length: 50 }),
+  tiktokImage: text("tiktok_image"), // Analytics screenshot
   youtube: varchar("youtube", { length: 255 }),
   youtubeSubs: varchar("youtube_subs", { length: 50 }),
+  youtubeImage: text("youtube_image"), // Analytics screenshot
   twitter: varchar("twitter", { length: 255 }),
+  twitterImage: text("twitter_image"), // Analytics screenshot
   facebook: varchar("facebook", { length: 255 }),
+  facebookImage: text("facebook_image"), // Analytics screenshot
   
   // Additional creator fields
   location: varchar("location", { length: 255 }),

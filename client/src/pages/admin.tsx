@@ -539,44 +539,135 @@ export default function Admin() {
                         )}
 
                         {/* Social Media Platforms */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-6">
                           {selectedEntry.instagram && (
-                            <div className="space-y-2">
-                              <Label className="text-sm font-medium text-gray-700">Instagram</Label>
-                              <p className="text-sm text-gray-900">{selectedEntry.instagram}</p>
-                              {selectedEntry.instagramFollowers && (
-                                <p className="text-xs text-gray-500">{selectedEntry.instagramFollowers} followers</p>
+                            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Instagram size={20} className="text-pink-600" />
+                                <Label className="text-base font-medium text-gray-900">Instagram</Label>
+                              </div>
+                              <div className="space-y-2 mb-3">
+                                <p className="text-sm"><strong>Handle:</strong> {selectedEntry.instagram}</p>
+                                {selectedEntry.instagramFollowers && (
+                                  <p className="text-sm"><strong>Followers:</strong> {selectedEntry.instagramFollowers}</p>
+                                )}
+                              </div>
+                              {selectedEntry.instagramImage && (
+                                <div className="space-y-2">
+                                  <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
+                                  <img 
+                                    src={selectedEntry.instagramImage} 
+                                    alt="Instagram Analytics" 
+                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    onClick={() => window.open(selectedEntry.instagramImage, '_blank')}
+                                  />
+                                  <p className="text-xs text-gray-500">Click to view full size</p>
+                                </div>
                               )}
                             </div>
                           )}
+                          
                           {selectedEntry.tiktok && (
-                            <div className="space-y-2">
-                              <Label className="text-sm font-medium text-gray-700">TikTok</Label>
-                              <p className="text-sm text-gray-900">{selectedEntry.tiktok}</p>
-                              {selectedEntry.tiktokFollowers && (
-                                <p className="text-xs text-gray-500">{selectedEntry.tiktokFollowers} followers</p>
+                            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                              <div className="flex items-center gap-2 mb-3">
+                                <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center">
+                                  <span className="text-white text-xs font-bold">T</span>
+                                </div>
+                                <Label className="text-base font-medium text-gray-900">TikTok</Label>
+                              </div>
+                              <div className="space-y-2 mb-3">
+                                <p className="text-sm"><strong>Handle:</strong> {selectedEntry.tiktok}</p>
+                                {selectedEntry.tiktokFollowers && (
+                                  <p className="text-sm"><strong>Followers:</strong> {selectedEntry.tiktokFollowers}</p>
+                                )}
+                              </div>
+                              {selectedEntry.tiktokImage && (
+                                <div className="space-y-2">
+                                  <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
+                                  <img 
+                                    src={selectedEntry.tiktokImage} 
+                                    alt="TikTok Analytics" 
+                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    onClick={() => window.open(selectedEntry.tiktokImage, '_blank')}
+                                  />
+                                  <p className="text-xs text-gray-500">Click to view full size</p>
+                                </div>
                               )}
                             </div>
                           )}
+                          
                           {selectedEntry.youtube && (
-                            <div className="space-y-2">
-                              <Label className="text-sm font-medium text-gray-700">YouTube</Label>
-                              <p className="text-sm text-gray-900">{selectedEntry.youtube}</p>
-                              {selectedEntry.youtubeSubs && (
-                                <p className="text-xs text-gray-500">{selectedEntry.youtubeSubs} subscribers</p>
+                            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Youtube size={20} className="text-red-600" />
+                                <Label className="text-base font-medium text-gray-900">YouTube</Label>
+                              </div>
+                              <div className="space-y-2 mb-3">
+                                <p className="text-sm"><strong>Channel:</strong> {selectedEntry.youtube}</p>
+                                {selectedEntry.youtubeSubs && (
+                                  <p className="text-sm"><strong>Subscribers:</strong> {selectedEntry.youtubeSubs}</p>
+                                )}
+                              </div>
+                              {selectedEntry.youtubeImage && (
+                                <div className="space-y-2">
+                                  <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
+                                  <img 
+                                    src={selectedEntry.youtubeImage} 
+                                    alt="YouTube Analytics" 
+                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    onClick={() => window.open(selectedEntry.youtubeImage, '_blank')}
+                                  />
+                                  <p className="text-xs text-gray-500">Click to view full size</p>
+                                </div>
                               )}
                             </div>
                           )}
+                          
                           {selectedEntry.twitter && (
-                            <div className="space-y-2">
-                              <Label className="text-sm font-medium text-gray-700">Twitter</Label>
-                              <p className="text-sm text-gray-900">{selectedEntry.twitter}</p>
+                            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Twitter size={20} className="text-blue-500" />
+                                <Label className="text-base font-medium text-gray-900">X (Twitter)</Label>
+                              </div>
+                              <div className="space-y-2 mb-3">
+                                <p className="text-sm"><strong>Handle:</strong> {selectedEntry.twitter}</p>
+                              </div>
+                              {selectedEntry.twitterImage && (
+                                <div className="space-y-2">
+                                  <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
+                                  <img 
+                                    src={selectedEntry.twitterImage} 
+                                    alt="Twitter Analytics" 
+                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    onClick={() => window.open(selectedEntry.twitterImage, '_blank')}
+                                  />
+                                  <p className="text-xs text-gray-500">Click to view full size</p>
+                                </div>
+                              )}
                             </div>
                           )}
+                          
                           {selectedEntry.facebook && (
-                            <div className="space-y-2">
-                              <Label className="text-sm font-medium text-gray-700">Facebook</Label>
-                              <p className="text-sm text-gray-900">{selectedEntry.facebook}</p>
+                            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Facebook size={20} className="text-blue-600" />
+                                <Label className="text-base font-medium text-gray-900">Facebook</Label>
+                              </div>
+                              <div className="space-y-2 mb-3">
+                                <p className="text-sm"><strong>Profile:</strong> {selectedEntry.facebook}</p>
+                              </div>
+                              {selectedEntry.facebookImage && (
+                                <div className="space-y-2">
+                                  <Label className="text-sm font-medium text-gray-700">Analytics Screenshot</Label>
+                                  <img 
+                                    src={selectedEntry.facebookImage} 
+                                    alt="Facebook Analytics" 
+                                    className="max-w-full h-auto rounded-lg border shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+                                    onClick={() => window.open(selectedEntry.facebookImage, '_blank')}
+                                  />
+                                  <p className="text-xs text-gray-500">Click to view full size</p>
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>

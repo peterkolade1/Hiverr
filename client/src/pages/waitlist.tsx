@@ -501,13 +501,40 @@ export default function Waitlist() {
     waitlistMutation.mutate(data);
   };
 
-  const onCreatorSubmit = (data: CreatorForm) => {
-    // Transform arrays to JSON strings for backend
+  const onCreatorSubmit = async (data: CreatorForm) => {
+    // Helper function to convert file to base64
+    const fileToBase64 = (file: File): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = error => reject(error);
+      });
+    };
+
+    // Convert platform images to base64
+    const imagePromises = Object.entries(platformFiles).map(async ([platform, file]) => {
+      if (file) {
+        try {
+          const base64 = await fileToBase64(file);
+          return { [`${platform}Image`]: base64 };
+        } catch {
+          return { [`${platform}Image`]: null };
+        }
+      }
+      return { [`${platform}Image`]: null };
+    });
+
+    const imageData = await Promise.all(imagePromises);
+    const platformImages = imageData.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+
+    // Transform arrays to JSON strings for backend and include platform images
     const transformedData = {
       ...data,
       niches: JSON.stringify(data.niches),
       selectedPlatforms: JSON.stringify(data.selectedPlatforms),
       languages: JSON.stringify(data.languages),
+      ...platformImages,
     };
     waitlistMutation.mutate(transformedData);
   };
