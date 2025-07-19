@@ -39,8 +39,7 @@ export function ComingSoonBanner() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
-            Let your top creators scale campaigns—even while they sleep. Revolutionary AI technology 
-            that maintains authentic creator voice and style across unlimited content.
+            Join the waitlist now and unlock exclusive early access benefits: priority access to top-performing creators, special launch pricing with reduced commission rates, and direct input into our product development.
           </motion.p>
           
           <motion.div

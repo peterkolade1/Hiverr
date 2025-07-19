@@ -921,12 +921,14 @@ export default function Waitlist() {
 
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <p className="text-sm text-purple-700">
-                    🚀 <strong>Early Access Benefits:</strong>
+                    🚀 <strong>Early Access Benefits for Brands:</strong>
                   </p>
                   <ul className="text-sm text-purple-600 mt-2 space-y-1">
-                    <li>• Priority access to top-performing creators</li>
-                    <li>• Special launch pricing and discounts</li>
+                    <li>• Priority access to top-performing verified creators</li>
+                    <li>• Special launch pricing with reduced commission rates</li>
+                    <li>• First access to AI avatar technology for scale</li>
                     <li>• Direct feedback line to our product team</li>
+                    <li>• Exclusive beta features and early campaign tools</li>
                   </ul>
                 </div>
 
@@ -1794,12 +1796,14 @@ export default function Waitlist() {
 
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <p className="text-sm text-purple-700">
-                    🚀 <strong>Early Access Benefits:</strong>
+                    🚀 <strong>Early Access Benefits for Creators:</strong>
                   </p>
                   <ul className="text-sm text-purple-600 mt-2 space-y-1">
-                    <li>• Be the first to access Hiverr when we launch</li>
-                    <li>• Special launch pricing and discounts</li>
-                    <li>• Direct feedback line to our product team</li>
+                    <li>• First access to premium brand partnerships</li>
+                    <li>• Reduced platform commission rates for early adopters</li>
+                    <li>• Priority verification and featured creator status</li>
+                    <li>• Early access to AI avatar monetization tools</li>
+                    <li>• Direct feedback line to shape the platform features</li>
                   </ul>
                 </div>
 
