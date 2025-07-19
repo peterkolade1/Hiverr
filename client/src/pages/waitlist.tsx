@@ -222,6 +222,8 @@ export default function Waitlist() {
   const [instagramFollowersOpen, setInstagramFollowersOpen] = useState(false);
   const [tiktokFollowersOpen, setTiktokFollowersOpen] = useState(false);
   const [youtubeSubsOpen, setYoutubeSubsOpen] = useState(false);
+  const [fieldValidation, setFieldValidation] = useState<Record<string, 'idle' | 'validating' | 'valid' | 'error'>>({});
+  const [formProgress, setFormProgress] = useState(0);
   const profilePictureInputRef = useRef<HTMLInputElement>(null);
   const platformInputRefs = useRef<Record<string, HTMLInputElement | null>>({
     instagram: null,
@@ -231,6 +233,48 @@ export default function Waitlist() {
     facebook: null,
   });
   const { toast } = useToast();
+
+  // Helper function to calculate form completion progress
+  const calculateProgress = (form: any, userType: string) => {
+    if (userType === "brand") {
+      const requiredFields = ["fullName", "email", "companyName", "companyWebsite", "role", "creatorsLooking", "budgetRange", "launchTiming"];
+      const completedFields = requiredFields.filter(field => {
+        const value = form.watch(field);
+        return value && value.length > 0;
+      });
+      return Math.round((completedFields.length / requiredFields.length) * 100);
+    } else {
+      const requiredFields = ["fullName", "email", "selectedPlatforms", "niches", "location", "languages"];
+      const completedFields = requiredFields.filter(field => {
+        const value = form.watch(field);
+        if (Array.isArray(value)) return value.length > 0;
+        return value && value.length > 0;
+      });
+      return Math.round((completedFields.length / requiredFields.length) * 100);
+    }
+  };
+
+  // Helper function to validate field in real-time
+  const validateField = async (fieldName: string, value: any, schema: any) => {
+    setFieldValidation(prev => ({ ...prev, [fieldName]: 'validating' }));
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300)); // Simulate validation delay
+      schema.pick({ [fieldName]: true }).parse({ [fieldName]: value });
+      setFieldValidation(prev => ({ ...prev, [fieldName]: 'valid' }));
+    } catch (error) {
+      setFieldValidation(prev => ({ ...prev, [fieldName]: 'error' }));
+    }
+  };
+
+  // Helper function to get field validation icon
+  const getValidationIcon = (fieldName: string, hasError: boolean) => {
+    const state = fieldValidation[fieldName];
+    if (state === 'validating') return <Loader2 size={16} className="animate-spin text-blue-500" />;
+    if (state === 'valid' && !hasError) return <CheckCircle size={16} className="text-green-500" />;
+    if (hasError) return <AlertCircle size={16} className="text-red-500" />;
+    return null;
+  };
 
   const brandForm = useForm<BrandForm>({
     resolver: zodResolver(brandFormSchema),
@@ -268,6 +312,27 @@ export default function Waitlist() {
       aiContent: false,
     },
   });
+
+  // Update form progress in real-time
+  useEffect(() => {
+    const currentForm = userType === "brand" ? brandForm : creatorForm;
+    const progress = calculateProgress(currentForm, userType);
+    setFormProgress(progress);
+  }, [userType, brandForm.watch(), creatorForm.watch()]);
+
+  // Real-time validation for key fields
+  useEffect(() => {
+    const currentForm = userType === "brand" ? brandForm : creatorForm;
+    const schema = userType === "brand" ? brandFormSchema : creatorFormSchema;
+    
+    const subscription = currentForm.watch((value, { name }) => {
+      if (name && value[name]) {
+        validateField(name, value[name], schema);
+      }
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [userType]);
 
   const waitlistMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -448,9 +513,38 @@ export default function Waitlist() {
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Join the Waitlist
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
               Be the first to know when Hiverr launches and get early access to our platform.
             </p>
+            
+            {/* Form Progress Bar */}
+            <div className="max-w-md mx-auto mb-8">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-700">Form Progress</span>
+                <span className="text-sm font-medium text-gray-700">{formProgress}%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <motion.div
+                  className="bg-gradient-to-r from-purple-500 to-cyan-500 h-2 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${formProgress}%` }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                />
+              </div>
+              <AnimatePresence>
+                {formProgress === 100 && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="text-sm text-green-600 mt-2 flex items-center justify-center gap-1"
+                  >
+                    <CheckCircle size={16} />
+                    All required fields completed!
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </div>
           </motion.div>
 
           {/* User Type Toggle */}
@@ -506,34 +600,39 @@ export default function Waitlist() {
                         {...brandForm.register("fullName")}
                         placeholder="Enter your full name"
                         disabled={waitlistMutation.isPending}
-                        className={`transition-all duration-200 ${
+                        className={`transition-all duration-200 pr-10 ${
                           brandForm.formState.errors.fullName 
                             ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-500' 
                             : brandForm.watch("fullName") 
                             ? 'border-green-500 bg-green-50' 
                             : ''
                         }`}
+                        onChange={(e) => {
+                          brandForm.setValue("fullName", e.target.value);
+                          if (e.target.value) {
+                            validateField("fullName", e.target.value, brandFormSchema);
+                          }
+                        }}
                       />
-                      {brandForm.watch("fullName") && !brandForm.formState.errors.fullName && (
-                        <motion.div
-                          initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                        >
-                          <CheckCircle size={16} className="text-green-500" />
-                        </motion.div>
-                      )}
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <AnimatePresence mode="wait">
+                          {getValidationIcon("fullName", !!brandForm.formState.errors.fullName)}
+                        </AnimatePresence>
+                      </div>
                     </div>
-                    {brandForm.formState.errors.fullName && (
-                      <motion.p 
-                        initial={{ opacity: 0, y: -5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-sm text-red-600 mt-1 flex items-center gap-1"
-                      >
-                        <X size={12} />
-                        {brandForm.formState.errors.fullName.message}
-                      </motion.p>
-                    )}
+                    <AnimatePresence>
+                      {brandForm.formState.errors.fullName && (
+                        <motion.p 
+                          initial={{ opacity: 0, y: -5 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -5 }}
+                          className="text-sm text-red-600 mt-1 flex items-center gap-1"
+                        >
+                          <AlertCircle size={12} />
+                          {brandForm.formState.errors.fullName.message}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                   </div>
 
                   <div>
