@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -17,7 +17,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { Users, Building2, Upload, CheckCircle, Check, ChevronsUpDown, X, Shield } from "lucide-react";
+import { Users, Building2, Upload, CheckCircle, Check, ChevronsUpDown, X, Shield, AlertCircle, Loader2 } from "lucide-react";
 import facebookIcon from "@assets/2023_Facebook_icon.svg_1752884478102.webp";
 import tiktokIcon from "@assets/download (18)_1752884478109.png";
 import instagramIcon from "@assets/Instagram_logo_2016.svg_1752884478110.png";
