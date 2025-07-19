@@ -117,13 +117,13 @@ export default function Admin() {
   const exportToCSV = () => {
     if (!waitlistEntries) return;
     
-    const headers = ['Name', 'Email', 'Interest', 'Date Joined'];
+    const headers = ['Name', 'Email', 'User Type', 'Date Joined'];
     const csvContent = [
       headers.join(','),
       ...waitlistEntries.map(entry => [
         entry.name,
         entry.email,
-        entry.interest || 'Not specified',
+        entry.companyName ? 'Brand' : 'Creator',
         new Date(entry.createdAt!).toLocaleDateString()
       ].join(','))
     ].join('\n');
@@ -600,24 +600,7 @@ export default function Admin() {
                         </div>
                       </div>
                     </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Interest</Label>
-                      <p className="text-sm text-gray-900">
-                        {selectedEntry.interest ? (
-                          <Badge variant="secondary">{selectedEntry.interest}</Badge>
-                        ) : (
-                          <span className="text-gray-400">Not specified</span>
-                        )}
-                      </p>
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-sm font-medium text-gray-700">Date Joined</Label>
-                      <p className="text-sm text-gray-900">
-                        {selectedEntry.createdAt ? new Date(selectedEntry.createdAt).toLocaleDateString() : 'Unknown'}
-                      </p>
-                    </div>
-                  </div>
+
 
                   {/* Brand-specific fields */}
                   {selectedEntry.companyName && (

@@ -96,6 +96,8 @@ export function LazyImage({
           onLoad={handleLoad}
           onError={handleError}
           loading="lazy"
+          onClick={onClick}
+          style={{ cursor: onClick ? 'pointer' : 'default' }}
         />
       )}
 
