@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { HiverLogo } from "./hiver-logo";
 import { ComingSoonPopup } from "./coming-soon-popup";
-import { Star, Plus, Video, Search } from "lucide-react";
+import { Star, Plus, Video, Search, ArrowRight } from "lucide-react";
 import { useImagePreloader } from "@/hooks/useImagePreloader";
+import { Link } from "wouter";
 
 // Import creator images
 import smartphoneImage from "@assets/portrait-woman-using-smartphone-with-pop-socket-outdoors_1752546751339.jpg";
@@ -147,6 +148,18 @@ export function HeroSection() {
             <p className="text-sm text-gray-500 text-center">
               {searchConfig[searchMode].suggestions}
             </p>
+
+            {/* Try for Free CTA */}
+            <Link href="/signup">
+              <Button 
+                size="lg"
+                className="mt-4 bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-semibold px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                data-testid="button-try-free"
+              >
+                Try for Free
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </motion.div>
         </div>
 

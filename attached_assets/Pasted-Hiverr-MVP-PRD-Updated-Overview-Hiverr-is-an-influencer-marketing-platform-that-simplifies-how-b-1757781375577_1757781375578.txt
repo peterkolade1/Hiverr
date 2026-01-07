@@ -1,0 +1,469 @@
+Hiverr - MVP PRD (Updated)
+Overview
+Hiverr is an influencer marketing platform that simplifies how brands discover, engage, and collaborate with creators. The MVP introduces a dynamic base fee model per influencer, a performance-based bonus pool distributed proportionally by contribution, a matching algorithm to connect brands and influencers, and a multi-tenant wallet system powered by Stripe.
+
+🎯 MVP Goals
+Validate willingness of brands to adopt base + performance fee model.
+
+
+Test fairness and adoption of weighted bonus distribution across influencers.
+
+
+Provide a transparent campaign management tool for both brands and creators.
+
+
+Improve efficiency of campaign matching via algorithm-driven recommendations.
+
+
+Enable seamless payout and financial management through integrated wallets.
+
+
+
+👥 User Personas
+Brands/Agencies
+
+
+Goal: Run influencer campaigns with predictable base spend and performance-based upside.
+
+
+Needs: Easy campaign setup, transparent fee model, verified analytics, smart matching.
+
+
+Influencers (Nano/Micro/Mid-tier)
+
+
+Goal: Earn guaranteed base fee + bonus if campaign succeeds.
+
+
+Needs: Fair payout system, relevant briefs, and the ability to manage and withdraw earnings.
+
+
+
+🛠️ Core MVP Features
+Brand Side
+Campaign Brief Form
+
+
+Deliverables (e.g., TikTok, IG Reels, Stories)
+
+
+Dynamic base fee (auto-calculated per influencer)
+
+
+Bonus Pool ($)
+
+
+Campaign KPI (views, engagements, conversions)
+
+
+Campaign Dashboard
+
+
+Track influencers (applied/approved/live)
+
+
+Show projected spend: Base payout + Bonus pool
+
+
+Show campaign metrics vs goal (aggregated)
+
+
+Influencer Recommendations
+
+
+Matching algorithm ranks top influencers based on Hive Score, niche relevance, demographics, and past performance.
+
+
+Brand sees “Top 10 Matches” for each brief.
+
+
+Influencer Side
+Profile & Media Kit (auto-synced analytics)
+
+
+Brief Browser (shows base fee + potential bonus share upfront)
+
+
+Campaign Tracker (applied/accepted/delivered/paid)
+
+
+Payout Transparency: Base fee guaranteed + potential bonus based on contribution
+
+
+Brief Recommendations: Suggested briefs based on niche and performance
+
+
+Wallet Dashboard (Stripe)
+
+
+Earnings from base fees and unlocked bonuses reflected in real-time
+
+
+Balance overview (Pending vs Available)
+
+
+Withdrawal option (available balance → bank account)
+
+
+Automatic payout at month-end if threshold met
+
+
+
+💸 Payment Logic
+1. Base Fee (Dynamic)
+Calculated using Influencer Score (IS):
+
+
+Reach Score (50%)
+
+
+Engagement Score (40%)
+
+
+Consistency (10%)
+
+
+Formula:
+
+
+Base Fee = MinFee + (IS × (MaxFee – MinFee))
+
+
+Example Range: $50–$300/post
+
+
+2. Bonus Pool (Weighted Distribution)
+At campaign end, if KPI met, unlock bonus pool.
+
+
+Bonus distribution formula:
+
+
+Bonusᵢ = TotalBonusPool × (Metricᵢ ÷ Σ Metricall)
+
+
+Metrics tracked: Views, engagements, or conversions (set by brand).
+
+
+Example: If brand sets $1,000 pool and campaign yields 600k views:
+
+
+Influencer with 60k views (10%) → $100
+
+
+Influencer with 180k views (30%) → $300
+
+
+Influencer with 360k views (60%) → $600
+
+
+3. Wallet System (Stripe Connect)
+Multi-tenant wallets for each influencer.
+
+
+Brands fund escrow (base + bonus pool) upfront.
+
+
+Base fee payout: Released to influencer wallet after content approved.
+
+
+Bonus payout: Released after campaign KPI met and metrics verified.
+
+
+Wallet Features:
+
+
+Real-time balance updates (Pending / Available)
+
+
+Monthly auto-payout to connected bank account
+
+
+Manual withdrawal option (subject to minimum balance)
+
+
+
+🔍 Matching Algorithm (MVP)
+Hive Match Score (0–100)
+Combines:
+Engagement Rate (30%)
+
+
+Avg Reach (25%)
+
+
+Niche Match Score (25%)
+
+
+Audience Demographics Match (15%)
+
+
+Response Rate (5%)
+
+
+Formula:
+ HiveMatch = (ER × 0.3) + (Reach × 0.25) + (Niche × 0.25) + (Audience × 0.15) + (Response × 0.05)
+Brand View
+Brands see influencers ranked by Hive Match for each brief.
+
+
+Filters: niche, geography, audience age/gender split.
+
+
+Influencer View
+Influencers see recommended briefs ranked by Hive Match relevance.
+
+
+Each brief card shows: base fee, bonus pool, KPI, and match %.
+
+
+
+📊 Hive Score (MVP)
+Engagement Rate (40%)
+
+
+Avg Reach (30%)
+
+
+Niche Match (20%)
+
+
+Response Rate (5%)
+
+
+Content Quality (5%)
+
+
+Used for leaderboard + influencer visibility.
+
+
+
+💼 Multi‑Tenant Wallet & Monthly Payouts (Stripe)
+Objectives
+Give every influencer a secure, auditable wallet to track Pending, Available, and Paid earnings.
+
+
+Support monthly withdrawals (auto‑payouts) using Stripe Connect (Express) across multiple tenants/brands.
+
+
+Stripe Architecture (MVP)
+Connect Account Type: Stripe Connect Express per influencer (KYC handled by Stripe).
+
+
+Platform Account: Hiverr Stripe account owns the platform balance and orchestrates flows.
+
+
+Funding: Brands pay into campaign escrow (PaymentIntent) covering: (a) total base fees + (b) bonus pool + (c) fees buffer.
+
+
+Ledger: Internal double‑entry ledger per influencer and per campaign: escrowed → pending → available → in_payout → paid (with possible reversed/failed).
+
+
+Money Flow
+Brand Funds Campaign
+ Card/ACH → Platform Stripe (escrow) for Base + Bonus Pool.
+
+
+Deliverable Approval
+ Base fee for that deliverable moves escrow → pending (T+0) and becomes available after a configurable clearing window (default T+7 days).
+
+
+Campaign Close & KPI Check
+ If KPI met, compute each influencer’s weighted bonus and move escrow → pending for each; then to available after clearing window (default T+7).
+
+
+Monthly Auto‑Payout
+ On the last business day of each month (configurable), run a payout job: sum each influencer’s available balance that meets the minimum payout threshold (default $50). Create Stripe Transfers to each influencer’s Connect account, then Payouts to their bank per Stripe schedule. Mark entries in_payout → paid.
+
+
+Fees, Refunds, Edge Cases
+Stripe Fees: Default billed to the brand at funding; configurable split across brand/platform.
+
+
+Refunds/Chargebacks:
+
+
+If against escrow → reduce pool before distribution.
+
+
+If against available/paid → create negative adjustments; optionally claw back from next payout.
+
+
+Disputes/Holds: If content is flagged, mark item on_hold; amounts remain escrowed until resolution.
+
+
+Currency: Set campaign currency at creation; rely on Stripe FX if cross‑border. Display converted estimates to influencers.
+
+
+Tax Forms: Collect W‑9/W‑8BEN during Stripe onboarding; export annual 1099/K forms via Stripe.
+
+
+Wallet UI (Influencer)
+Balances Card: Available, Pending, Next Payout Date, Lifetime Earnings.
+
+
+Ledger Table: date, type (Base/Bonus/Adjustment/Fee), campaign, deliverable, status, amount.
+
+
+Payouts Tab: history of monthly payouts with downloadable receipts.
+
+
+Account Tab: Stripe onboarding/verification status, bank details, tax form status.
+
+
+Admin/Brand Views
+Brand Campaign Finance: funded escrow, base released, bonus remaining, fees.
+
+
+Platform Ops: reconciliation dashboard, failed payouts queue, clawback queue, export CSV.
+
+
+Scheduled Jobs (MVP)
+nightly-ledger-close: move eligible pending → available after T+7.
+
+
+month-end-payout: aggregate available ≥ threshold; create Stripe transfers/payouts; email statements.
+
+
+fx-rate-sync: cache daily rates for display; Stripe handles actual FX.
+
+
+Key Config (env)
+CLEARING_DAYS=7
+
+
+MIN_PAYOUT=50
+
+
+PAYOUT_CRON=last_business_day_23_00_EST
+
+
+FEES_MODEL=brand|split|platform
+
+
+Security & Compliance
+PCI handled by Stripe (no card data stored).
+
+
+PII minimized; rely on Stripe Hosted Onboarding.
+
+
+Audit trail on every ledger mutation (idempotency keys, who/when/what).
+
+
+Acceptance Criteria (Wallet)
+Given an approved deliverable, when the brand approves it, then the base amount appears in the influencer pending balance within seconds.
+
+
+Given a campaign that met KPI, when the campaign is closed, then the influencer’s bonus share (weighted by contribution) posts to pending within 10 minutes.
+
+
+Given CLEARING_DAYS=7, when 7 days elapse, then pending entries auto‑move to available.
+
+
+Given PAYOUT_CRON, when month‑end runs, then all influencers with available ≥ MIN_PAYOUT receive a Stripe payout and see a paid ledger entry with receipt.
+
+
+Given a failed payout, when Stripe returns failed, then the system retries (3x exponential backoff) and notifies the influencer to update bank details.
+
+
+
+✅ Success Metrics
+% of briefs applied to by influencers
+
+
+% of campaigns where bonus unlocked
+
+
+Average influencer earnings (base vs bonus split)
+
+
+Brand satisfaction (bonus fairness, matching accuracy)
+
+
+Creator satisfaction (payout transparency, wallet usability)
+
+
+
+🔐 Authentication & Onboarding
+Sign-In Options
+Email + Password (standard, with verification email).
+
+
+Single Sign-On (SSO):
+
+
+Google OAuth (Gmail sign-in) for both brands and influencers.
+
+
+Future: Apple ID for iOS app.
+
+
+Requirements
+JWT-based session tokens with refresh.
+
+
+Secure password hashing (bcrypt/argon2).
+
+
+MFA (optional, roadmap).
+
+
+Role-based access: Influencer, Brand, Admin.
+
+
+
+🔗 Integrations
+TikTok Integration
+API: TikTok for Developers (Business Accounts & Creator Marketplace data).
+
+
+Data Synced: follower count, avg views per post, avg engagement (likes, comments, shares), audience demographics (age, gender, location if available).
+
+
+Use Cases:
+
+
+Populate Influencer Media Kit (auto-updated).
+
+
+Power Hive Score & Hive Match algorithms.
+
+
+Verify performance metrics for bonus distribution.
+
+
+Instagram Integration
+API: Instagram Graph API (requires Business/Creator account linked to FB Page).
+
+
+Data Synced: follower count, reach, impressions, engagement metrics, audience demographics.
+
+
+Use Cases:
+
+
+Populate Influencer Media Kit (auto-updated).
+
+
+Enable real-time analytics sync for brands.
+
+
+Verify deliverables’ reach/engagement for weighted bonus payout.
+
+
+Data Handling & Privacy
+Explicit OAuth consent from influencers at onboarding.
+
+
+Store tokens securely; refresh regularly.
+
+
+Limit scopes to read-only analytics; no posting access required.
+
+
+Comply with TikTok/Meta platform policies and data retention rules.
+
+
+
+

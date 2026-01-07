@@ -1,27 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, EyeOff, Mail, Lock, User, Building, ArrowRight } from "lucide-react";
-import { Link } from "wouter";
+import { Eye, EyeOff, Mail, Lock, User, Building, ArrowRight, CheckCircle } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { customSignupSchema, type CustomSignupUser } from "@shared/schema";
 import neonImage from "@assets/back-view-woman-with-blue-background_1752548501236.jpg";
 
-const signupSchema = z.object({
-  firstName: z.string().min(2, "First name must be at least 2 characters"),
-  lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+// Extend the API schema with UI-only fields
+const signupSchema = customSignupSchema.extend({
   confirmPassword: z.string(),
-  accountType: z.enum(["brand", "creator"], {
-    required_error: "Please select an account type",
-  }),
   company: z.string().optional(),
   agreeToTerms: z.boolean().refine((val) => val === true, {
     message: "You must agree to the terms and conditions",
@@ -36,8 +34,10 @@ type SignupForm = z.infer<typeof signupSchema>;
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [accountType, setAccountType] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const {
     register,
@@ -47,16 +47,110 @@ export default function Signup() {
     watch,
   } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      company: "",
+      agreeToTerms: false,
+    }
   });
 
-  const watchedAccountType = watch("accountType");
+  // Auto-select role if set from header signup buttons
+  useEffect(() => {
+    const intendedRole = sessionStorage.getItem('intended_role');
+    if (intendedRole === 'brand' || intendedRole === 'creator') {
+      setAccountType(intendedRole);
+      setValue("role", intendedRole);
+    }
+  }, [setValue]);
+
+  const watchedAccountType = watch("role");
+
+  const loginMutation = useMutation({
+    mutationFn: async (data: { email: string; password: string }) => {
+      const response = await apiRequest('/api/auth/login', 'POST', data);
+      return await response.json();
+    },
+  });
+
+  const signupMutation = useMutation({
+    mutationFn: async (data: CustomSignupUser) => {
+      const response = await apiRequest('/api/auth/signup', 'POST', data);
+      const result = await response.json();
+      if (!response.ok) {
+        throw result;
+      }
+      return result;
+    },
+    onSuccess: async (response, variables) => {
+      setIsSuccess(true);
+      toast({
+        title: "Account Created!",
+        description: "Welcome to Hiver. Setting up your account...",
+      });
+      
+      // Auto-login and redirect based on role
+      try {
+        await loginMutation.mutateAsync({ 
+          email: variables.email, 
+          password: variables.password 
+        });
+        
+        // Redirect brand users to onboarding, creators to their onboarding
+        if (variables.role === 'brand') {
+          setTimeout(() => {
+            window.location.href = '/onboarding/brand';
+          }, 1000);
+        } else if (variables.role === 'creator') {
+          setTimeout(() => {
+            window.location.href = '/onboarding/creator';
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            setLocation('/');
+          }, 1000);
+        }
+      } catch (loginError) {
+        // If auto-login fails, redirect to login page
+        setTimeout(() => {
+          setLocation('/login');
+        }, 2000);
+      }
+    },
+    onError: (error: any) => {
+      console.error('Signup error:', error);
+      
+      // Handle specific error types
+      if (error.type === 'duplicate_email') {
+        toast({
+          title: "Email Already Registered",
+          description: "An account with this email already exists. Please sign in instead.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Signup Failed",
+          description: error.message || "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+      }
+    },
+  });
 
   const onSubmit = async (data: SignupForm) => {
-    setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log("Signup data:", data);
-    setIsLoading(false);
+    // Extract only the fields needed for the API
+    const signupData: CustomSignupUser = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      role: data.role,
+    };
+    
+    signupMutation.mutate(signupData);
   };
 
   return (
@@ -91,8 +185,9 @@ export default function Signup() {
                       value={accountType}
                       onValueChange={(value) => {
                         setAccountType(value);
-                        setValue("accountType", value as "brand" | "creator");
+                        setValue("role", value as "brand" | "creator");
                       }}
+                      data-testid="select-account-type"
                     >
                       <SelectTrigger className="bg-white/10 border-white/20 text-white focus:border-purple-400 focus:ring-purple-400">
                         <SelectValue placeholder="Select account type" />
@@ -102,8 +197,8 @@ export default function Signup() {
                         <SelectItem value="creator">Content Creator</SelectItem>
                       </SelectContent>
                     </Select>
-                    {errors.accountType && (
-                      <p className="text-red-400 text-sm mt-1">{errors.accountType.message}</p>
+                    {errors.role && (
+                      <p className="text-red-400 text-sm mt-1">{errors.role.message}</p>
                     )}
                   </div>
 
@@ -118,6 +213,7 @@ export default function Signup() {
                           id="firstName"
                           placeholder="First name"
                           className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400"
+                          data-testid="input-first-name"
                           {...register("firstName")}
                         />
                       </div>
@@ -136,6 +232,7 @@ export default function Signup() {
                           id="lastName"
                           placeholder="Last name"
                           className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400"
+                          data-testid="input-last-name"
                           {...register("lastName")}
                         />
                       </div>
@@ -156,6 +253,7 @@ export default function Signup() {
                         type="email"
                         placeholder="Enter your email"
                         className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400"
+                        data-testid="input-email"
                         {...register("email")}
                       />
                     </div>
@@ -175,6 +273,7 @@ export default function Signup() {
                           id="company"
                           placeholder="Your company name"
                           className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400"
+                          data-testid="input-company"
                           {...register("company")}
                         />
                       </div>
@@ -192,12 +291,14 @@ export default function Signup() {
                         type={showPassword ? "text" : "password"}
                         placeholder="Create a password"
                         className="pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400"
+                        data-testid="input-password"
                         {...register("password")}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-3 text-white/60 hover:text-white"
+                        data-testid="button-toggle-password"
                       >
                         {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
@@ -218,12 +319,14 @@ export default function Signup() {
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm your password"
                         className="pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400"
+                        data-testid="input-confirm-password"
                         {...register("confirmPassword")}
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         className="absolute right-3 top-3 text-white/60 hover:text-white"
+                        data-testid="button-toggle-confirm-password"
                       >
                         {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
@@ -236,8 +339,10 @@ export default function Signup() {
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="agreeToTerms"
-                      {...register("agreeToTerms")}
-                      className="border-white/20 text-purple-400"
+                      checked={watch("agreeToTerms")}
+                      onCheckedChange={(checked) => setValue("agreeToTerms", checked === true)}
+                      className="border-white/20 data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500"
+                      data-testid="checkbox-agree-terms"
                     />
                     <Label htmlFor="agreeToTerms" className="text-sm text-white/90">
                       I agree to the{" "}
@@ -258,10 +363,16 @@ export default function Signup() {
                     <Button
                       type="submit"
                       className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-medium py-3 transition-all duration-300"
-                      disabled={isLoading}
+                      disabled={signupMutation.isPending || isSuccess}
+                      data-testid="button-create-account"
                     >
-                      {isLoading ? (
+                      {signupMutation.isPending ? (
                         "Creating Account..."
+                      ) : isSuccess ? (
+                        <>
+                          Account Created!
+                          <CheckCircle className="ml-2 h-4 w-4" />
+                        </>
                       ) : (
                         <>
                           Create Account
@@ -275,7 +386,7 @@ export default function Signup() {
                 <div className="text-center">
                   <p className="text-white/80">
                     Already have an account?{" "}
-                    <Link href="/login" className="text-purple-400 hover:text-purple-300 font-medium">
+                    <Link href="/login" className="text-purple-400 hover:text-purple-300 font-medium" data-testid="link-sign-in">
                       Sign in here
                     </Link>
                   </p>
@@ -285,8 +396,8 @@ export default function Signup() {
           </div>
         </div>
 
-        {/* Right Side - Neon Image */}
-        <div className="flex-1 relative overflow-hidden">
+        {/* Right Side - Neon Image (hidden on mobile) */}
+        <div className="hidden lg:flex flex-1 relative overflow-hidden">
           <div className="absolute inset-0">
             <img
               src={neonImage}

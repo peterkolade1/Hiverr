@@ -63,13 +63,33 @@ export function ComingSoonBanner() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Button
               size="lg"
-              onClick={() => window.location.href = '/waitlist'}
+              onClick={() => {
+                sessionStorage.setItem('intended_role', 'creator');
+                sessionStorage.setItem('should_onboard', 'true');
+                window.location.href = '/signup';
+              }}
               className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white px-8 py-4 text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl group"
+              data-testid="button-signup-creator"
             >
-              Join the Waitlist
+              Sign Up as Creator
+              <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={20} />
+            </Button>
+            <Button
+              size="lg"
+              onClick={() => {
+                sessionStorage.setItem('intended_role', 'brand');
+                sessionStorage.setItem('should_onboard', 'true');
+                window.location.href = '/signup';
+              }}
+              variant="outline"
+              className="border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white px-8 py-4 text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl group"
+              data-testid="button-signup-brand"
+            >
+              Sign Up as Brand
               <ArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" size={20} />
             </Button>
           </motion.div>

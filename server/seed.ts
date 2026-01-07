@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { creators, campaigns } from "@shared/schema";
+import { legacyCreators, legacyCampaigns } from "@shared/schema";
 
 // Sample creators data
 const sampleCreators = [
@@ -91,18 +91,18 @@ const sampleCampaigns = [
 export async function seedDatabase() {
   try {
     // Check if data already exists
-    const existingCreators = await db.select().from(creators).limit(1);
+    const existingCreators = await db.select().from(legacyCreators).limit(1);
     if (existingCreators.length > 0) {
       console.log("Database already seeded");
       return;
     }
 
     // Insert creators
-    await db.insert(creators).values(sampleCreators);
+    await db.insert(legacyCreators).values(sampleCreators);
     console.log("Creators seeded successfully");
 
     // Insert campaigns
-    await db.insert(campaigns).values(sampleCampaigns);
+    await db.insert(legacyCampaigns).values(sampleCampaigns);
     console.log("Campaigns seeded successfully");
 
     console.log("Database seeded successfully!");

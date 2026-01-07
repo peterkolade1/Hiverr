@@ -38,6 +38,7 @@ Preferred communication style: Simple, everyday language.
 - Proper relationships and constraints with serial primary keys
 
 ## Recent Changes
+- **July 2025**: Updated header and footer logo to new Hiverr brand design with hexagonal icon and modern typography
 - **July 2025**: Enhanced email validation in waitlist forms with robust checks and user-friendly error messages
 - **July 2025**: Cleared waitlist database for fresh start and added missing brand fields (campaign_ready, company_website, company_handle)
 - **July 2025**: Fixed admin interface by removing non-existent "Interest" field and fixing image click functionality for analytics screenshots

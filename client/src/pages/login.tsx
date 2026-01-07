@@ -3,24 +3,28 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
-import { Link } from "wouter";
+import { Eye, EyeOff, Mail, Lock, ArrowRight, CheckCircle } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { customLoginSchema, type CustomLoginUser } from "@shared/schema";
 import neonImage from "@assets/back-view-woman-with-blue-background_1752548501236.jpg";
 
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+// Use the shared login schema from backend
+const loginSchema = customLoginSchema;
 
-type LoginForm = z.infer<typeof loginSchema>;
+type LoginForm = CustomLoginUser;
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const {
     register,
@@ -28,14 +32,55 @@ export default function Login() {
     formState: { errors },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    }
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: async (data: CustomLoginUser) => {
+      const response = await apiRequest('/api/auth/login', 'POST', data);
+      return await response.json();
+    },
+    onSuccess: (response) => {
+      setIsSuccess(true);
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in to your account.",
+      });
+      
+      // Redirect based on user role
+      const userRole = response.user?.role;
+      const savedOnboardingPath = localStorage.getItem('onboarding_path');
+      
+      setTimeout(() => {
+        if (savedOnboardingPath) {
+          localStorage.removeItem('onboarding_path');
+          setLocation(savedOnboardingPath);
+        } else if (userRole === 'brand') {
+          // Redirect brands to their briefs page
+          setLocation('/brand/dashboard/briefs');
+        } else if (userRole === 'creator') {
+          // Redirect creators to their dashboard
+          setLocation('/creator/dashboard');
+        } else {
+          setLocation('/');
+        }
+      }, 1500);
+    },
+    onError: (error: any) => {
+      console.error('Login error:', error);
+      toast({
+        title: "Login Failed",
+        description: error.message || "Invalid email or password. Please try again.",
+        variant: "destructive",
+      });
+    },
   });
 
   const onSubmit = async (data: LoginForm) => {
-    setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log("Login data:", data);
-    setIsLoading(false);
+    loginMutation.mutate(data);
   };
 
   return (
@@ -73,6 +118,7 @@ export default function Login() {
                         type="email"
                         placeholder="Enter your email"
                         className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400"
+                        data-testid="input-email"
                         {...register("email")}
                       />
                     </div>
@@ -92,12 +138,14 @@ export default function Login() {
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter your password"
                         className="pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-purple-400 focus:ring-purple-400"
+                        data-testid="input-password"
                         {...register("password")}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-3 text-white/60 hover:text-white"
+                        data-testid="button-toggle-password"
                       >
                         {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
@@ -108,7 +156,7 @@ export default function Login() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <Link href="/forgot-password" className="text-sm text-purple-400 hover:text-purple-300">
+                    <Link href="/forgot-password" className="text-sm text-purple-400 hover:text-purple-300" data-testid="link-forgot-password">
                       Forgot password?
                     </Link>
                   </div>
@@ -117,10 +165,16 @@ export default function Login() {
                     <Button
                       type="submit"
                       className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white font-medium py-3 transition-all duration-300"
-                      disabled={isLoading}
+                      disabled={loginMutation.isPending || isSuccess}
+                      data-testid="button-sign-in"
                     >
-                      {isLoading ? (
+                      {loginMutation.isPending ? (
                         "Signing in..."
+                      ) : isSuccess ? (
+                        <>
+                          Signed In!
+                          <CheckCircle className="ml-2 h-4 w-4" />
+                        </>
                       ) : (
                         <>
                           Sign In
@@ -131,10 +185,10 @@ export default function Login() {
                   </div>
                 </form>
 
-                <div className="text-center">
+                <div className="text-center pt-4">
                   <p className="text-white/80">
                     Don't have an account?{" "}
-                    <Link href="/signup" className="text-purple-400 hover:text-purple-300 font-medium">
+                    <Link href="/signup" className="text-purple-400 hover:text-purple-300 font-medium" data-testid="link-sign-up">
                       Sign up here
                     </Link>
                   </p>
@@ -144,8 +198,8 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Right Side - Neon Image */}
-        <div className="flex-1 relative overflow-hidden">
+        {/* Right Side - Neon Image (hidden on mobile) */}
+        <div className="hidden lg:flex flex-1 relative overflow-hidden">
           <div className="absolute inset-0">
             <img
               src={neonImage}
