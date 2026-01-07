@@ -57,15 +57,15 @@ export default function Login() {
       setTimeout(() => {
         if (savedOnboardingPath) {
           localStorage.removeItem('onboarding_path');
-          setLocation(savedOnboardingPath);
+          window.location.href = savedOnboardingPath;
         } else if (userRole === 'brand') {
           // Redirect brands to their briefs page
-          setLocation('/brand/dashboard/briefs');
+          window.location.href = '/brand/dashboard/briefs';
         } else if (userRole === 'creator') {
           // Redirect creators to their dashboard
-          setLocation('/creator/dashboard');
+          window.location.href = '/creator/dashboard';
         } else {
-          setLocation('/');
+          window.location.href = '/';
         }
       }, 1500);
     },
