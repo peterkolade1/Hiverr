@@ -7,18 +7,25 @@ import {
   BookOpen, 
   HelpCircle, 
   Settings,
-  MessageCircle,
-  Phone,
   ChevronDown,
   ChevronUp,
   Menu,
-  X
+  X,
+  ThumbsUp,
+  ArrowRight,
+  Star,
+  Lightbulb,
+  AlertCircle,
+  Frown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { HiverWordmark } from "@/components/hiver-logo";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 import { useState, createContext, useContext } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface NavItem {
   label: string;
@@ -45,6 +52,131 @@ const onboardingTasks = [
   { id: 2, label: "Create your first brief", completed: false },
 ];
 
+const feedbackCategories = [
+  { id: "general", label: "General Experience", icon: Star },
+  { id: "bug", label: "Report a Bug", icon: AlertCircle },
+  { id: "feature", label: "Feature Request", icon: Lightbulb },
+  { id: "other", label: "Something Felt Off", icon: Frown },
+];
+
+function FeedbackCard({ onOpenFeedback }: { onOpenFeedback: () => void }) {
+  return (
+    <div className="bg-gray-50 rounded-xl p-4">
+      <div className="mb-3">
+        <ThumbsUp className="w-8 h-8 text-[#8B5CF6]" />
+      </div>
+      <h3 className="font-semibold text-gray-900 mb-1">Tell us what's working and what's not</h3>
+      <p className="text-sm text-gray-500 mb-4">We're building Hiverr for you.</p>
+      <Button 
+        variant="outline"
+        className="w-full justify-center text-sm bg-gray-100 hover:bg-gray-200 border-0"
+        onClick={onOpenFeedback}
+        data-testid="button-give-feedback"
+      >
+        Give Feedback
+        <ArrowRight className="w-4 h-4 ml-2" />
+      </Button>
+    </div>
+  );
+}
+
+function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const [rating, setRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [note, setNote] = useState("");
+  const { toast } = useToast();
+
+  const handleSubmit = () => {
+    toast({
+      title: "Thanks for your feedback!",
+      description: "We appreciate you taking the time to help us improve.",
+    });
+    setRating(0);
+    setSelectedCategory(null);
+    setNote("");
+    onClose();
+  };
+
+  const displayRating = hoveredRating || rating;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-bold">How's your Hiverr Experience?</DialogTitle>
+          <p className="text-gray-500 text-sm">Are you satisfied with the service?</p>
+        </DialogHeader>
+        
+        <div className="space-y-6 py-4">
+          <div className="flex gap-2 justify-center">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                type="button"
+                className="focus:outline-none transition-transform hover:scale-110"
+                onMouseEnter={() => setHoveredRating(star)}
+                onMouseLeave={() => setHoveredRating(0)}
+                onClick={() => setRating(star)}
+                data-testid={`star-${star}`}
+              >
+                <Star
+                  className={`w-10 h-10 ${
+                    star <= displayRating
+                      ? "fill-amber-400 text-amber-400"
+                      : "text-amber-400"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+
+          <div>
+            <p className="font-medium text-gray-900 mb-3">Tell us what can be improved:</p>
+            <div className="flex flex-wrap gap-2">
+              {feedbackCategories.map((category) => (
+                <button
+                  key={category.id}
+                  type="button"
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full border text-sm transition-colors ${
+                    selectedCategory === category.id
+                      ? "border-[#8B5CF6] bg-[#8B5CF6]/10 text-[#8B5CF6]"
+                      : "border-gray-200 hover:border-gray-300 text-gray-700"
+                  }`}
+                  data-testid={`category-${category.id}`}
+                >
+                  <category.icon className="w-4 h-4" />
+                  {category.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="font-medium text-gray-900 block mb-2">Add a note</label>
+            <Textarea
+              placeholder="Write your note here"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              className="min-h-[120px] bg-gray-50 border-gray-200 resize-none"
+              data-testid="textarea-feedback-note"
+            />
+          </div>
+
+          <Button
+            onClick={handleSubmit}
+            className="w-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white py-6"
+            data-testid="button-submit-feedback"
+          >
+            Submit Feedback
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 interface SidebarContextType {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
@@ -69,7 +201,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
+function SidebarContent({ onNavigate, onOpenFeedback }: { onNavigate?: () => void; onOpenFeedback: () => void }) {
   const [location] = useLocation();
   const [showTasks, setShowTasks] = useState(true);
   
@@ -188,53 +320,39 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           )}
         </div>
 
-        <div className="bg-gray-50 rounded-xl p-4">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-[#8B5CF6] rounded-full flex items-center justify-center">
-              <MessageCircle className="w-5 h-5 text-white" />
-            </div>
-            <p className="text-sm font-medium text-gray-900">We're here to help</p>
-          </div>
-          <div className="space-y-2">
-            <Button 
-              variant="outline" 
-              className="w-full justify-center text-sm"
-              data-testid="button-chat"
-            >
-              Chat with Us
-            </Button>
-            <Button 
-              className="w-full justify-center text-sm bg-gray-900 hover:bg-gray-800"
-              data-testid="button-book-call"
-            >
-              <Phone className="w-4 h-4 mr-2" />
-              Book a Call
-            </Button>
-          </div>
-        </div>
+        <FeedbackCard onOpenFeedback={onOpenFeedback} />
       </div>
     </>
   );
 }
 
 export function BrandSidebar() {
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  
   return (
-    <div className="hidden lg:flex w-64 bg-white border-r border-gray-200 flex-col h-screen fixed left-0 top-0 z-40">
-      <SidebarContent />
-    </div>
+    <>
+      <div className="hidden lg:flex w-64 bg-white border-r border-gray-200 flex-col h-screen fixed left-0 top-0 z-40">
+        <SidebarContent onOpenFeedback={() => setFeedbackOpen(true)} />
+      </div>
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
+    </>
   );
 }
 
 export function MobileSidebar() {
   const { isOpen, setIsOpen } = useSidebarContext();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent side="left" className="w-80 p-0 flex flex-col">
-        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-        <SidebarContent onNavigate={() => setIsOpen(false)} />
-      </SheetContent>
-    </Sheet>
+    <>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetContent side="left" className="w-80 p-0 flex flex-col">
+          <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+          <SidebarContent onNavigate={() => setIsOpen(false)} onOpenFeedback={() => { setIsOpen(false); setFeedbackOpen(true); }} />
+        </SheetContent>
+      </Sheet>
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
+    </>
   );
 }
 
