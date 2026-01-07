@@ -798,6 +798,88 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Feedback endpoints
+  app.post("/api/feedback", isAuthenticated, async (req: any, res) => {
+    try {
+      const user = await getCurrentUser(req.user, storage);
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+
+      const { rating, category, note } = req.body;
+      
+      if (!rating || rating < 1 || rating > 5) {
+        return res.status(400).json({ message: "Rating must be between 1 and 5" });
+      }
+
+      const feedback = await storage.createFeedback({
+        userId: user.id,
+        rating,
+        category: category || null,
+        note: note || null,
+      });
+      
+      res.status(201).json(feedback);
+    } catch (error) {
+      console.error("Error creating feedback:", error);
+      res.status(500).json({ message: "Failed to submit feedback" });
+    }
+  });
+
+  app.get("/api/feedback", isAuthenticated, async (req: any, res) => {
+    try {
+      const user = await getCurrentUser(req.user, storage);
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+
+      const feedback = await storage.getFeedbackByUserId(user.id);
+      res.json(feedback);
+    } catch (error) {
+      console.error("Error fetching feedback:", error);
+      res.status(500).json({ message: "Failed to fetch feedback" });
+    }
+  });
+
+  // Onboarding progress endpoints
+  app.get("/api/onboarding/progress", isAuthenticated, async (req: any, res) => {
+    try {
+      const user = await getCurrentUser(req.user, storage);
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+
+      // Initialize onboarding tasks if not already done
+      const progress = await storage.initializeOnboardingTasks(user.id);
+      res.json(progress);
+    } catch (error) {
+      console.error("Error fetching onboarding progress:", error);
+      res.status(500).json({ message: "Failed to fetch onboarding progress" });
+    }
+  });
+
+  app.patch("/api/onboarding/progress/:taskKey", isAuthenticated, async (req: any, res) => {
+    try {
+      const user = await getCurrentUser(req.user, storage);
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+
+      const { taskKey } = req.params;
+      const { completed } = req.body;
+
+      if (typeof completed !== 'boolean') {
+        return res.status(400).json({ message: "completed must be a boolean" });
+      }
+
+      const progress = await storage.updateOnboardingTask(user.id, taskKey, completed);
+      res.json(progress);
+    } catch (error) {
+      console.error("Error updating onboarding progress:", error);
+      res.status(500).json({ message: "Failed to update onboarding progress" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

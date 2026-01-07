@@ -531,3 +531,40 @@ export const insertWaitlistSchema = createInsertSchema(waitlist).omit({
 
 export type Waitlist = typeof waitlist.$inferSelect;
 export type InsertWaitlist = z.infer<typeof insertWaitlistSchema>;
+
+// Feedback submissions table
+export const feedbackSubmissions = pgTable("feedback_submissions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  rating: integer("rating").notNull(), // 1-5 stars
+  category: text("category"), // 'general' | 'bug' | 'feature' | 'other'
+  note: text("note"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertFeedbackSchema = createInsertSchema(feedbackSubmissions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type FeedbackSubmission = typeof feedbackSubmissions.$inferSelect;
+export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
+
+// Onboarding task progress table
+export const onboardingProgress = pgTable("onboarding_progress", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  taskKey: text("task_key").notNull(), // e.g., 'complete_profile', 'create_first_brief'
+  completed: boolean("completed").default(false),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertOnboardingProgressSchema = createInsertSchema(onboardingProgress).omit({
+  id: true,
+  createdAt: true,
+  completedAt: true,
+});
+
+export type OnboardingProgress = typeof onboardingProgress.$inferSelect;
+export type InsertOnboardingProgress = z.infer<typeof insertOnboardingProgressSchema>;

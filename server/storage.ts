@@ -1,8 +1,10 @@
 import { db } from "./db";
 import { 
   inquiries, users, waitlist, creatorProfiles, brandProfiles, socialAccounts, campaigns, applications, assignments, deliverables, briefs,
+  feedbackSubmissions, onboardingProgress,
   type Inquiry, type User, type UpsertUser, type Waitlist, type CustomSignupUser, type CustomLoginUser,
-  type CreatorProfile, type BrandProfile, type SocialAccount, type Campaign, type Application, type Assignment, type Brief, type InsertBrief
+  type CreatorProfile, type BrandProfile, type SocialAccount, type Campaign, type Application, type Assignment, type Brief, type InsertBrief,
+  type FeedbackSubmission, type InsertFeedback, type OnboardingProgress, type InsertOnboardingProgress
 } from "@shared/schema";
 import { eq, and, count, sum, desc } from "drizzle-orm";
 import bcrypt from "bcrypt";
@@ -120,6 +122,15 @@ export interface IStorage {
   updateBrief(id: number, data: Partial<Brief>): Promise<Brief>;
   deleteBrief(id: number): Promise<void>;
   getBriefCounts(userId: number): Promise<{ all: number; draft: number; active: number; paused: number; closed: number }>;
+  
+  // Feedback operations
+  createFeedback(feedbackData: InsertFeedback): Promise<FeedbackSubmission>;
+  getFeedbackByUserId(userId: number): Promise<FeedbackSubmission[]>;
+  
+  // Onboarding progress operations
+  getOnboardingProgress(userId: number): Promise<OnboardingProgress[]>;
+  updateOnboardingTask(userId: number, taskKey: string, completed: boolean): Promise<OnboardingProgress>;
+  initializeOnboardingTasks(userId: number): Promise<OnboardingProgress[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -573,6 +584,28 @@ export class MemStorage implements IStorage {
   async getBriefCounts(userId: number): Promise<{ all: number; draft: number; active: number; paused: number; closed: number }> {
     return { all: 0, draft: 0, active: 0, paused: 0, closed: 0 };
   }
+
+  // Feedback operations (stubs for MemStorage)
+  async createFeedback(feedbackData: InsertFeedback): Promise<FeedbackSubmission> {
+    throw new Error("Feedback operations require database storage");
+  }
+
+  async getFeedbackByUserId(userId: number): Promise<FeedbackSubmission[]> {
+    return [];
+  }
+
+  // Onboarding progress operations (stubs for MemStorage)
+  async getOnboardingProgress(userId: number): Promise<OnboardingProgress[]> {
+    return [];
+  }
+
+  async updateOnboardingTask(userId: number, taskKey: string, completed: boolean): Promise<OnboardingProgress> {
+    throw new Error("Onboarding operations require database storage");
+  }
+
+  async initializeOnboardingTasks(userId: number): Promise<OnboardingProgress[]> {
+    throw new Error("Onboarding operations require database storage");
+  }
 }
 
 export class DatabaseStorage implements IStorage {
@@ -977,6 +1010,94 @@ export class DatabaseStorage implements IStorage {
       paused: allBriefs.filter(b => b.status === 'paused').length,
       closed: allBriefs.filter(b => b.status === 'closed').length,
     };
+  }
+
+  // Feedback operations
+  async createFeedback(feedbackData: InsertFeedback): Promise<FeedbackSubmission> {
+    const [feedback] = await db
+      .insert(feedbackSubmissions)
+      .values(feedbackData)
+      .returning();
+    return feedback;
+  }
+
+  async getFeedbackByUserId(userId: number): Promise<FeedbackSubmission[]> {
+    return await db
+      .select()
+      .from(feedbackSubmissions)
+      .where(eq(feedbackSubmissions.userId, userId))
+      .orderBy(desc(feedbackSubmissions.createdAt));
+  }
+
+  // Onboarding progress operations
+  async getOnboardingProgress(userId: number): Promise<OnboardingProgress[]> {
+    return await db
+      .select()
+      .from(onboardingProgress)
+      .where(eq(onboardingProgress.userId, userId));
+  }
+
+  async updateOnboardingTask(userId: number, taskKey: string, completed: boolean): Promise<OnboardingProgress> {
+    // Try to update existing task
+    const [existing] = await db
+      .select()
+      .from(onboardingProgress)
+      .where(and(
+        eq(onboardingProgress.userId, userId),
+        eq(onboardingProgress.taskKey, taskKey)
+      ));
+
+    if (existing) {
+      const [updated] = await db
+        .update(onboardingProgress)
+        .set({
+          completed,
+          completedAt: completed ? new Date() : null,
+        })
+        .where(eq(onboardingProgress.id, existing.id))
+        .returning();
+      return updated;
+    }
+
+    // Create new task progress entry
+    const [created] = await db
+      .insert(onboardingProgress)
+      .values({
+        userId,
+        taskKey,
+        completed,
+        completedAt: completed ? new Date() : null,
+      })
+      .returning();
+    return created;
+  }
+
+  async initializeOnboardingTasks(userId: number): Promise<OnboardingProgress[]> {
+    const existingProgress = await this.getOnboardingProgress(userId);
+    if (existingProgress.length > 0) {
+      return existingProgress;
+    }
+
+    // Default onboarding tasks for brands
+    const defaultTasks = [
+      { taskKey: 'complete_profile', completed: false },
+      { taskKey: 'create_first_brief', completed: false },
+    ];
+
+    const createdTasks: OnboardingProgress[] = [];
+    for (const task of defaultTasks) {
+      const [created] = await db
+        .insert(onboardingProgress)
+        .values({
+          userId,
+          taskKey: task.taskKey,
+          completed: task.completed,
+        })
+        .returning();
+      createdTasks.push(created);
+    }
+
+    return createdTasks;
   }
 }
 
