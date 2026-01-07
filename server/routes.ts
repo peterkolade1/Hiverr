@@ -411,6 +411,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.updateUserRole(userId, 'brand');
       }
 
+      // Mark onboarding task as complete
+      await storage.updateOnboardingTask(userId, 'complete_profile', true);
+
       res.status(201).json({
         message: "Brand profile created successfully",
         profile: brandProfile
@@ -604,6 +607,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const brief = await storage.createBrief(result.data);
+      
+      // Mark onboarding task as complete
+      await storage.updateOnboardingTask(user.id, 'create_first_brief', true);
+      
       res.status(201).json(brief);
     } catch (error) {
       console.error("Error creating brief:", error);

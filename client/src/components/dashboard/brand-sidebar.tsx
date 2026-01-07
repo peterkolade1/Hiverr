@@ -26,6 +26,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Textarea } from "@/components/ui/textarea";
 import { useState, createContext, useContext } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 interface NavItem {
   label: string;
@@ -47,10 +49,10 @@ const accountNavItems: NavItem[] = [
   { label: "Account Settings", icon: Settings, href: "/brand/dashboard/settings" },
 ];
 
-const onboardingTasks = [
-  { id: 1, label: "Complete your brand profile", completed: true },
-  { id: 2, label: "Create your first brief", completed: false },
-];
+const taskLabels: Record<string, string> = {
+  complete_profile: "Complete your brand profile",
+  create_first_brief: "Create your first brief",
+};
 
 const feedbackCategories = [
   { id: "general", label: "General Experience", icon: Star },
@@ -87,15 +89,39 @@ function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
   const [note, setNote] = useState("");
   const { toast } = useToast();
 
+  const submitFeedback = useMutation({
+    mutationFn: async (data: { rating: number; category: string | null; note: string }) => {
+      return apiRequest("/api/feedback", "POST", data);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Thanks for your feedback!",
+        description: "We appreciate you taking the time to help us improve.",
+      });
+      setRating(0);
+      setSelectedCategory(null);
+      setNote("");
+      onClose();
+    },
+    onError: () => {
+      toast({
+        title: "Failed to submit feedback",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSubmit = () => {
-    toast({
-      title: "Thanks for your feedback!",
-      description: "We appreciate you taking the time to help us improve.",
-    });
-    setRating(0);
-    setSelectedCategory(null);
-    setNote("");
-    onClose();
+    if (rating === 0) {
+      toast({
+        title: "Please select a rating",
+        description: "Tell us how satisfied you are with Hiverr.",
+        variant: "destructive",
+      });
+      return;
+    }
+    submitFeedback.mutate({ rating, category: selectedCategory, note });
   };
 
   const displayRating = hoveredRating || rating;
@@ -166,10 +192,11 @@ function FeedbackModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
 
           <Button
             onClick={handleSubmit}
+            disabled={submitFeedback.isPending}
             className="w-full bg-[#8B5CF6] hover:bg-[#7C3AED] text-white py-6"
             data-testid="button-submit-feedback"
           >
-            Submit Feedback
+            {submitFeedback.isPending ? "Submitting..." : "Submit Feedback"}
           </Button>
         </div>
       </DialogContent>
@@ -201,13 +228,25 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+interface OnboardingTask {
+  id: number;
+  userId: number;
+  taskKey: string;
+  completed: boolean;
+  completedAt: string | null;
+}
+
 function SidebarContent({ onNavigate, onOpenFeedback }: { onNavigate?: () => void; onOpenFeedback: () => void }) {
   const [location] = useLocation();
   const [showTasks, setShowTasks] = useState(true);
   
+  const { data: onboardingTasks = [] } = useQuery<OnboardingTask[]>({
+    queryKey: ["/api/onboarding/progress"],
+  });
+  
   const completedTasks = onboardingTasks.filter(t => t.completed).length;
-  const totalTasks = onboardingTasks.length;
-  const progress = (completedTasks / totalTasks) * 100;
+  const totalTasks = onboardingTasks.length || 2;
+  const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
   const isActive = (href: string) => {
     if (href === "/brand/dashboard") {
@@ -302,7 +341,7 @@ function SidebarContent({ onNavigate, onOpenFeedback }: { onNavigate?: () => voi
               </div>
               <ul className="mt-3 space-y-2">
                 {onboardingTasks.map((task) => (
-                  <li key={task.id} className="flex items-center gap-2 text-sm">
+                  <li key={task.taskKey} className="flex items-center gap-2 text-sm">
                     <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
                       task.completed ? "bg-white border-white" : "border-white/50"
                     }`}>
@@ -312,7 +351,9 @@ function SidebarContent({ onNavigate, onOpenFeedback }: { onNavigate?: () => voi
                         </svg>
                       )}
                     </div>
-                    <span className={task.completed ? "line-through opacity-70" : ""}>{task.label}</span>
+                    <span className={task.completed ? "line-through opacity-70" : ""}>
+                      {taskLabels[task.taskKey] || task.taskKey}
+                    </span>
                   </li>
                 ))}
               </ul>
